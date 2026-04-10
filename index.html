@@ -3,389 +3,329 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Treinamento Operacional MRS - Sr Assis</title>
-    
+    <title>CAÇA-PALAVRAS SEGURANÇA - Sr Assis</title>
     <style>
         :root {
-            --mrs-blue: #003399;      /* Azul Oficial MRS */
-            --mrs-yellow: #FFCC00;    /* Amarelo Segurança */
-            --mrs-green: #28a745;     /* Sucesso Operacional */
-            --mrs-red: #dc3545;       /* Alerta de Risco */
-            --bg-gray: #f4f4f4;       /* Fundo Neutro */
-            --shadow: 0 4px 15px rgba(0,0,0,0.2);
+            --mrs-blue: #003399;
+            --mrs-yellow: #FFCC00;
+            --mrs-green: #28a745;
+            --bg-gray: #f4f4f4;
+            --cell-size: clamp(25px, 7vw, 35px);
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-gray);
             margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow-x: hidden;
             user-select: none;
             -webkit-user-select: none;
+            overflow-x: hidden;
         }
 
-        /* --- CABEÇALHO --- */
         header {
             background-color: var(--mrs-blue);
             color: white;
             width: 100%;
             padding: 20px 0;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-        header h2 { margin: 0; letter-spacing: 1px; }
-        header small { opacity: 0.8; font-weight: 300; }
+        header h1 { margin: 0; font-size: 1.4rem; text-transform: uppercase; }
+        header p { margin: 5px 0 0; font-size: 0.8rem; opacity: 0.8; }
 
-        /* --- BARRA DE STATUS --- */
-        #game-info {
+        .stats-container {
             width: 90%;
             max-width: 500px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 20px;
+            padding: 15px 0;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 5px 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
             font-weight: bold;
             color: var(--mrs-blue);
+            font-size: 0.8rem;
         }
 
-        .status-box {
+        /* GRID DO JOGO */
+        #grid-board {
             background: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        /* --- GRID DE OPERAÇÃO (O JOGO) --- */
-        #grid-container {
-            background: white;
-            padding: 12px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 5px;
-            width: 90vw;
-            max-width: 480px;
-            aspect-ratio: 1;
-            touch-action: none; /* ESSENCIAL PARA O ARRASTE NO MOBILE */
+            gap: 4px;
+            touch-action: none; /* Bloqueia scroll para o arraste funcionar */
         }
 
         .cell {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
+            width: var(--cell-size);
+            height: var(--cell-size);
+            background: #fff;
+            border: 1px solid #eee;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
-            font-size: 1.2rem;
+            font-weight: 900;
+            font-size: 1rem;
             border-radius: 4px;
-            transition: background 0.15s ease;
-            cursor: pointer;
+            transition: background 0.1s;
         }
 
-        /* EFEITO DE ARRASTE */
-        .cell.selected {
-            background-color: var(--mrs-yellow);
-            transform: scale(1.05);
-            z-index: 2;
-        }
+        .cell.selecting { background-color: var(--mrs-yellow); transform: scale(1.1); }
+        .cell.found { background-color: var(--mrs-green); color: white; border: none; }
 
-        /* PALAVRA ENCONTRADA */
-        .cell.found {
-            background-color: var(--mrs-green);
-            color: white;
-            border: none;
-            animation: pulse 0.5s ease;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* --- LISTA DE PALAVRAS --- */
-        #word-list {
+        /* LISTA DE PALAVRAS (ESTILO BOTÃO) */
+        #word-tags {
             width: 90%;
             max-width: 500px;
-            margin: 25px 0;
+            margin-top: 20px;
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 8px;
             justify-content: center;
         }
 
-        .word-tag {
-            background: white;
-            padding: 10px 18px;
-            border-radius: 25px;
-            border: 2.5px solid var(--mrs-blue);
-            font-size: 0.9rem;
+        .tag {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 2px solid var(--mrs-blue);
             color: var(--mrs-blue);
             font-weight: bold;
+            font-size: 0.75rem;
+            background: white;
             transition: 0.3s;
         }
 
-        .word-tag.done {
+        .tag.done {
             background: var(--mrs-green);
             color: white;
             border-color: var(--mrs-green);
             text-decoration: line-through;
-            opacity: 0.7;
         }
 
-        /* --- MODAL DE INSIGHTS TÉCNICOS --- */
-        #modal-overlay {
+        /* MODAL DE INSIGHTS */
+        #overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8);
-            z-index: 9999;
+            z-index: 1000;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(5px);
         }
 
         #modal {
             background: white;
             width: 85%;
-            max-width: 450px;
+            max-width: 400px;
             padding: 30px;
             border-radius: 20px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        #modal h2 { 
-            color: var(--mrs-blue); 
-            margin-top: 0; 
-            border-bottom: 2px solid var(--mrs-yellow);
-            padding-bottom: 10px;
-        }
-
-        #modal p {
-            font-size: 1.1rem;
-            line-height: 1.5;
-            color: #333;
-            margin: 20px 0;
-        }
-
+        #modal h2 { color: var(--mrs-blue); margin: 0 0 15px; }
+        #modal p { font-size: 1rem; line-height: 1.5; color: #444; }
         #modal button {
             background: var(--mrs-blue);
             color: white;
             border: none;
-            padding: 15px 35px;
-            border-radius: 30px;
-            font-size: 1rem;
-            cursor: pointer;
+            padding: 12px 30px;
+            border-radius: 25px;
+            margin-top: 20px;
             font-weight: bold;
-            text-transform: uppercase;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h2>CAÇA-PALAVRAS SEGURANÇA</h2>
-    <small>Fase Operacional - Maquinista Sr Assis</small>
+    <h1>Caça-Palavras Segurança</h1>
+    <p>Fase Operacional - Maquinista Sr Assis</p>
 </header>
 
-<div id="game-info">
-    <div class="status-box" id="label-fase">Fase: 1/6</div>
-    <div class="status-box" id="label-progresso">Progresso: 0/4</div>
+<div class="stats-container">
+    <div class="stat-box" id="fase-label">Fase: 1/6</div>
+    <div class="stat-box" id="progresso-label">Progresso: 0/4</div>
 </div>
 
-<div id="grid-container"></div>
+<div id="grid-board"></div>
 
-<div id="word-list"></div>
+<div id="word-tags"></div>
 
-<div id="modal-overlay">
+<div id="overlay">
     <div id="modal">
-        <h2 id="modal-title">INSIGHT TÉCNICO</h2>
-        <p id="modal-body"></p>
-        <button onclick="fecharModal()">Confirmar e Prosseguir</button>
+        <h2 id="m-title">INSIGHT</h2>
+        <p id="m-body"></p>
+        <button onclick="closeModal()">PROSSEGUIR</button>
     </div>
 </div>
 
 <script>
-    /** --- LÓGICA DO SISTEMA (JAVASCRIPT) --- **/
-    
-    const Jogo = {
+    const App = {
         fase: 1,
         encontradas: [],
         selecionadas: [],
-        estaArrastando: false,
+        arrastando: false,
 
-        // BANCO DE DADOS LAPIDADO (6 FASES)
+        // CONTEÚDO TÉCNICO COMPLETO (6 FASES)
         dados: {
             1: [
-                {p: "TRECHO", i: "Conhecimento do Trecho: Antecipe riscos conhecendo o perfil da via e pontos críticos."},
-                {p: "GABARITO", i: "Gabarito: Mantenha o olhar atento a obstruções laterais. Gabarito livre evita abalroamentos."},
-                {p: "BRITA", i: "Caminhar na Brita: Terreno irregular causa entorses. Foque no passo e use EPI correto."},
-                {p: "DORMER", i: "Dormentes: A saúde da via garante a estabilidade. Verifique rachaduras ou podridão."}
+                {p: "TRECHO", i: "CONHECIMENTO DO TRECHO: Saiba exatamente onde você está. Antecipar o perfil da via evita frenagens bruscas."},
+                {p: "GABARITO", i: "GABARITO: Cuidado com obstruções laterais. O gabarito livre é a garantia de que o trem passa sem impactos."},
+                {p: "BRITA", i: "BRITA: Atenção ao caminhar no pátio. Terrenos irregulares são os maiores causadores de entorses."},
+                {p: "DORMER", i: "DORMENTES: A base da via. Verifique o estado dos dormentes para garantir a estabilidade do rodeiro."}
             ],
             2: [
-                {p: "AGULHA", i: "Regra da Fresta: 3mm de abertura causam arrombamento. Limpe britas antes de operar."},
-                {p: "JACARE", i: "Jacaré: O choque de ponta ocorre se a agulha não estiver firme. Visualize a rota de fuga."},
-                {p: "CONTRATRILHO", i: "Guia da Segurança: Verifique fixações soltas na transposição de AMVs."},
-                {p: "MAQUINA", i: "Shisa Kanko: Aponte e fale. Confirme a fidelidade da posição da chave antes do movimento."}
+                {p: "AGULHA", i: "AGULHA: Regra da Fresta! 3mm de abertura já causam arrombamento. Verifique sempre antes de operar o AMV."},
+                {p: "JACARE", i: "JACARÉ: Visualize a rota. O choque de ponta no jacaré ocorre quando a agulha não está totalmente firme."},
+                {p: "CONTRATRILHO", i: "CONTRATRILHO: O guia da roda. Verifique fixações soltas que podem comprometer o gabarito na transposição."},
+                {p: "MAQUINA", i: "SHISA KANKO: Aponte e fale! Confirme visualmente a posição da chave antes de autorizar o movimento."}
             ],
             3: [
-                {p: "ASPECTO", i: "Visão Periférica: Não confie no hábito. Reconfirme o dado real do sinal antes de agir."},
-                {p: "DISTANCIA", i: "Tempo de Ciclo: Planeje a parada mental muito antes do dado ficar crítico no visor."},
-                {p: "COMUNICA", i: "Escuta Empática: Não absorva a pressa do rádio. A autoridade do comando é sua."},
-                {p: "EXPECTATIVA", i: "Mente de Principiante: Trate cada autorização como se fosse a primeira da carreira."}
+                {p: "ASPECTO", i: "VISÃO PERIFÉRICA: Não confie no hábito. Reconfirme o dado real do sinal antes de agir. O verde de 'ontem' não vale hoje."},
+                {p: "DISTANCIA", i: "TEMPO DE CICLO: Planeje a parada mental muito antes do dado numérico ficar crítico no visor do computador de bordo."},
+                {p: "COMUNICA", i: "ESCUTA EMPÁTICA: Não absorva a pressa do rádio. Processe a informação e repita. A autoridade final é sua."},
+                {p: "EXPECTATIVA", i: "MENTE DE PRINCIPIANTE: Trate cada autorização de movimento como se fosse a primeira. O excesso de confiança mata."}
             ],
             4: [
-                {p: "CONFIANCA", i: "Autoconfiança: O perigo mora na experiência. Não ignore riscos que um novato respeitaria."},
-                {p: "PRESSA", i: "Pressa: É uma emoção. Vocalize a urgência para recuperar a consciência operacional imediata."},
-                {p: "PERCEPCAO", i: "Olhar de Turista: Veja o pátio como se fosse a primeira vez. Busque o que mudou no cenário."},
-                {p: "LINHA", i: "Linha de Fogo: Visualize a liberação de energia antes de se posicionar próximo ao engate."}
+                {p: "CONFIANCA", i: "AUTOCONFIANÇA: O perigo mora na experiência. Profissionais antigos tendem a ignorar riscos que novatos respeitam."},
+                {p: "PRESSA", i: "A PRESSA É UMA EMOÇÃO: Se sentir urgência, pare e vocalize seu estado. A pressa causa a 'visão de túnel'."},
+                {p: "PERCEPCAO", i: "OLHAR DE TURISTA: Veja o pátio como se fosse a primeira vez. Busque o que mudou no cenário desde a última viagem."},
+                {p: "LINHA", i: "LINHA DE FOGO: Antecipação! Visualize onde a energia será liberada (engates, mangueiras) antes de se posicionar."}
             ],
             5: [
-                {p: "ALIVIO", i: "Item 6.3.3: Reduza o esforço gradualmente (>10s). Evita choque dinâmico e quebra de engates."},
-                {p: "CICLAGEM", i: "Item 6.3.11: Aguarde min. 30s após o alívio para nova aplicação. Garante a recarga do ar."},
-                {p: "DINAMICO", i: "Item 6.3.6: Freio Dinâmico antes do Automático. O SIC audita o equilíbrio das forças."},
-                {p: "INCORRETO", i: "Item 6.3.32: Independente aliviado em circulação evita superaquecimento de rodas."}
+                {p: "ALIVIO", i: "ALÍVIO BRUSCO (6.3.3): Reduza o esforço gradualmente (>10s). Evita o choque entre engates que o SIC monitora."},
+                {p: "CICLAGEM", i: "CICLAGEM (6.3.11): Aguarde min. 30s após o alívio para nova aplicação. Garante a recarga vital do encanamento geral."},
+                {p: "DINAMICO", i: "DINÂMICO (6.3.6): Use o Freio Dinâmico ANTES do Automático. O SIC audita o equilíbrio das forças de frenagem."},
+                {p: "INCORRETO", i: "MFI INCORRETO (6.3.32): Independente aliviado em circulação evita superaquecimento de rodas e desvios de conceito."}
             ],
             6: [
-                {p: "MANOBRA", i: "Limite de Pátio: Garante a parada em metade da distância visível. Evita incidentes graves."},
-                {p: "RADIO", i: "Contagem de Distância: Informe espaço em vagões. Silêncio no rádio exige parada imediata."},
-                {p: "ESTACIONA", i: "Garantia de Estacionamento: Shisa Kanko - Aponte e diga: 'Sapata colada, corrente tensionada'."},
-                {p: "PN", i: "Passagem em Nível: Gerenciamento de Risco. Antecipe a falha de terceiros. Reduza na dúvida."}
+                {p: "MANOBRA", i: "VELOCIDADE DE MANOBRA: Respeite o limite do pátio. Garante parada em metade da distância visível e evita incidentes."},
+                {p: "RADIO", i: "CONTAGEM DE DISTÂNCIA: Informe o espaço em vagões. O silêncio no rádio exige parada imediata. Sem 'vem vindo'."},
+                {p: "ESTACIONA", i: "GARANTIA DE ESTACIONAMENTO: SHISA KANKO! Aponte e diga: 'Sapata colada, corrente tensionada'. O visual é a lei."},
+                {p: "PN", i: "PASSAGEM EM NÍVEL: Gerenciamento de Risco. Antecipe a falha do terceiro. Reduza preventivamente se houver dúvida."}
             ]
         },
 
         init() {
-            console.log("Sistema Iniciado - Sr Assis");
-            this.render();
-            this.bindEventos();
+            this.buildGrid();
+            this.bindEvents();
         },
 
-        render() {
-            const grid = document.getElementById('grid-container');
-            const lista = document.getElementById('word-list');
-            grid.innerHTML = ''; 
-            lista.innerHTML = '';
+        buildGrid() {
+            const board = document.getElementById('grid-board');
+            const tags = document.getElementById('word-tags');
+            board.innerHTML = ''; tags.innerHTML = '';
             
-            // Geração da Grade 12x12
-            const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            // Gerar 144 células (12x12)
+            const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             for(let i=0; i<144; i++) {
-                let celula = document.createElement('div');
-                celula.className = 'cell';
-                celula.innerText = alfabeto[Math.floor(Math.random() * 26)];
-                grid.appendChild(celula);
+                let c = document.createElement('div');
+                c.className = 'cell';
+                c.innerText = abc[Math.floor(Math.random()*26)];
+                board.appendChild(c);
             }
 
-            // Geração das Tags de Palavras
-            this.dados[this.fase].forEach(item => {
-                let tag = document.createElement('div');
-                tag.className = 'word-tag';
-                tag.id = 'tag-' + item.p;
-                tag.innerText = item.p;
-                lista.appendChild(tag);
+            // Tags da fase
+            this.dados[this.fase].forEach(o => {
+                let t = document.createElement('div');
+                t.className = 'tag';
+                t.id = 'tag-' + o.p;
+                t.innerText = o.p;
+                tags.appendChild(t);
             });
-
-            document.getElementById('label-fase').innerText = `Fase: ${this.fase}/6`;
-            document.getElementById('label-progresso').innerText = `Progresso: ${this.encontradas.length}/4`;
+            document.getElementById('fase-label').innerText = `Fase: ${this.fase}/6`;
         },
 
-        bindEventos() {
-            const container = document.getElementById('grid-container');
+        bindEvents() {
+            const b = document.getElementById('grid-board');
             
-            const iniciar = (e) => {
-                this.estaArrastando = true;
+            const onStart = (e) => {
+                this.arrastando = true;
                 this.selecionadas = [];
-                this.processarMovimento(e);
+                this.handleMove(e);
             };
 
-            const mover = (e) => {
-                if(!this.estaArrastando) return;
-                e.preventDefault(); // BLOQUEIA SCROLL
-                const ponto = e.touches ? e.touches[0] : e;
-                const alvo = document.elementFromPoint(ponto.clientX, ponto.clientY);
-                
-                if(alvo && alvo.classList.contains('cell') && !this.selecionadas.includes(alvo)) {
-                    alvo.classList.add('selected');
-                    this.selecionadas.push(alvo);
+            const onMove = (e) => {
+                if(!this.arrastando) return;
+                e.preventDefault();
+                const touch = e.touches ? e.touches[0] : e;
+                const cell = document.elementFromPoint(touch.clientX, touch.clientY);
+                if(cell && cell.classList.contains('cell') && !this.selecionadas.includes(cell)) {
+                    cell.classList.add('selecting');
+                    this.selecionadas.push(cell);
                 }
             };
 
-            const finalizar = () => {
-                this.estaArrastando = false;
-                const palavra = this.selecionadas.map(c => c.innerText).join('');
-                this.verificarPalavra(palavra);
-                
-                // Limpa rastro visual de erro
-                this.selecionadas.forEach(c => c.classList.remove('selected'));
-                this.selecionadas = [];
+            const onEnd = () => {
+                this.arrastando = false;
+                const word = this.selecionadas.map(c => c.innerText).join('');
+                this.check(word);
+                this.selecionadas.forEach(c => c.classList.remove('selecting'));
             };
 
-            // MOUSE
-            container.addEventListener('mousedown', iniciar);
-            window.addEventListener('mousemove', mover);
-            window.addEventListener('mouseup', finalizar);
-
-            // TOUCH (MOBILE)
-            container.addEventListener('touchstart', iniciar, {passive: false});
-            container.addEventListener('touchmove', mover, {passive: false});
-            container.addEventListener('touchend', finalizar);
+            b.addEventListener('mousedown', onStart);
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('mouseup', onEnd);
+            b.addEventListener('touchstart', onStart, {passive: false});
+            b.addEventListener('touchmove', onMove, {passive: false});
+            b.addEventListener('touchend', onEnd);
         },
 
-        verificarPalavra(p) {
-            const invertida = p.split('').reverse().join('');
-            const match = this.dados[this.fase].find(o => o.p === p || o.p === invertida);
+        check(w) {
+            const rev = w.split('').reverse().join('');
+            const found = this.dados[this.fase].find(o => o.p === w || o.p === rev);
             
-            if(match && !this.encontradas.includes(match.p)) {
-                this.encontradas.push(match.p);
+            if(found && !this.encontradas.includes(found.p)) {
+                this.encontradas.push(found.p);
                 this.selecionadas.forEach(c => c.classList.add('found'));
-                document.getElementById('tag-' + match.p).classList.add('done');
-                this.abrirModal(match.p, match.i);
-                this.validarFimFase();
+                document.getElementById('tag-' + found.p).classList.add('done');
+                this.showInsight(found.p, found.i);
+                this.updateProgresso();
             }
         },
 
-        abrirModal(titulo, corpo) {
-            document.getElementById('modal-title').innerText = titulo;
-            document.getElementById('modal-body').innerText = corpo;
-            document.getElementById('modal-overlay').style.display = 'flex';
+        showInsight(t, b) {
+            document.getElementById('m-title').innerText = t;
+            document.getElementById('m-body').innerText = b;
+            document.getElementById('overlay').style.display = 'flex';
         },
 
-        validarFimFase() {
-            document.getElementById('label-progresso').innerText = `Progresso: ${this.encontradas.length}/4`;
-            
+        updateProgresso() {
+            document.getElementById('progresso-label').innerText = `Progresso: ${this.encontradas.length}/4`;
             if(this.encontradas.length === 4) {
                 setTimeout(() => {
-                    this.enviarDadosCoordenação();
+                    this.sendToForms();
                     if(this.fase < 6) {
-                        this.fase++;
-                        this.encontradas = [];
-                        this.render();
+                        this.fase++; this.encontradas = [];
+                        this.buildGrid();
                     } else {
-                        alert("TREINAMENTO CONCLUÍDO! Parabéns Maquinista Sr Assis.");
+                        alert("TREINAMENTO CONCLUÍDO! Parabéns, Sr Assis.");
                     }
                 }, 1000);
             }
         },
 
-        enviarDadosCoordenação() {
-            console.log("Log: Fase " + this.fase + " concluída. Sincronizando Forms...");
-            // fetch('URL_DO_FORMS', { mode: 'no-cors' });
+        sendToForms() {
+            // Sincronização com o Google Forms (Backend)
+            const url = "URL_DO_SEU_FORMS_AQUI";
+            console.log("Fase " + this.fase + " concluída. Enviando dados...");
         }
     };
 
-    function fecharModal() {
-        document.getElementById('modal-overlay').style.display = 'none';
-    }
-
-    // DISPARO INICIAL
-    window.onload = () => Jogo.init();
-
+    function closeModal() { document.getElementById('overlay').style.display = 'none'; }
+    window.onload = () => App.init();
 </script>
 </body>
 </html>
