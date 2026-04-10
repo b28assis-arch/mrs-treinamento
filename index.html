@@ -60,18 +60,6 @@
         }
         .btn-next:active { transform: translateY(4px); box-shadow: 0 2px 0 #b38f00; }
 
-        .analise-section {
-            max-width: 460px; margin: 30px auto; background: rgba(255,255,255,0.1);
-            padding: 15px; border-radius: 12px; text-align: left; border: 1px solid rgba(255,255,255,0.1);
-        }
-        .analise-section h3 { margin-top: 0; font-size: 1rem; color: var(--accent); text-transform: uppercase; }
-        textarea {
-            width: 100%; height: 80px; border-radius: 8px; border: none; padding: 10px;
-            box-sizing: border-box; font-family: inherit; margin-bottom: 10px; background: #eee;
-        }
-        .btn-acao { background: var(--primary); color: #fff; border: 1px solid var(--accent); padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
-        .btn-forms { background: #2ecc71; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.8rem; float: right; }
-
         .controles { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
         .btn-aux { border: none; padding: 8px 12px; border-radius: 5px; font-weight: 700; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; }
         
@@ -87,7 +75,7 @@
     <div class="header-game">
         <h2 id="fase-titulo">Fase 01: Segurança e AMV</h2>
         <div class="progresso-container">
-            Palavras: <span class="contador-bolinha" id="contador-txt">0 / 9</span>
+            Palavras: <span class="contador-bolinha" id="contador-txt">0 / 8</span>
         </div>
     </div>
 
@@ -104,66 +92,53 @@
 
     <div id="resultado"></div>
 
-    <div class="analise-section">
-        <h3>📊 Banco de Dados Operacional</h3>
-        <p style="font-size: 0.75rem; margin-bottom: 10px; opacity: 0.8;">
-            Registre observações técnicas. Use o botão verde para enviar ao banco de dados da Coordenação.
-        </p>
-        <textarea id="input-comentario" placeholder="Descreva aqui um compromisso ou desvio observado..."></textarea>
-        
-        <button class="btn-acao" onclick="salvarComentario()">Registrar Fator</button>
-        <button class="btn-forms" onclick="abrirForms()">Enviar ao Forms</button>
-
-        <div id="lista-comentarios" style="margin-top:15px; font-size:0.8rem; color:var(--accent)"></div>
-    </div>
-
 <script>
     const SIZE = 13;
     let selecionadas = [], encontradas = [], gridData = [], faseAtual = 1;
 
+    // BANCO DE DADOS RESETADO DO ZERO - APENAS AS PALAVRAS SOLICITADAS
     const fasesPalavras = {
         1: [
-            {txt: "AGULHA", nome: "AGULHA", nivel: "grave", dica: "Verifique a 'Regra da Fresta'. 3mm de abertura já causam arrombamento. Limpe detritos antes de operar."},
-            {txt: "JACARE", nome: "JACARÉ", nivel: "grave", dica: "O choque de ponta ocorre se a agulha não estiver firme. Visualize a rota de fuga antes do movimento."},
-            {txt: "SHISAKANKO", nome: "SHISA KANKO", nivel: "grave", dica: "Técnica de apontar e falar. Confirme visualmente a posição da chave antes de autorizar o movimento."},
-            {txt: "CONTRATRILHO", nome: "CONTRATRILHO", nivel: "medio", dica: "O guia da segurança. Verifique fixações soltas que podem comprometer o gabarito na transposição."},
-            {txt: "MAQUINA", nome: "MÁQUINA", nivel: "medio", dica: "Aponte e confirme a fidelidade da posição no painel ou local antes de iniciar o movimento."},
-            {txt: "TRAVAMENTO", nome: "TRAVAMENTO", nivel: "medio", dica: "Ação de assegurar que o mecanismo do AMV esteja fisicamente bloqueado para a rota."},
-            {txt: "GABARITO", nome: "GABARITO", nivel: "leve", dica: "Mantenha o olhar atento a obstruções laterais. Gabarito livre evita abalroamentos em manobras."},
-            {txt: "BRITA", nome: "BRITA", nivel: "leve", dica: "Cuidado ao caminhar. Terrenos irregulares são os maiores causadores de incidentes de pátio."},
-            {txt: "TRECHO", nome: "TRECHO", nivel: "leve", dica: "Conhecimento do Trecho: A base da condução segura é antecipar os pontos críticos da via."}
+            {txt: "AGULHA", nome: "AGULHA", nivel: "grave", dica: "Regra da Fresta: 3mm de abertura causam arrombamento. Limpe britas antes de operar."},
+            {txt: "JACARE", nome: "JACARÉ", nivel: "grave", dica: "O choque de ponta ocorre se a agulha não estiver firme. Visualize a rota de fuga."},
+            {txt: "SHISAKANKO", nome: "SHISA KANKO", nivel: "grave", dica: "Técnica de apontar e falar. Confirme visualmente a posição da chave antes de autorizar."},
+            {txt: "CONTRATRILHO", nome: "CONTRATRILHO", nivel: "medio", dica: "O guia da segurança. Verifique fixações soltas que podem comprometer o gabarito."},
+            {txt: "MAQUINA", nome: "MÁQUINA", nivel: "medio", dica: "Aponte e confirme a fidelidade da posição da chave antes de iniciar o movimento."},
+            {txt: "TRAVAMENTO", nome: "TRAVAMENTO", nivel: "medio", dica: "Assegurar que o mecanismo do AMV esteja fisicamente bloqueado para a rota."},
+            {txt: "GABARITO", nome: "GABARITO", nivel: "leve", dica: "Mantenha o olhar atento a obstruções laterais. Gabarito livre evita abalroamentos."},
+            {txt: "TRECHO", nome: "TRECHO", nivel: "leve", dica: "Conhecimento do Trecho: A base da condução segura é antecipar os pontos críticos."}
         ],
         2: [
-            {txt: "ASPECTO", nome: "ASPECTO", nivel: "grave", dica: "Visão Periférica: Não confie no hábito. Reconfirme o aspecto real do sinal antes de agir."},
+            {txt: "ASPECTO", nome: "ASPECTO", nivel: "grave", dica: "Visão Periférica: Não confie no hábito. Reconfirme o aspecto real do sinal luminoso antes de agir."},
             {txt: "AVANCO", nome: "AVANÇO", nivel: "grave", dica: "Transpor sinal restritivo sem autorização. Trate cada licença como se fosse a primeira."},
             {txt: "DISTANCIA", nome: "DISTÂNCIA", nivel: "grave", dica: "Tempo de Ciclo: Planeje a parada mental antes do dado numérico ficar crítico no visor."},
-            {txt: "COMUNICACAO", nome: "COMUNICAÇÃO", nivel: "medio", dica: "Escuta Empática: Não absorva a pressa do rádio. A autoridade final do comando é sua."},
+            {txt: "COMUNICA", nome: "COMUNICAÇÃO", nivel: "medio", dica: "Escuta Empática: Não absorva a pressa do rádio. Processe e confirme. A autoridade final é sua."},
             {txt: "EXPECTATIVA", nome: "EXPECTATIVA", nivel: "medio", dica: "Não deixe a mente 'projetar' o sinal verde. Force a confirmação visual do aspecto real."},
-            {txt: "VOCALIZACAO", nome: "VOCALIZAÇÃO", nivel: "medio", dica: "Diga o aspecto em voz alta para ativar o alerta cerebral e evitar o piloto automático."},
-            {txt: "CONFIANCA", nome: "AUTOCONFIANÇA", nivel: "leve", dica: "O perigo mora na experiência. Não ignore riscos que um novato respeitaria."},
-            {txt: "PRESSA", nome: "PRESSA", nivel: "leve", dica: "A pressa é uma emoção. Vocalize seu estado de urgência para recuperar a consciência."},
-            {txt: "PERCEPCAO", nome: "PERCEPÇÃO", nivel: "leve", dica: "Olhar de Turista: Veja o pátio como se fosse a primeira vez. Busque mudanças no cenário."}
+            {txt: "VOCALIZA", nome: "VOCALIZAÇÃO", nivel: "medio", dica: "Diga o aspecto em voz alta para ativar o alerta cerebral e evitar o piloto automático."},
+            {txt: "CONFIANCA", nome: "AUTOCONFIANÇA", nivel: "leve", dica: "O perigo mora na experiência. Profissionais antigos tendem a ignorar riscos que um novato respeitaria."},
+            {txt: "PRESSA", nome: "PRESSA", nivel: "leve", dica: "A pressa é uma emoção de risco. Vocalize seu estado de urgência para recuperar a consciência."},
+            {txt: "PERCEPCAO", nome: "PERCEPÇÃO", nivel: "leve", dica: "Olhar de Turista: Veja o pátio como se fosse a primeira vez. Busque o que mudou no cenário."}
         ],
         3: [
-            {txt: "ALIVIO", nome: "ALÍVIO BRUSCO", nivel: "grave", dica: "POP 6.3.3: Reduza o esforço de tração gradualmente (min 10s). Evita choque dinâmico."},
+            {txt: "ALIVIO", nome: "ALÍVIO BRUSCO", nivel: "grave", dica: "POP 6.3.3: Reduza o esforço de tração gradualmente (mínimo 10s). Evita choque dinâmico."},
             {txt: "CICLAGEM", nome: "CICLAGEM", nivel: "grave", dica: "POP 6.3.11: Aguarde min 30s após o alívio para nova aplicação. Garante a recarga do ar."},
             {txt: "DINAMICO", nome: "DINÂMICO", nivel: "grave", dica: "POP 6.3.6: Inicie a redução pelo Freio Dinâmico antes do Automático (MFA)."},
-            {txt: "FRENAGEM", nome: "FRENAGEM", nivel: "medio", dica: "Atuação correta dos sistemas para manutenção da velocidade conforme o perfil da via."},
-            {txt: "CAIXAPRETA", nome: "CAIXA PRETA", nivel: "medio", dica: "A base do SIC. O sistema processa os dados para identificar desvios e riscos operacionais."},
+            {txt: "CAIXAPRETA", nome: "CAIXA PRETA", nivel: "medio", dica: "Base do SIC: O sistema processa os dados da locomotiva para identificar desvios."},
             {txt: "CORRENTE", nome: "CORRENTE", nivel: "medio", dica: "O SIC monitora picos de amperagem. Alivie a potência devagar para proteger os motores."},
-            {txt: "DESVIO", nome: "DESVIO", nivel: "leve", dica: "Termo técnico para quando a condução registrada não segue os padrões da MRS."},
+            {txt: "FRENAGEM", nome: "FRENAGEM", nivel: "medio", dica: "Atuação correta dos sistemas para manutenção da velocidade conforme o perfil da via."},
+            {txt: "DESVIO", nome: "DESVIO", nivel: "leve", dica: "Termo técnico para quando a condução registrada no SIC não segue os padrões da MRS."},
             {txt: "AUDITORIA", nome: "AUDITORIA", nivel: "leve", dica: "O SIC não pune apenas, ele audita se o Maquinista operou com maestria técnica."},
-            {txt: "CONFORMIDADE", nome: "CONFORMIDADE", nivel: "leve", dica: "O objetivo do SIC: garantir que a viagem seguiu os parâmetros técnicos de segurança."}
+            {txt: "CONFORMIDADE", nome: "CONFORMIDADE", nivel: "leve", dica: "O objetivo final do SIC: garantir que a viagem seguiu os parâmetros técnicos."}
         ],
         4: [
-            {txt: "MANOBRA", nome: "MANOBRA", nivel: "grave", dica: "Respeite o limite do pátio. Velocidade compatível garante a parada segura."},
+            {txt: "MANOBRA", nome: "MANOBRA", nivel: "grave", dica: "Respeite o limite do pátio. Velocidade compatível garante a parada segura em metade da distância."},
             {txt: "RADIO", nome: "RÁDIO", nivel: "grave", dica: "Contagem de Distância: Informe espaço em vagões. Silêncio no rádio exige parada imediata."},
             {txt: "ESTACIONA", nome: "ESTACIONAMENTO", nivel: "grave", dica: "Shisa Kanko: Aponte e diga: 'Sapata colada, corrente tensionada'. O visual é a garantia."},
-            {txt: "PN", nome: "PASSAGEM NÍVEL", nivel: "medio", dica: "Gerenciamento de Risco: Antecipe a falha do terceiro. Reduza preventivamente na dúvida."},
+            {txt: "PN", nome: "PASSAGEM NÍVEL", nivel: "medio", dica: "Gerenciamento de Risco: Antecipe a falha do terceiro. Reduza preventivamente na dúvida na PN."},
             {txt: "SAPATA", nome: "SAPATA", nivel: "medio", dica: "Check Visual: Deve estar perfeitamente encostada no aro para garantir a imobilização."},
-            {txt: "RESTRITA", nome: "MARCHA RESTRITA", nivel: "medio", dica: "Prontidão para parar em metade da distância visível. Técnica vital para segurança."},
+            {txt: "RESTRITA", nome: "MARCHA RESTRITA", nivel: "medio", dica: "Prontidão para parar em metade da distância visível. Técnica vital para trechos sem sinalização."},
             {txt: "MARCO", nome: "MARCO", nivel: "leve", dica: "Estacionar fora do marco causa abalroamento lateral. A conferência da entrevia é inegociável."},
-            {txt: "MFI", nome: "USO DO MFI", nivel: "leve", dica: "POP 6.3.32: Independente aliviado em circulação evita superaquecimento de rodas."},
+            {txt: "MFI", nome: "USO DO MFI", nivel: "leve", dica: "POP 6.3.32: Manter o independente aliviado em circulação evita o superaquecimento de rodas."},
             {txt: "FOGO", nome: "LINHA DE FOGO", nivel: "leve", dica: "Saia do automático. Visualize onde a energia será liberada antes de se posicionar."}
         ]
     };
@@ -240,7 +215,6 @@
     function exibirInsight(p) {
         const res = document.getElementById("resultado");
         const card = document.createElement("div"); card.className = `insight ${p.nivel}`;
-        // Correção do erro undefined: usamos p.nome e p.dica que agora estão mapeados corretamente
         card.innerHTML = `<strong>✔ ${p.nome}</strong>: ${p.dica}`; res.prepend(card);
     }
 
@@ -267,20 +241,8 @@
 
     function checarFimFase() { if (encontradas.length === fasesPalavras[faseAtual].length) document.getElementById("btn-next").style.display = (faseAtual < 4) ? "block" : "none"; }
 
-    function salvarComentario() {
-        const texto = document.getElementById("input-comentario").value;
-        if (!texto) return;
-        document.getElementById("lista-comentarios").innerHTML = `✅ Fator registrado! Use o botão verde para consolidar na nuvem.`;
-        alert("Observação salva. Clique no botão verde para enviar.");
-    }
-
-    function abrirForms() {
-        const linkGoogleForms = "https://forms.gle/ut3jDiKRPWSGVXw37";
-        window.open(linkGoogleForms, '_blank');
-    }
-
     document.getElementById("btn-reset").onclick = function() { document.querySelectorAll(".cell.selected").forEach(el => el.classList.remove("selected")); selecionadas = []; };
-    document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar toda a trilha técnica?")) { faseAtual = 1; encontradas = []; selecionadas = []; document.getElementById("resultado").innerHTML = ""; document.getElementById("btn-next").style.display = "none"; init(); } };
+    document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar toda a trilha técnica?")) { location.reload(); } };
     document.getElementById("btn-next").onclick = function() { faseAtual++; encontradas = []; selecionadas = []; document.getElementById("resultado").innerHTML = ""; this.style.display = "none"; init(); };
 
     init();
