@@ -1,269 +1,288 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Treinamento de Segurança MRS</title>
+    <title>MRS - Trilha de Conhecimento Operacional</title>
     <style>
-        /* Cores Padrão MRS: Verde, Amarelo e Branco */
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #f4f6f8; 
-            color: #333; 
-            margin: 0; 
-            padding: 20px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
+        :root {
+            --primary: #0b3a6f; --accent: #ffcc00; --cell-bg: #ffffff;
+            --selected: #5dade2; --danger: #e74c3c; --warning: #f1c40f;
+            --info: #2ecc71; --dark: #1a252f;
         }
-        h1 { 
-            color: #006633; 
-            text-align: center; 
-            font-size: 24px; 
-            margin-bottom: 5px; 
+
+        body {
+            margin: 0; font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: #fff; text-align: center; padding: 10px; min-height: 100vh;
         }
-        p.subtitle { 
-            text-align: center; 
-            font-size: 15px; 
-            color: #555; 
-            margin-bottom: 20px; 
-            max-width: 500px;
+
+        .header-game {
+            background: rgba(255, 255, 255, 0.05); padding: 15px;
+            border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1);
         }
+
+        h2 { margin: 0; font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
+        .progresso-container { margin-top: 5px; font-weight: bold; font-size: 0.9rem; }
+        .contador-bolinha { background: rgba(0,0,0,0.3); padding: 2px 10px; border-radius: 20px; border: 1px solid var(--accent); }
+
+        .legenda-container { 
+            max-width: 460px; margin: 10px auto 15px auto; text-align: center; 
+            background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .legenda-item { padding: 6px 10px; border-radius: 6px; margin-bottom: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .leg-verde { background: var(--info); color: #fff; }
+        .leg-amarelo { background: var(--warning); color: #000; }
+        .leg-vermelho { background: var(--danger); color: #fff; }
+
+        .grid {
+            display: grid; grid-template-columns: repeat(13, 1fr); gap: 4px;
+            max-width: 460px; margin: 10px auto; background: rgba(0,0,0,0.2);
+            padding: 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .cell {
+            aspect-ratio: 1; background: var(--cell-bg); color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 3px; font-weight: 800; font-size: 0.75rem; cursor: pointer;
+            user-select: none;
+        }
+        .selected { background: var(--selected) !important; color: #fff !important; }
+        .found-grave { background: var(--danger) !important; color: #fff !important; }
+        .found-medio { background: var(--warning) !important; color: #000 !important; }
+        .found-leve { background: var(--info) !important; color: #fff !important; }
+
+        .btn-next { 
+            background: var(--accent); color: var(--primary); display: none; 
+            width: 100%; max-width: 460px; margin: 15px auto; padding: 16px; 
+            font-size: 1rem; font-weight: 800; border: 2px solid var(--primary);
+            box-shadow: 0 6px 0 #b38f00; border-radius: 8px; cursor: pointer; transition: all 0.1s;
+        }
+        .btn-next:active { transform: translateY(4px); box-shadow: 0 2px 0 #b38f00; }
+
+        .analise-section {
+            max-width: 460px; margin: 30px auto; background: rgba(255,255,255,0.1);
+            padding: 15px; border-radius: 12px; text-align: left; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .analise-section h3 { margin-top: 0; font-size: 1rem; color: var(--accent); text-transform: uppercase; }
+        textarea {
+            width: 100%; height: 80px; border-radius: 8px; border: none; padding: 10px;
+            box-sizing: border-box; font-family: inherit; margin-bottom: 10px; background: #eee;
+        }
+        .btn-acao { background: var(--primary); color: #fff; border: 1px solid var(--accent); padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
+        .btn-forms { background: #2ecc71; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.8rem; float: right; }
+
+        .controles { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
+        .btn-aux { border: none; padding: 8px 12px; border-radius: 5px; font-weight: 700; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; }
         
-        #game-board { 
-            display: grid; 
-            grid-template-columns: repeat(12, 1fr); 
-            gap: 2px; 
-            background-color: #ccc; 
-            padding: 4px; 
-            border-radius: 8px; 
-            width: 100%; 
-            max-width: 420px; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .cell { 
-            background-color: #fff; 
-            aspect-ratio: 1; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 18px; 
-            font-weight: bold; 
-            color: #333; 
-            cursor: pointer; 
-            user-select: none; 
-            border-radius: 4px; 
-            text-transform: uppercase; 
-            transition: background-color 0.2s;
-        }
-        /* Seleção e Acerto */
-        .cell.selected { background-color: #FFCC00; color: #000; }
-        .cell.found { background-color: #006633; color: #fff; }
-        
-        .controls { margin-top: 15px; display: flex; gap: 10px; }
-        button.btn-clear { 
-            padding: 10px 20px; 
-            border: none; 
-            border-radius: 6px; 
-            background-color: #d9534f; 
-            color: white; 
-            font-size: 14px;
-            font-weight: bold; 
-            cursor: pointer; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        #legends { 
-            margin-top: 25px; 
-            width: 100%; 
-            max-width: 500px; 
-            background: #fff; 
-            padding: 20px; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-        }
-        #legends h3 { 
-            margin-top: 0; 
-            color: #006633; 
-            border-bottom: 3px solid #FFCC00; 
-            padding-bottom: 8px; 
-        }
-        .legend-item { 
-            font-size: 14px; 
-            margin-bottom: 12px; 
-            line-height: 1.5; 
-            padding: 8px; 
-            border-radius: 4px; 
-            transition: all 0.3s ease;
-        }
-        .legend-item.found { 
-            text-decoration: line-through; 
-            color: #999; 
-            background-color: #f0f0f0; 
-            border-left: 4px solid #006633;
-        }
-        
-        #btn-forms { 
-            display: none; 
-            margin-top: 30px; 
-            padding: 18px 20px; 
-            background-color: #006633; 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            font-size: 16px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            width: 100%; 
-            max-width: 500px; 
-            text-align: center; 
-            text-decoration: none; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
-        }
-        #btn-forms:hover { background-color: #004d26; }
+        #resultado { max-width: 460px; margin: 15px auto; display: flex; flex-direction: column; gap: 8px; padding-bottom: 40px;}
+        .insight { padding: 12px; border-radius: 8px; text-align: left; font-size: 0.85rem; border-left: 6px solid rgba(0,0,0,0.3); animation: slideIn 0.3s ease-out; }
+        .grave { background: var(--danger); color: #fff; } .medio { background: var(--warning); color: #000; } .leve { background: var(--info); color: #fff; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <h1>Semana da Segurança Operacional</h1>
-    <p class="subtitle">Selecione as letras clicando nelas para formar as palavras técnicas. Se selecionar errado, clique em "Limpar Seleção".</p>
-
-    <div id="game-board"></div>
-    
-    <div class="controls">
-        <button class="btn-clear" onclick="clearSelection()">Limpar Seleção</button>
+    <div class="header-game">
+        <h2 id="fase-titulo">Fase 01: Segurança Geral</h2>
+        <div class="progresso-container">
+            Palavras: <span class="contador-bolinha" id="contador-txt">0 / 9</span>
+        </div>
     </div>
 
-    <div id="legends">
-        <h3>Glossário Técnico (MOF / ROF)</h3>
-        <div id="legend-list"></div>
+    <div class="legenda-container" id="painel-legenda"></div>
+
+    <div class="controles">
+        <button class="btn-aux" style="background:#fff; color:var(--primary)" id="btn-reset">Limpar Seleção</button>
+        <button class="btn-aux" style="background:var(--danger); color:#fff" id="btn-master">Reiniciar Trilha</button>
     </div>
 
-    <a id="btn-forms" href="#" target="_blank" onclick="window.open(linkGoogleForms, '_blank'); return false;">REGISTRAR OBSERVAÇÃO NO FORMS</a>
+    <div class="grid" id="grid-box"></div>
 
-    <script>
-        // Definições atualizadas conforme MOF e ROF
-        const wordsAndClues = [
-            { word: "MARCO", clue: "<strong>MARCO:</strong> Dispositivo fixo que indica a quilometragem exata da via (MOF)." },
-            { word: "TRECHO", clue: "<strong>TRECHO:</strong> Parte da via principal compreendida entre duas estações adjacentes (ROF)." },
-            { word: "LICENCA", clue: "<strong>LICENÇA:</strong> Autorização expedida pelo CCO para que um trem ocupe determinado trecho (ROF)." },
-            { word: "PLANO", clue: "<strong>PLANO:</strong> Perfil longitudinal da via com inclinação nula, ou seja, em nível (MOF)." },
-            { word: "DESVIO", clue: "<strong>DESVIO:</strong> Linha secundária ligada à via principal, destinada a cruzamentos e manobras (ROF)." },
-            { word: "VIA", clue: "<strong>VIA:</strong> Infraestrutura ferroviária composta por trilhos, dormentes e lastro (ROF)." },
-            { word: "PATIO", clue: "<strong>PÁTIO:</strong> Conjunto de vias destinado a cruzamento, formação e manobra de trens (ROF)." }
-        ];
+    <button class="btn-next" id="btn-next">PRÓXIMO NÍVEL ➔</button>
 
-        // Link oficial da planilha do Sr Assis
+    <div id="resultado"></div>
+
+    <div class="analise-section">
+        <h3>📊 Banco de Dados Operacional</h3>
+        <p style="font-size: 0.75rem; margin-bottom: 10px; opacity: 0.8;">
+            Registre observações técnicas. Use o botão verde para enviar ao banco de dados da Coordenação.
+        </p>
+        <textarea id="input-comentario" placeholder="Descreva aqui um compromisso ou desvio observado..."></textarea>
+        
+        <button class="btn-acao" onclick="salvarComentario()">Registrar Fator</button>
+        <button class="btn-forms" onclick="abrirForms()">Enviar ao Forms</button>
+
+        <div id="lista-comentarios" style="margin-top:15px; font-size:0.8rem; color:var(--accent)"></div>
+    </div>
+
+<script>
+    const SIZE = 13;
+    let selecionadas = [], encontradas = [], gridData = [], faseAtual = 1;
+
+    const fasesPalavras = {
+        1: [
+            {txt: "SEGURANCA", nome: "SEGURANÇA", nivel: "grave", dica: "Condição ideal de operação sem exposição a riscos ou desvios operativos."},
+            {txt: "LICENCA", nome: "LICENÇA", nivel: "grave", dica: "Autorização expedida pelo CCO para que um trem ocupe determinado trecho (ROF)."},
+            {txt: "CONDUTA", nome: "CONDUTA", nivel: "grave", dica: "Cumprimento rigoroso dos regulamentos, normas e manuais de operação aplicáveis."},
+            {txt: "COMUNICACAO", nome: "COMUNICAÇÃO", nivel: "medio", dica: "Ato de transmitir e receber informações via rádio, com repetição integral da ordem (MOF)."},
+            {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "medio", dica: "Estado de vigilância constante exigido na cabine durante toda a circulação."},
+            {txt: "PLANO", nome: "PLANO", nivel: "medio", dica: "Perfil longitudinal da via com inclinação nula, ou seja, em nível (MOF)."},
+            {txt: "ROTINA", nome: "ROTINA", nivel: "leve", dica: "Execução padronizada de procedimentos operacionais conforme os POPs vigentes."},
+            {txt: "TRECHO", nome: "TRECHO", nivel: "leve", dica: "Parte da via principal compreendida entre duas estações adjacentes (ROF)."},
+            {txt: "MARCO", nome: "MARCO", nivel: "leve", dica: "Dispositivo fixo que indica a quilometragem exata da via (MOF)."}
+        ],
+        2: [
+            {txt: "SHISAKANKO", nome: "SHISA KANKO", nivel: "grave", dica: "Técnica operacional de apontar e falar para confirmação de rotas e sinais."},
+            {txt: "AVANCO", nome: "AVANÇO SINAL", nivel: "grave", dica: "Transpor sinalização restritiva de parada absoluta sem a devida autorização do CCO."},
+            {txt: "FOGO", nome: "LINHA DE FOGO", nivel: "grave", dica: "Área de risco na via onde o colaborador fica exposto à movimentação de ativos."},
+            {txt: "AMV", nome: "AGULHA (AMV)", nivel: "medio", dica: "Trilho móvel do aparelho de mudança de via responsável pelo direcionamento dos rodeiros (MOF)."},
+            {txt: "ALINHA", nome: "ALINHAMENTO", nivel: "medio", dica: "Posicionamento correto das chaves de acordo com a rota previamente estabelecida."},
+            {txt: "VISUAL", nome: "CONFIRMAÇÃO", nivel: "medio", dica: "Validação visual obrigatória de sinais luminosos e encosto de agulhas antes da transposição."},
+            {txt: "CONTATO", nome: "3 PONTOS", nivel: "leve", dica: "Regra normativa de segurança ao subir ou descer de equipamentos móveis ou fixos."},
+            {txt: "TRAVA", nome: "TRAVAMENTO", nivel: "leve", dica: "Ação de assegurar que o mecanismo do AMV ou chave esteja fisicamente bloqueado."},
+            {txt: "VIGILANCIA", nome: "VIGILÂNCIA", nivel: "leve", dica: "Monitoramento contínuo da via à frente e supervisão dos painéis da locomotiva."}
+        ],
+        3: [
+            {txt: "EMERGENCIA", nome: "EMERGÊNCIA", nivel: "grave", dica: "Aplicação total e imediata dos freios pneumáticos em situação de risco iminente de acidente."},
+            {txt: "VMA", nome: "EXCESSO VMA", nivel: "grave", dica: "Circular acima da Velocidade Máxima Autorizada estipulada no quadro de distâncias ou boletim."},
+            {txt: "ALERTOR", nome: "ALERTOR", nivel: "grave", dica: "Dispositivo de segurança (homem-morto) que exige reconhecimento periódico e obrigatório."},
+            {txt: "FRENAGEM", nome: "FRENAGEM", nivel: "medio", dica: "Atuação dos sistemas pneumático e dinâmico para redução ou manutenção da velocidade da composição."},
+            {txt: "CICLAGEM", nome: "CICLAGEM", nivel: "medio", dica: "Tempo técnico necessário para a recarga do encanamento geral entre as aplicações de freio."},
+            {txt: "DESATENCAO", nome: "DESATENÇÃO", nivel: "medio", dica: "Falha de foco operacional na via ou nos instrumentos, causadora principal de penalizações do SIC."},
+            {txt: "BUZINA", nome: "BUZINA", nivel: "leve", dica: "Acionamento sonoro padronizado exigido antes do início da marcha e em passagens em nível."},
+            {txt: "CORRENTE", nome: "CORRENTE", nivel: "leve", dica: "Esforço trator lido em amperes, cujo limite deve ser respeitado para evitar choque de engates."},
+            {txt: "AESS", nome: "SISTEMA AESS", nivel: "leve", dica: "Sistema que gerencia o desligamento automático do motor diesel para eficiência energética."}
+        ],
+        4: [
+            {txt: "TESTEMARCHA", nome: "TESTE MARCHA", nivel: "grave", dica: "Procedimento obrigatório após a primeira movimentação para certificar a eficiência do sistema de freio."},
+            {txt: "CELULAR", nome: "CELULAR", nivel: "grave", dica: "Equipamento eletrônico pessoal de uso estritamente proibido durante a condução (MOF 3.24)."},
+            {txt: "VALVULA", nome: "VÁLVULA", nivel: "grave", dica: "Dispositivo pneumático instalado no vagão ou extremidade para descarga rápida do encanamento geral."},
+            {txt: "DINAMICO", nome: "DINÂMICO", nivel: "medio", dica: "Freio elétrico de retenção que converte a energia cinética dos motores de tração em energia térmica."},
+            {txt: "CHAVEFACA", nome: "CHAVE FACA", nivel: "medio", dica: "Chave seletora responsável por configurar a locomotiva como comandante ou comandada no sistema."},
+            {txt: "VISTORIA", nome: "VISTORIA", nivel: "medio", dica: "Inspeção técnica prévia e obrigatória nos componentes críticos da locomotiva ao assumir o trem."},
+            {txt: "CREMALHEIRA", nome: "CREMALHEIRA", nivel: "leve", dica: "Sistema mecânico de roda dentada e trilho central usado para tração e frenagem em fortes declives."},
+            {txt: "ADERENCIA", nome: "ADERÊNCIA", nivel: "leve", dica: "Coeficiente de atrito roda-trilho fundamental para tração; requer aplicação de areia em condições adversas."},
+            {txt: "TRANSICAO", nome: "TRANSIÇÃO", nivel: "leve", dica: "Procedimento de espera de 10 segundos entre os estados de tração e freio dinâmico para evitar surtos."}
+        ]
+    };
+
+    function init() {
+        let pronto = false;
+        while (!pronto) { gridData = Array(SIZE).fill(null).map(() => Array(SIZE).fill('')); pronto = distribuirPalavras(); }
+        preencherLixo(); desenhar(); atualizarUI();
+    }
+
+    function distribuirPalavras() {
+        const lista = [...fasesPalavras[faseAtual]].sort(() => Math.random() - 0.5);
+        for (let p of lista) {
+            let colocada = false, tentativas = 0;
+            while (!colocada && tentativas < 3000) {
+                let h = Math.random() > 0.5, r = Math.floor(Math.random() * (h ? SIZE : SIZE - p.txt.length)), c = Math.floor(Math.random() * (h ? SIZE - p.txt.length : SIZE));
+                if (podeColocar(p.txt, r, c, h)) {
+                    for (let i = 0; i < p.txt.length; i++) gridData[h ? r : r + i][h ? c + i : c] = p.txt[i];
+                    colocada = true;
+                }
+                tentativas++;
+            }
+            if (!colocada) return false;
+        }
+        return true;
+    }
+
+    function podeColocar(p, r, c, h) {
+        for (let i = -1; i <= p.length; i++) {
+            for (let j = -1; j <= 1; j++) {
+                let currR = h ? r + j : r + i, currC = h ? c + i : c + j;
+                if (currR >= 0 && currR < SIZE && currC >= 0 && currC < SIZE) {
+                    if (i >= 0 && i < p.length && j === 0) { if (gridData[currR][currC] !== '' && gridData[currR][currC] !== p[i]) return false; }
+                    else if (i >= 0 && i < p.length && gridData[currR][currC] !== '') return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    function preencherLixo() { const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; for (let r = 0; r < SIZE; r++) for (let c = 0; c < SIZE; c++) if (gridData[r][c] === '') gridData[r][c] = abc[Math.floor(Math.random() * abc.length)]; }
+
+    function desenhar() {
+        const container = document.getElementById("grid-box"); container.innerHTML = '';
+        gridData.forEach((row, r) => row.forEach((letra, c) => {
+            const div = document.createElement("div"); div.className = "cell"; div.innerText = letra;
+            div.onclick = () => clicarCelula(div, letra, r, c); container.appendChild(div);
+        }));
+    }
+
+    function clicarCelula(el, letra, r, c) {
+        if (el.classList.contains('found-grave') || el.classList.contains('found-medio') || el.classList.contains('found-leve')) return;
+        if (el.classList.contains('selected')) { if (selecionadas.length > 0 && selecionadas[selecionadas.length - 1].el === el) { el.classList.remove('selected'); selecionadas.pop(); } return; }
+        if (selecionadas.length > 0) {
+            const last = selecionadas[selecionadas.length - 1];
+            if (Math.abs(r - last.r) > 1 || Math.abs(c - last.c) > 1 || (Math.abs(r - last.r) === 1 && Math.abs(c - last.c) === 1)) return;
+            if (selecionadas.length >= 2) {
+                const first = selecionadas[0], second = selecionadas[1];
+                if (first.r === second.r && r !== last.r) return; if (first.r !== second.r && c !== last.c) return;
+            }
+        }
+        el.classList.add('selected'); selecionadas.push({el, letra, r, c}); verificarJogo();
+    }
+
+    function verificarJogo() {
+        const palavraFormada = selecionadas.map(s => s.letra).join('');
+        const alvo = fasesPalavras[faseAtual].find(p => p.txt === palavraFormada && !encontradas.includes(p.txt));
+        if (alvo) {
+            selecionadas.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(alvo.nivel === 'grave' ? 'found-grave' : alvo.nivel === 'medio' ? 'found-medio' : 'found-leve'); });
+            encontradas.push(alvo.txt); exibirInsight(alvo); selecionadas = []; atualizarUI(); checarFimFase();
+        }
+    }
+
+    function exibirInsight(p) {
+        const res = document.getElementById("resultado");
+        const card = document.createElement("div"); card.className = `insight ${p.nivel}`;
+        card.innerHTML = `<strong>✔ ${p.nome}</strong>: ${p.dica}`; res.prepend(card);
+    }
+
+    function atualizarUI() {
+        const total = fasesPalavras[faseAtual].length;
+        document.getElementById("contador-txt").innerText = `${encontradas.length} / ${total}`;
+        const painel = document.getElementById("painel-legenda");
+        const graves = fasesPalavras[faseAtual].filter(p => p.nivel === 'grave').map(p => p.nome).join(' • ');
+        const medios = fasesPalavras[faseAtual].filter(p => p.nivel === 'medio').map(p => p.nome).join(' • ');
+        const leves = fasesPalavras[faseAtual].filter(p => p.nivel === 'leve').map(p => p.nome).join(' • ');
+
+        painel.innerHTML = `
+            <div class="legenda-item leg-verde">${leves}</div>
+            <div class="legenda-item leg-amarelo">${medios}</div>
+            <div class="legenda-item leg-vermelho">${graves}</div>
+        `;
+        let tit = "";
+        if(faseAtual === 1) tit = "Fase 01: Segurança Geral";
+        else if(faseAtual === 2) tit = "Fase 02: Riscos Críticos";
+        else if(faseAtual === 3) tit = "Fase 03: Parâmetros SIC";
+        else tit = "Fase 04: Domínio MOF 2025";
+        document.getElementById("fase-titulo").innerText = tit;
+    }
+
+    function checarFimFase() { if (encontradas.length === fasesPalavras[faseAtual].length) document.getElementById("btn-next").style.display = (faseAtual < 4) ? "block" : "none"; }
+
+    function salvarComentario() {
+        const texto = document.getElementById("input-comentario").value;
+        if (!texto) return;
+        document.getElementById("lista-comentarios").innerHTML = `✅ Fator registrado! Use o botão verde para consolidar na nuvem.`;
+        alert("Observação salva. Clique no botão verde para enviar.");
+    }
+
+    function abrirForms() {
         const linkGoogleForms = "https://forms.gle/ut3jDiKRPWSGVXw37";
-        
-        // Grade otimizada e fixa para não quebrar no celular dos colegas
-        const gridData = [
-            ['M','A','R','C','O','X','D','E','S','V','I','O'],
-            ['K','T','L','P','J','W','T','R','E','C','H','O'],
-            ['L','I','C','E','N','C','A','P','R','Y','H','Z'],
-            ['M','N','P','X','B','Q','W','A','F','V','I','A'],
-            ['S','F','L','P','L','A','N','O','G','J','U','M'],
-            ['D','G','A','U','C','H','P','A','T','I','O','L'],
-            ['R','Q','N','S','E','G','U','R','A','N','C','A'],
-            ['Y','O','O','D','O','R','M','E','N','T','E','T'],
-            ['C','R','U','Z','A','M','E','N','T','O','K','P'],
-            ['B','R','A','S','I','L','Q','V','T','R','E','M'],
-            ['M','A','Q','U','I','N','I','S','T','A','X','C'],
-            ['O','P','E','R','A','C','A','O','Z','M','R','S']
-        ];
-        
-        let selectedCells = [];
-        let foundWordsCount = 0;
+        window.open(linkGoogleForms, '_blank');
+    }
 
-        function initGame() {
-            const board = document.getElementById('game-board');
-            const legendList = document.getElementById('legend-list');
+    document.getElementById("btn-reset").onclick = function() { document.querySelectorAll(".cell.selected").forEach(el => el.classList.remove("selected")); selecionadas = []; };
+    document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar toda a trilha técnica?")) { faseAtual = 1; encontradas = []; selecionadas = []; document.getElementById("resultado").innerHTML = ""; document.getElementById("btn-next").style.display = "none"; init(); } };
+    document.getElementById("btn-next").onclick = function() { faseAtual++; encontradas = []; selecionadas = []; document.getElementById("resultado").innerHTML = ""; this.style.display = "none"; init(); };
 
-            // Renderizar Grade
-            for (let r = 0; r < 12; r++) {
-                for (let c = 0; c < 12; c++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'cell';
-                    cell.textContent = gridData[r][c];
-                    cell.dataset.row = r;
-                    cell.dataset.col = c;
-                    cell.onclick = () => toggleSelect(cell);
-                    board.appendChild(cell);
-                }
-            }
-
-            // Renderizar Legendas
-            wordsAndClues.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'legend-item';
-                div.id = 'legend-' + item.word;
-                div.innerHTML = item.clue;
-                legendList.appendChild(div);
-            });
-        }
-
-        // Sistema de clique nas letras
-        function toggleSelect(cell) {
-            if (cell.classList.contains('found')) return;
-            
-            if (cell.classList.contains('selected')) {
-                cell.classList.remove('selected');
-                selectedCells = selectedCells.filter(c => c !== cell);
-            } else {
-                cell.classList.add('selected');
-                selectedCells.push(cell);
-            }
-            
-            checkWord();
-        }
-
-        // Botão de limpar
-        function clearSelection() {
-            selectedCells.forEach(cell => cell.classList.remove('selected'));
-            selectedCells = [];
-        }
-
-        // Verificação se a palavra selecionada bate com o ROF/MOF
-        function checkWord() {
-            const currentWord = selectedCells.map(c => c.textContent).join('');
-            const currentWordReverse = selectedCells.map(c => c.textContent).reverse().join('');
-            
-            let wordMatched = null;
-            
-            wordsAndClues.forEach(item => {
-                if (currentWord === item.word || currentWordReverse === item.word) {
-                    wordMatched = item.word;
-                }
-            });
-
-            if (wordMatched) {
-                const legendItem = document.getElementById('legend-' + wordMatched);
-                if (!legendItem.classList.contains('found')) {
-                    legendItem.classList.add('found'); // Risca a legenda
-                    selectedCells.forEach(cell => {
-                        cell.classList.remove('selected');
-                        cell.classList.add('found'); // Pinta a palavra de verde
-                    });
-                    selectedCells = [];
-                    foundWordsCount++;
-                    checkWin();
-                }
-            }
-        }
-
-        // Verifica se terminou para mostrar o botão
-        function checkWin() {
-            if (foundWordsCount === wordsAndClues.length) {
-                document.getElementById('btn-forms').style.display = 'block';
-                // Rola a tela suavemente para o botão
-                setTimeout(() => {
-                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                }, 500);
-            }
-        }
-
-        // Iniciar jogo ao carregar
-        window.onload = initGame;
-    </script>
+    init();
+</script>
 </body>
 </html>
