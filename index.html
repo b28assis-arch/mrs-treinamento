@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MRS - Treinamento Operacional</title>
+    <title>MRS - Trilha de Conhecimento Técnico</title>
     <style>
         :root {
             --primary: #0b3a6f; --accent: #ffcc00; --cell-bg: #ffffff;
@@ -11,66 +11,79 @@
             --info: #2ecc71; --dark: #1a252f;
         }
         body {
-            margin: 0; font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            margin: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
             color: #fff; text-align: center; padding: 10px; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
         }
         .header-game {
-            background: rgba(255, 255, 255, 0.05); padding: 15px;
-            border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.05); padding: 20px;
+            border-radius: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1);
+            width: 90%; max-width: 460px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        h2 { margin: 0; font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
-        .progresso-container { margin-top: 5px; font-weight: bold; font-size: 0.9rem; }
-        .contador-bolinha { background: rgba(0,0,0,0.3); padding: 2px 10px; border-radius: 20px; border: 1px solid var(--accent); }
+        h2 { margin: 0; font-size: 1.15rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); }
+        .progresso-container { margin-top: 8px; font-weight: bold; font-size: 0.95rem; }
+        .contador-bolinha { background: rgba(0,0,0,0.4); padding: 3px 12px; border-radius: 20px; border: 1px solid var(--accent); }
         .legenda-container { 
-            max-width: 460px; margin: 10px auto; text-align: center; 
-            background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px;
+            width: 90%; max-width: 460px; margin: 10px auto; text-align: center; 
+            background: rgba(0,0,0,0.2); padding: 12px; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .legenda-item { padding: 6px 10px; border-radius: 6px; margin-bottom: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .legenda-item { padding: 8px 12px; border-radius: 8px; margin-bottom: 6px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
         .leg-verde { background: var(--info); color: #fff; }
         .leg-amarelo { background: var(--warning); color: #000; }
         .leg-vermelho { background: var(--danger); color: #fff; }
         .grid {
-            display: grid; grid-template-columns: repeat(13, 1fr); gap: 4px;
-            max-width: 460px; margin: 10px auto; background: rgba(0,0,0,0.2);
-            padding: 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);
+            display: grid; grid-template-columns: repeat(13, 1fr); gap: 5px;
+            width: 95%; max-width: 480px; margin: 15px auto; background: rgba(0,0,0,0.3);
+            padding: 10px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.1);
         }
         .cell {
             aspect-ratio: 1; background: var(--cell-bg); color: var(--primary);
             display: flex; align-items: center; justify-content: center;
-            border-radius: 3px; font-weight: 800; font-size: 0.75rem; cursor: pointer; user-select: none;
+            border-radius: 4px; font-weight: 900; font-size: 0.8rem; cursor: pointer; user-select: none;
+            transition: transform 0.1s;
         }
-        .selected { background: var(--selected) !important; color: #fff !important; }
+        .cell:active { transform: scale(0.9); }
+        .selected { background: var(--selected) !important; color: #fff !important; box-shadow: inset 0 0 8px rgba(0,0,0,0.3); }
         .found-grave { background: var(--danger) !important; color: #fff !important; }
         .found-medio { background: var(--warning) !important; color: #000 !important; }
         .found-leve { background: var(--info) !important; color: #fff !important; }
         .btn-next { 
             background: var(--accent); color: var(--primary); display: none; 
-            width: 100%; max-width: 460px; margin: 15px auto; padding: 16px; 
-            font-size: 1rem; font-weight: 800; border-radius: 8px; cursor: pointer; border: none;
+            width: 90%; max-width: 460px; margin: 20px auto; padding: 18px; 
+            font-size: 1.1rem; font-weight: 900; border-radius: 10px; cursor: pointer; border: 2px solid var(--primary);
+            box-shadow: 0 4px 0 #b38f00; animation: pulse 1.5s infinite;
         }
-        .controles { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
-        .btn-aux { border: none; padding: 8px 12px; border-radius: 5px; font-weight: 700; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; }
-        #resultado { max-width: 460px; margin: 15px auto; display: flex; flex-direction: column; gap: 8px; padding-bottom: 40px;}
-        .insight { padding: 12px; border-radius: 8px; text-align: left; font-size: 0.85rem; border-left: 6px solid rgba(0,0,0,0.3); animation: slideIn 0.3s; }
-        .btn-forms { background: #2ecc71; color: white; padding: 15px; border-radius: 8px; text-decoration: none; display: inline-block; margin-top: 20px; font-weight: bold; border: 2px solid #fff; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
+        .controles { display: flex; justify-content: center; gap: 10px; margin-bottom: 12px; }
+        .btn-aux { border: none; padding: 10px 16px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        #resultado { width: 90%; max-width: 460px; margin: 15px auto; display: flex; flex-direction: column; gap: 10px; }
+        .insight { padding: 15px; border-radius: 10px; text-align: left; font-size: 0.85rem; border-left: 8px solid rgba(0,0,0,0.4); animation: slideIn 0.4s ease-out; line-height: 1.4; }
+        .btn-forms { 
+            background: #27ae60; color: white; padding: 20px; border-radius: 10px; 
+            text-decoration: none; display: inline-block; margin-top: 30px; 
+            margin-bottom: 100px; font-weight: 900; border: 2px solid #ffffff; 
+            width: 85%; max-width: 400px; box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
 
     <div class="header-game">
-        <h2 id="fase-titulo">Iniciando Treinamento...</h2>
+        <h2 id="fase-titulo">Carregando Treinamento...</h2>
         <div class="progresso-container">
-            Progresso: <span class="contador-bolinha" id="contador-txt">0 / 0</span>
+            Palavras Encontradas: <span class="contador-bolinha" id="contador-txt">0 / 0</span>
         </div>
     </div>
 
     <div class="legenda-container" id="painel-legenda"></div>
 
     <div class="controles">
-        <button class="btn-aux" style="background:#fff; color:var(--primary)" onclick="limparSelecao()">Limpar Seleção</button>
-        <button class="btn-aux" style="background:var(--danger); color:#fff" onclick="reiniciarTrilha()">Reiniciar Trilha</button>
+        <button class="btn-aux" style="background:#ffffff; color:var(--primary)" onclick="limparSelecao()">Limpar Seleção</button>
+        <button class="btn-aux" style="background:var(--danger); color:#ffffff" onclick="reiniciarTrilha()">Reiniciar Tudo</button>
     </div>
 
     <div class="grid" id="grid-box"></div>
@@ -79,72 +92,75 @@
 
     <div id="resultado"></div>
 
-    <a href="https://forms.gle/ut3jDiKRPWSGVXw37" target="_blank" class="btn-forms">📋 ENVIAR RELATÓRIO AO FORMS</a>
+    <a href="https://forms.gle/ut3jDiKRPWSGVXw37" target="_blank" class="btn-forms">📋 ENVIAR RELATÓRIO FINAL</a>
 
 <script>
     const SIZE = 13;
     let selecionadas = [], encontradas = [], gridData = [], faseAtual = 1;
 
+    // BANCO DE DADOS TÉCNICO COMPLETO - 6 ESTÁGIOS
     const bancoFases = {
         1: {
-            titulo: "Estágio 1: Segurança Geral",
+            titulo: "Fase 1: Segurança Geral",
             palavras: [
-                {txt: "SEGURANCA", nome: "SEGURANÇA", nivel: "grave", dica: "Base da operação: retorno seguro para casa."},
-                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "grave", dica: "Vigilância 360° constante no ambiente ferroviário."},
-                {txt: "TRECHO", nome: "TRECHO", nivel: "medio", dica: "Conhecimento do perfil e pontos críticos da via."},
-                {txt: "MARCO", nome: "MARCO", nivel: "medio", dica: "Localização exata via quilometragem física no ROF."},
-                {txt: "ROTINA", nome: "ROTINA", nivel: "leve", dica: "Cuidado com o piloto automático que gera desvios."},
-                {txt: "GABARITO", nome: "GABARITO", nivel: "leve", dica: "Espaço livre lateral para circulação segura."}
+                {txt: "SEGURANCA", nome: "SEGURANÇA", nivel: "grave", dica: "A base de toda operação MRS. Seguir o padrão garante o retorno seguro para sua família."},
+                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "grave", dica: "Vigilância 360° constante. Mantenha o foco total e evite distrações na cabine e no pátio."},
+                {txt: "TRECHO", nome: "TRECHO", nivel: "medio", dica: "Conhecimento profundo do perfil da via e pontos críticos. Antecipe suas ações de condução."},
+                {txt: "MARCO", nome: "MARCO", nivel: "medio", dica: "Fundamental para o estacionamento seguro. Respeite sempre a entrevia para evitar abalroamento lateral."},
+                {txt: "ROTINA", nome: "ROTINA", nivel: "leve", dica: "Combata o 'piloto automático'. A rotina excessiva não pode cegar o maquinista para riscos reais."},
+                {txt: "GABARITO", nome: "GABARITO", nivel: "leve", dica: "Espaço lateral livre. Verifique sempre se há obstruções ou pessoas para garantir a circulação segura."}
             ]
         },
         2: {
-            titulo: "Estágio 2: Quebra de Chave (AMV)",
+            titulo: "Fase 2: Quebra de Chave (AMV)",
             palavras: [
-                {txt: "AGULHA", nome: "AGULHA", nivel: "grave", dica: "Regra da fresta: 3mm causam arrombamento."},
-                {txt: "JACARE", nome: "JACARÉ", nivel: "grave", dica: "Ponto crítico de transposição do rodeiro no AMV."},
-                {txt: "SHISAKANKO", nome: "SHISA KANKO", nivel: "grave", dica: "Técnica de apontar e falar para confirmar rota."},
-                {txt: "MAQUINA", nome: "MÁQUINA", nivel: "medio", dica: "Verificação da fidelidade da posição da chave."},
-                {txt: "TRAVAMENTO", nome: "TRAVAMENTO", nivel: "medio", dica: "Bloqueio físico obrigatório para movimentação."},
-                {txt: "CONTRATRILHO", nome: "CONTRATRILHO", nivel: "leve", dica: "Guia que garante o direcionamento do rodeiro."}
+                {txt: "AGULHA", nome: "AGULHA", nivel: "grave", dica: "Regra da fresta: 3mm já causam arrombamento. Verifique a limpeza e o perfeito encosto antes da operação."},
+                {txt: "JACARE", nome: "JACARÉ", nivel: "grave", dica: "Ponto crítico de transposição. O choque de ponta ocorre se a agulha não estiver perfeitamente firme."},
+                {txt: "SHISAKANKO", nome: "SHISA KANKO", nivel: "grave", dica: "Técnica de apontar e falar. Confirme visualmente a rota e a posição da chave antes de qualquer movimento."},
+                {txt: "MAQUINA", nome: "MÁQUINA", nivel: "medio", dica: "Verificação da fidelidade da posição. Garanta que a indicação no painel ou local condiz com a realidade."},
+                {txt: "TRAVAMENTO", nome: "TRAVAMENTO", nivel: "medio", dica: "Bloqueio físico obrigatório. Sem o travamento correto, não existe autorização segura para o movimento."},
+                {txt: "CONTRATRILHO", nome: "CONTRATRILHO", nivel: "leve", dica: "Guia passivo de segurança que garante o direcionamento correto do rodeiro durante a transposição no AMV."}
             ]
         },
         3: {
-            titulo: "Estágio 3: Avanço de Sinal",
+            titulo: "Fase 3: Avanço de Sinal",
             palavras: [
-                {txt: "ASPECTO", nome: "ASPECTO", nivel: "grave", dica: "Confirmação real do sinal luminoso de campo."},
-                {txt: "AVANCO", nome: "AVANÇO", nivel: "grave", dica: "Transposição de sinal restritivo sem licença."},
-                {txt: "DISTANCIA", nome: "DISTÂNCIA", nivel: "grave", dica: "Planejamento da parada mental antecipada."},
-                {txt: "COMUNICA", nome: "COMUNICAÇÃO", nivel: "medio", dica: "Escuta ativa e repetição clara de ordens do CCO."},
-                {txt: "EXPECTATIVA", nome: "EXPECTATIVA", nivel: "medio", dica: "Não projete o verde; confirme o que seus olhos veem."}
+                {txt: "ASPECTO", nome: "ASPECTO", nivel: "grave", dica: "Confirmação real do sinal luminoso de campo. Jamais confie no hábito ou na expectativa de sinal favorável."},
+                {txt: "AVANCO", nome: "AVANÇO", nivel: "grave", dica: "Transposição de sinal restritivo sem licença absoluta do CCO. Trate cada autorização como se fosse a primeira."},
+                {txt: "DISTANCIA", nome: "DISTÂNCIA", nivel: "grave", dica: "Gestão do tempo de ciclo. Planeje a sua parada mental e física muito antes do dado numérico ficar crítico."},
+                {txt: "COMUNICA", nome: "COMUNICAÇÃO", nivel: "medio", dica: "Escuta ativa: repita e confirme ordens claramente. Não absorva a pressa do rádio; o maquinista é o dono do comando."},
+                {txt: "EXPECTATIVA", nome: "EXPECTATIVA", nivel: "medio", dica: "Mente de principiante: não projete o verde na sua mente. Force a confirmação visual real de cada aspecto."},
+                {txt: "SINALIZA", nome: "SINALIZAÇÃO", nivel: "grave", dica: "Obediência estrita aos dispositivos de via. A sinalização é a voz do CCO no trecho ferroviário."}
             ]
         },
         4: {
-            titulo: "Estágio 4: Acidentes Pessoais",
+            titulo: "Fase 4: Acidentes Pessoais",
             palavras: [
-                {txt: "CONFIANCA", nome: "AUTOCONFIANÇA", nivel: "grave", dica: "Excesso de experiência que ignora riscos básicos."},
-                {txt: "PRESSA", nome: "PRESSA", nivel: "grave", dica: "Emoção que atropela procedimentos de segurança."},
-                {txt: "PERCEPCAO", nome: "PERCEPÇÃO", nivel: "grave", dica: "Olhar de turista: buscar o que mudou no cenário."},
-                {txt: "LINHA", nome: "LINHA DE FOGO", nivel: "medio", dica: "Zona de perigo onde a energia é liberada."}
+                {txt: "CONFIANCA", nome: "AUTOCONFIANÇA", nivel: "grave", dica: "O perigo mora na experiência. Veteranos tendem a ignorar riscos básicos que novatos respeitam por medo."},
+                {txt: "PRESSA", nome: "PRESSA", nivel: "grave", dica: "Fator emocional de alto risco. Vocalize seu estado de urgência para recuperar a consciência e o padrão operacional."},
+                {txt: "PERCEPCAO", nome: "PERCEPÇÃO", nivel: "grave", dica: "Olhar de turista: buscar ativamente perigos novos e mudanças no cenário a cada nova passagem pelo local."},
+                {txt: "LINHA", nome: "LINHA DE FOGO", nivel: "medio", dica: "Zona de perigo imediato. Visualize onde a energia será liberada (engates, molas, ar) antes de se posicionar."},
+                {txt: "POSTURA", nome: "POSTURA", nivel: "leve", dica: "Mantenha a postura ergonômica e segura. Sua saúde física reflete na sua capacidade de reação rápida."}
             ]
         },
         5: {
-            titulo: "Estágio 5: Parâmetros SIC (POP-0018)",
+            titulo: "Fase 5: Parâmetros SIC (POP-0018)",
             palavras: [
-                {txt: "ALIVIO", nome: "ALÍVIO", nivel: "grave", dica: "Redução gradual de tração para evitar choque."},
-                {txt: "CICLAGEM", nome: "CICLAGEM", nivel: "grave", dica: "Tempo técnico para recarga do encanamento geral."},
-                {txt: "DINAMICO", nome: "DINÂMICO", nivel: "grave", dica: "Uso prioritário antes do freio automático."},
-                {txt: "CORRENTE", nome: "CORRENTE", nivel: "medio", dica: "Monitoramento de amperagem para proteção de motores."},
-                {txt: "FRENAGEM", nome: "FRENAGEM", nivel: "medio", dica: "Gestão da velocidade conforme o perfil da via."}
+                {txt: "ALIVIO", nome: "ALÍVIO", nivel: "grave", dica: "POP 6.3.3: Reduza o esforço de tração gradualmente (mínimo 10s) para evitar o choque dinâmico e quebra de engates."},
+                {txt: "CICLAGEM", nome: "CICLAGEM", nivel: "grave", dica: "POP 6.3.11: Aguarde no mínimo 30s após o alívio para nova aplicação. Garante a recarga vital do ar no sistema."},
+                {txt: "DINAMICO", nome: "DINÂMICO", nivel: "grave", dica: "POP 6.3.6: Uso prioritário do freio elétrico antes do automático para equilibrar as forças de compressão."},
+                {txt: "CORRENTE", nome: "CORRENTE", nivel: "medio", dica: "Monitoramento de amperagem: alivie a potência devagar para proteger os motores de tração contra sobrecarga."},
+                {txt: "FRENAGEM", nome: "FRENAGEM", nivel: "medio", dica: "Gestão técnica da velocidade e forças de compressão conforme o perfil longitudinal e o peso da composição."}
             ]
         },
         6: {
-            titulo: "Estágio 6: Manobras (MOF)",
+            titulo: "Fase 6: Manobras e MOF",
             palavras: [
-                {txt: "MANOBRA", nome: "MANOBRA", nivel: "grave", dica: "Velocidade reduzida para parada em meia distância."},
-                {txt: "RADIO", nome: "RÁDIO", nivel: "grave", dica: "Contagem de distância obrigatória via rádio."},
-                {txt: "ESTACIONA", nome: "ESTACIONA", nivel: "grave", dica: "Garantia: sapata colada e corrente tensionada."},
-                {txt: "PN", nome: "PASSAGEM NÍVEL", nivel: "medio", dica: "Atenção máxima em cruzamentos rodoferroviários."},
-                {txt: "SAPATA", nome: "SAPATA", nivel: "medio", dica: "Verificação visual da imobilização do vagão."}
+                {txt: "MANOBRA", nome: "MANOBRA", nivel: "grave", dica: "Velocidade de pátio: garantir a parada segura em metade da distância visível. Técnica vital do MOF."},
+                {txt: "RADIO", nome: "RÁDIO", nivel: "grave", dica: "Comunicação clara e contagem de distância. Silêncio no rádio exige parada imediata. Nunca assuma o 'vem vindo'."},
+                {txt: "ESTACIONA", nome: "ESTACIONA", nivel: "grave", dica: "Garantia visual: sapata colada e corrente tensionada. O check visual é sua única garantia real de imobilização."},
+                {txt: "PN", nome: "PASSAGEM NÍVEL", nivel: "medio", dica: "Gerenciamento de risco: antecipe a falha do terceiro. Reduza preventivamente na dúvida ou falta de visibilidade."},
+                {txt: "SAPATA", nome: "SAPATA", nivel: "medio", dica: "Verificação visual obrigatória da imobilização mecânica efetiva. Certifique-se do travamento total dos vagões."}
             ]
         }
     };
@@ -153,26 +169,30 @@
         selecionadas = []; encontradas = [];
         document.getElementById("resultado").innerHTML = "";
         document.getElementById("btn-next").style.display = "none";
-        gridData = Array(SIZE).fill(null).map(() => Array(SIZE).fill(''));
-        if (!distribuirPalavras()) {
-            setTimeout(init, 10);
-            return;
+        let pronto = false;
+        let tentativasGlobais = 0;
+        while (!pronto && tentativasGlobais < 50) { 
+            gridData = Array(SIZE).fill(null).map(() => Array(SIZE).fill(''));
+            pronto = distribuirPalavras(); 
+            tentativasGlobais++;
         }
         preencherLixo(); desenhar(); atualizarUI();
     }
 
     function distribuirPalavras() {
-        const palavrasAtuais = bancoFases[faseAtual].palavras;
-        for (let p of palavrasAtuais) {
+        const lista = [...bancoFases[faseAtual].palavras].sort(() => Math.random() - 0.5);
+        for (let p of lista) {
             let colocada = false;
             let tentativas = 0;
-            while (!colocada && tentativas < 1000) {
-                let horizontal = Math.random() > 0.5;
-                let r = Math.floor(Math.random() * (horizontal ? SIZE : SIZE - p.txt.length));
-                let c = Math.floor(Math.random() * (horizontal ? SIZE - p.txt.length : SIZE));
-                if (podeColocar(p.txt, r, c, horizontal)) {
+            while (!colocada && tentativas < 3000) {
+                let h = Math.random() > 0.5; 
+                let r = Math.floor(Math.random() * (h ? SIZE : SIZE - p.txt.length));
+                let c = Math.floor(Math.random() * (h ? SIZE - p.txt.length : SIZE));
+                if (podeColocar(p.txt, r, c, h)) {
                     for (let i = 0; i < p.txt.length; i++) {
-                        gridData[horizontal ? r : r + i][horizontal ? c + i : c] = p.txt[i];
+                        let row = h ? r : r + i;
+                        let col = h ? c + i : c;
+                        gridData[row][col] = p.txt[i];
                     }
                     colocada = true;
                 }
@@ -183,11 +203,11 @@
         return true;
     }
 
-    function podeColocar(palavra, r, c, horizontal) {
-        for (let i = 0; i < palavra.length; i++) {
-            let row = horizontal ? r : r + i;
-            let col = horizontal ? c + i : c;
-            if (gridData[row][col] !== '') return false;
+    function podeColocar(p, r, c, h) {
+        for (let i = 0; i < p.length; i++) {
+            let currR = h ? r : r + i;
+            let currC = h ? c + i : c;
+            if (gridData[currR][currC] !== '') return false;
         }
         return true;
     }
@@ -202,7 +222,7 @@
     }
 
     function desenhar() {
-        const box = document.getElementById("grid-box");
+        const box = document.getElementById("grid-box"); 
         box.innerHTML = '';
         gridData.forEach((row, r) => {
             row.forEach((letra, c) => {
@@ -229,18 +249,16 @@
 
     function verificar() {
         const pal = selecionadas.map(s => s.letra).join('');
-        const invertida = pal.split('').reverse().join('');
-        const alvo = bancoFases[faseAtual].palavras.find(p => (p.txt === pal || p.txt === invertida) && !encontradas.includes(p.txt));
-        
+        const alvo = bancoFases[faseAtual].palavras.find(p => p.txt === pal && !encontradas.includes(p.txt));
         if (alvo) {
-            selecionadas.forEach(s => {
-                s.el.classList.remove('selected');
-                s.el.classList.add(`found-${alvo.nivel}`);
+            selecionadas.forEach(s => { 
+                s.el.classList.remove('selected'); 
+                s.el.classList.add(`found-${alvo.nivel}`); 
             });
             encontradas.push(alvo.txt);
             const msg = `<div class="insight ${alvo.nivel}"><strong>✔ ${alvo.nome}</strong>: ${alvo.dica}</div>`;
             document.getElementById("resultado").innerHTML = msg + document.getElementById("resultado").innerHTML;
-            selecionadas = [];
+            selecionadas = []; 
             atualizarUI();
             if (encontradas.length === bancoFases[faseAtual].palavras.length) {
                 document.getElementById("btn-next").style.display = "block";
@@ -262,7 +280,7 @@
 
     function proximaFase() {
         if (faseAtual < 6) { faseAtual++; init(); }
-        else { alert("Trilha Técnica MRS Concluída!"); }
+        else { alert("Parabéns, Sr. Assis! Trilha Técnica MRS Concluída com Sucesso!"); }
     }
 
     function limparSelecao() {
@@ -270,7 +288,9 @@
         selecionadas = [];
     }
 
-    function reiniciarTrilha() { if(confirm("Reiniciar tudo?")) { faseAtual = 1; init(); } }
+    function reiniciarTrilha() {
+        if(confirm("Deseja reiniciar todo o treinamento técnico?")) { faseAtual = 1; init(); }
+    }
 
     window.onload = init;
 </script>
