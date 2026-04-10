@@ -19,7 +19,7 @@
             background: rgba(255, 255, 255, 0.05); padding: 15px;
             border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1);
         }
-        h2 { margin: 0; font-size: 1.1rem; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
+        h2 { margin: 0; font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
         .progresso-container { margin-top: 5px; font-weight: bold; font-size: 0.9rem; }
         .contador-bolinha { background: rgba(0,0,0,0.3); padding: 2px 10px; border-radius: 20px; border: 1px solid var(--accent); }
         .legenda-container { 
@@ -51,19 +51,18 @@
         }
         .controles { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
         .btn-aux { border: none; padding: 8px 12px; border-radius: 5px; font-weight: 700; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; }
-        #resultado { max-width: 460px; margin: 15px auto; display: flex; flex-direction: column; gap: 8px; padding-bottom: 20px; }
+        #resultado { max-width: 460px; margin: 15px auto; display: flex; flex-direction: column; gap: 8px; padding-bottom: 40px;}
         .insight { padding: 12px; border-radius: 8px; text-align: left; font-size: 0.85rem; border-left: 6px solid rgba(0,0,0,0.3); animation: slideIn 0.3s; }
-        .grave { background: var(--danger); color: #fff; } .medio { background: var(--warning); color: #000; } .leve { background: var(--info); color: #fff; }
-        .btn-forms { background: #2ecc71; color: white; padding: 15px; border-radius: 8px; text-decoration: none; display: inline-block; margin-top: 10px; font-weight: bold; border: 2px solid #fff; }
+        .btn-forms { background: #2ecc71; color: white; padding: 15px; border-radius: 8px; text-decoration: none; display: inline-block; margin-top: 20px; font-weight: bold; border: 2px solid #fff; }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div class="header-game">
-        <h2 id="fase-titulo">Carregando Trilha Técnica...</h2>
+        <h2 id="fase-titulo">Iniciando Treinamento...</h2>
         <div class="progresso-container">
-            Palavras: <span class="contador-bolinha" id="contador-txt">0 / 0</span>
+            Progresso: <span class="contador-bolinha" id="contador-txt">0 / 0</span>
         </div>
     </div>
 
@@ -88,18 +87,18 @@
 
     const bancoFases = {
         1: {
-            titulo: "Fase 1: Segurança Geral",
+            titulo: "Estágio 1: Segurança Geral",
             palavras: [
-                {txt: "SEGURANCA", nome: "SEGURANÇA", nivel: "grave", dica: "A base de toda operação. Retorno seguro para casa."},
-                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "grave", dica: "Foco total 360° no ambiente ferroviário."},
+                {txt: "SEGURANCA", nome: "SEGURANÇA", nivel: "grave", dica: "Base da operação: retorno seguro para casa."},
+                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "grave", dica: "Vigilância 360° constante no ambiente ferroviário."},
                 {txt: "TRECHO", nome: "TRECHO", nivel: "medio", dica: "Conhecimento do perfil e pontos críticos da via."},
-                {txt: "MARCO", nome: "MARCO", nivel: "medio", dica: "Localização exata via quilometragem física."},
+                {txt: "MARCO", nome: "MARCO", nivel: "medio", dica: "Localização exata via quilometragem física no ROF."},
                 {txt: "ROTINA", nome: "ROTINA", nivel: "leve", dica: "Cuidado com o piloto automático que gera desvios."},
                 {txt: "GABARITO", nome: "GABARITO", nivel: "leve", dica: "Espaço livre lateral para circulação segura."}
             ]
         },
         2: {
-            titulo: "Fase 2: Quebra de Chave (AMV)",
+            titulo: "Estágio 2: Quebra de Chave (AMV)",
             palavras: [
                 {txt: "AGULHA", nome: "AGULHA", nivel: "grave", dica: "Regra da fresta: 3mm causam arrombamento."},
                 {txt: "JACARE", nome: "JACARÉ", nivel: "grave", dica: "Ponto crítico de transposição do rodeiro no AMV."},
@@ -110,7 +109,7 @@
             ]
         },
         3: {
-            titulo: "Fase 3: Avanço de Sinal",
+            titulo: "Estágio 3: Avanço de Sinal",
             palavras: [
                 {txt: "ASPECTO", nome: "ASPECTO", nivel: "grave", dica: "Confirmação real do sinal luminoso de campo."},
                 {txt: "AVANCO", nome: "AVANÇO", nivel: "grave", dica: "Transposição de sinal restritivo sem licença."},
@@ -120,7 +119,7 @@
             ]
         },
         4: {
-            titulo: "Fase 4: Acidentes Pessoais",
+            titulo: "Estágio 4: Acidentes Pessoais",
             palavras: [
                 {txt: "CONFIANCA", nome: "AUTOCONFIANÇA", nivel: "grave", dica: "Excesso de experiência que ignora riscos básicos."},
                 {txt: "PRESSA", nome: "PRESSA", nivel: "grave", dica: "Emoção que atropela procedimentos de segurança."},
@@ -129,7 +128,7 @@
             ]
         },
         5: {
-            titulo: "Fase 5: Parâmetros SIC (POP-0018)",
+            titulo: "Estágio 5: Parâmetros SIC (POP-0018)",
             palavras: [
                 {txt: "ALIVIO", nome: "ALÍVIO", nivel: "grave", dica: "Redução gradual de tração para evitar choque."},
                 {txt: "CICLAGEM", nome: "CICLAGEM", nivel: "grave", dica: "Tempo técnico para recarga do encanamento geral."},
@@ -139,7 +138,7 @@
             ]
         },
         6: {
-            titulo: "Fase 6: Manobras (MOF)",
+            titulo: "Estágio 6: Manobras (MOF)",
             palavras: [
                 {txt: "MANOBRA", nome: "MANOBRA", nivel: "grave", dica: "Velocidade reduzida para parada em meia distância."},
                 {txt: "RADIO", nome: "RÁDIO", nivel: "grave", dica: "Contagem de distância obrigatória via rádio."},
@@ -154,25 +153,27 @@
         selecionadas = []; encontradas = [];
         document.getElementById("resultado").innerHTML = "";
         document.getElementById("btn-next").style.display = "none";
-        
-        let pronto = false;
-        while (!pronto) { 
-            gridData = Array(SIZE).fill(null).map(() => Array(SIZE).fill('')); 
-            pronto = distribuirPalavras(); 
+        gridData = Array(SIZE).fill(null).map(() => Array(SIZE).fill(''));
+        if (!distribuirPalavras()) {
+            setTimeout(init, 10);
+            return;
         }
         preencherLixo(); desenhar(); atualizarUI();
     }
 
     function distribuirPalavras() {
-        const lista = [...bancoFases[faseAtual].palavras].sort(() => Math.random() - 0.5);
-        for (let p of lista) {
-            let colocada = false, tentativas = 0;
-            while (!colocada && tentativas < 2000) {
-                let h = Math.random() > 0.5, 
-                    r = Math.floor(Math.random() * (h ? SIZE : SIZE - p.txt.length)), 
-                    c = Math.floor(Math.random() * (h ? SIZE - p.txt.length : SIZE));
-                if (podeColocar(p.txt, r, c, h)) {
-                    for (let i = 0; i < p.txt.length; i++) gridData[h ? r : r + i][h ? c + i : c] = p.txt[i];
+        const palavrasAtuais = bancoFases[faseAtual].palavras;
+        for (let p of palavrasAtuais) {
+            let colocada = false;
+            let tentativas = 0;
+            while (!colocada && tentativas < 1000) {
+                let horizontal = Math.random() > 0.5;
+                let r = Math.floor(Math.random() * (horizontal ? SIZE : SIZE - p.txt.length));
+                let c = Math.floor(Math.random() * (horizontal ? SIZE - p.txt.length : SIZE));
+                if (podeColocar(p.txt, r, c, horizontal)) {
+                    for (let i = 0; i < p.txt.length; i++) {
+                        gridData[horizontal ? r : r + i][horizontal ? c + i : c] = p.txt[i];
+                    }
                     colocada = true;
                 }
                 tentativas++;
@@ -182,50 +183,63 @@
         return true;
     }
 
-    function podeColocar(p, r, c, h) {
-        for (let i = 0; i < p.length; i++) {
-            let currR = h ? r : r + i, currC = h ? c + i : c;
-            if (gridData[currR][currC] !== '' && gridData[currR][currC] !== p[i]) return false;
+    function podeColocar(palavra, r, c, horizontal) {
+        for (let i = 0; i < palavra.length; i++) {
+            let row = horizontal ? r : r + i;
+            let col = horizontal ? c + i : c;
+            if (gridData[row][col] !== '') return false;
         }
         return true;
     }
 
-    function preencherLixo() { 
-        const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
-        for (let r = 0; r < SIZE; r++) 
-            for (let c = 0; c < SIZE; c++) 
-                if (gridData[r][c] === '') gridData[r][c] = abc[Math.floor(Math.random() * abc.length)]; 
+    function preencherLixo() {
+        const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (let r = 0; r < SIZE; r++) {
+            for (let c = 0; c < SIZE; c++) {
+                if (gridData[r][c] === '') gridData[r][c] = abc[Math.floor(Math.random() * abc.length)];
+            }
+        }
     }
 
     function desenhar() {
-        const container = document.getElementById("grid-box"); container.innerHTML = '';
-        gridData.forEach((row, r) => row.forEach((letra, c) => {
-            const div = document.createElement("div"); div.className = "cell"; div.innerText = letra;
-            div.onclick = () => clicarCelula(div, letra, r, c); container.appendChild(div);
-        }));
+        const box = document.getElementById("grid-box");
+        box.innerHTML = '';
+        gridData.forEach((row, r) => {
+            row.forEach((letra, c) => {
+                const div = document.createElement("div");
+                div.className = "cell";
+                div.innerText = letra;
+                div.onclick = () => selecionar(div, letra, r, c);
+                box.appendChild(div);
+            });
+        });
     }
 
-    function clicarCelula(el, letra, r, c) {
-        if (el.classList.contains('found-grave') || el.classList.contains('found-medio') || el.classList.contains('found-leve')) return;
-        if (el.classList.contains('selected')) { 
-            el.classList.remove('selected'); 
+    function selecionar(el, letra, r, c) {
+        if (el.className.includes('found')) return;
+        if (el.classList.contains('selected')) {
+            el.classList.remove('selected');
             selecionadas = selecionadas.filter(s => s.el !== el);
-            return; 
+        } else {
+            el.classList.add('selected');
+            selecionadas.push({el, letra, r, c});
+            verificar();
         }
-        el.classList.add('selected'); selecionadas.push({el, letra, r, c});
-        verificarJogo();
     }
 
-    function verificarJogo() {
-        const palavraFormada = selecionadas.map(s => s.letra).join('');
-        const alvo = bancoFases[faseAtual].palavras.find(p => p.txt === palavraFormada && !encontradas.includes(p.txt));
+    function verificar() {
+        const pal = selecionadas.map(s => s.letra).join('');
+        const invertida = pal.split('').reverse().join('');
+        const alvo = bancoFases[faseAtual].palavras.find(p => (p.txt === pal || p.txt === invertida) && !encontradas.includes(p.txt));
+        
         if (alvo) {
-            selecionadas.forEach(s => { 
-                s.el.classList.remove('selected'); 
-                s.el.classList.add(`found-${alvo.nivel}`); 
+            selecionadas.forEach(s => {
+                s.el.classList.remove('selected');
+                s.el.classList.add(`found-${alvo.nivel}`);
             });
             encontradas.push(alvo.txt);
-            document.getElementById("resultado").innerHTML = `<div class="insight ${alvo.nivel}"><strong>✔ ${alvo.nome}</strong>: ${alvo.dica}</div>` + document.getElementById("resultado").innerHTML;
+            const msg = `<div class="insight ${alvo.nivel}"><strong>✔ ${alvo.nome}</strong>: ${alvo.dica}</div>`;
+            document.getElementById("resultado").innerHTML = msg + document.getElementById("resultado").innerHTML;
             selecionadas = [];
             atualizarUI();
             if (encontradas.length === bancoFases[faseAtual].palavras.length) {
@@ -237,28 +251,26 @@
     function atualizarUI() {
         document.getElementById("fase-titulo").innerText = bancoFases[faseAtual].titulo;
         document.getElementById("contador-txt").innerText = `${encontradas.length} / ${bancoFases[faseAtual].palavras.length}`;
-        const painel = document.getElementById("painel-legenda");
         const graves = bancoFases[faseAtual].palavras.filter(p => p.nivel === 'grave').map(p => p.nome).join(' • ');
         const medios = bancoFases[faseAtual].palavras.filter(p => p.nivel === 'medio').map(p => p.nome).join(' • ');
         const leves = bancoFases[faseAtual].palavras.filter(p => p.nivel === 'leve').map(p => p.nome).join(' • ');
-        painel.innerHTML = `
+        document.getElementById("painel-legenda").innerHTML = `
             <div class="legenda-item leg-vermelho">${graves}</div>
             <div class="legenda-item leg-amarelo">${medios}</div>
-            <div class="legenda-item leg-verde">${leves}</div>
-        `;
+            <div class="legenda-item leg-verde">${leves}</div>`;
     }
 
     function proximaFase() {
-        if (faseAtual < 6) { faseAtual++; init(); } 
-        else { alert("Trilha Técnica MRS Concluída com Sucesso!"); }
+        if (faseAtual < 6) { faseAtual++; init(); }
+        else { alert("Trilha Técnica MRS Concluída!"); }
     }
 
-    function limparSelecao() { 
+    function limparSelecao() {
         document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
-        selecionadas = []; 
+        selecionadas = [];
     }
 
-    function reiniciarTrilha() { if(confirm("Deseja reiniciar todo o treinamento técnico?")) { faseAtual = 1; init(); } }
+    function reiniciarTrilha() { if(confirm("Reiniciar tudo?")) { faseAtual = 1; init(); } }
 
     window.onload = init;
 </script>
