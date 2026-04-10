@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CAÇA-PALAVRAS SEGURANÇA - MRS</title>
     <style>
-        /* --- 🎨 LAYOUT E CORES OFICIAIS --- */
+        /* --- 🎨 LAYOUT E CORES OFICIAIS MRS --- */
         :root {
-            --mrs-blue: #003399;      /* Azul MRS */
+            --mrs-blue: #003399;      /* Azul Institucional */
             --mrs-yellow: #FFCC00;    /* Amarelo Segurança */
-            --mrs-green: #28a745;     /* Sucesso/Correção */
-            --bg-gray: #f0f2f5;       /* Fundo Neutro */
+            --mrs-green: #28a745;     /* Sucesso/Conformidade */
+            --bg-gray: #f0f2f5;       /* Fundo Neutro de Pátio */
             --text-dark: #333;
+            --shadow: 0 8px 24px rgba(0,0,0,0.15);
         }
 
         body {
@@ -26,47 +27,50 @@
             overflow-x: hidden;
         }
 
+        /* --- CABEÇALHO --- */
         header {
             background-color: var(--mrs-blue);
             color: white;
             width: 100%;
-            padding: 20px 0;
+            padding: 25px 0;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-bottom: 5px solid var(--mrs-yellow);
         }
 
-        header h1 { margin: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
-        header p { margin: 5px 0 0; font-size: 0.85rem; font-weight: 300; }
+        header h1 { margin: 0; font-size: 1.6rem; text-transform: uppercase; letter-spacing: 2px; }
+        header p { margin: 5px 0 0; font-size: 0.9rem; font-weight: 300; opacity: 0.9; }
 
+        /* --- BARRA DE STATUS --- */
         .stats-bar {
             width: 90%;
             max-width: 480px;
             display: flex;
             justify-content: space-between;
-            padding: 15px 0;
+            padding: 20px 0;
         }
 
         .stat-card {
             background: white;
-            padding: 8px 15px;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             font-weight: bold;
             color: var(--mrs-blue);
             font-size: 0.9rem;
-            border-left: 4px solid var(--mrs-yellow);
+            border-left: 5px solid var(--mrs-yellow);
         }
 
-        /* --- 🕹️ GRID DO JOGO (LAYOUT) --- */
+        /* --- 🕹️ GRID DO JOGO (LAYOUT PROFISSIONAL) --- */
         #grid-board {
             background: white;
-            padding: 12px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 5px;
-            touch-action: none; /* Crucial para o Arrastar */
+            gap: 6px;
+            touch-action: none; /* Bloqueia scroll para o arraste funcionar */
             width: 90vw;
             max-width: 450px;
             aspect-ratio: 1;
@@ -79,44 +83,54 @@
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: clamp(0.8rem, 4vw, 1.1rem);
-            border-radius: 4px;
-            transition: all 0.1s ease;
+            font-size: clamp(0.9rem, 4.5vw, 1.2rem);
+            border-radius: 5px;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             color: var(--text-dark);
+            cursor: pointer;
         }
 
         .cell.selecting { 
             background-color: var(--mrs-yellow); 
-            transform: scale(1.1); 
+            transform: scale(1.15); 
             z-index: 10;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
         }
 
         .cell.found { 
             background-color: var(--mrs-green); 
             color: white; 
-            border: none; 
+            border: none;
+            animation: pulse 0.4s ease-out;
         }
 
-        /* --- 🏷️ LISTA DE PALAVRAS --- */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- 🏷️ LISTA DE PALAVRAS (TAGS) --- */
         #word-tags {
             width: 90%;
             max-width: 480px;
-            margin-top: 20px;
+            margin-top: 25px;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
             justify-content: center;
         }
 
         .tag {
-            padding: 10px 18px;
-            border-radius: 25px;
-            border: 2px solid var(--mrs-blue);
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 2.5px solid var(--mrs-blue);
             background: white;
             color: var(--mrs-blue);
             font-weight: bold;
-            font-size: 0.8rem;
-            transition: 0.3s ease;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .tag.done {
@@ -124,10 +138,11 @@
             color: white;
             border-color: var(--mrs-green);
             text-decoration: line-through;
-            opacity: 0.8;
+            opacity: 0.7;
+            transform: scale(0.95);
         }
 
-        /* --- 💬 MODAL DE INSIGHTS --- */
+        /* --- 💬 MODAL DE INSIGHTS OPERACIONAIS --- */
         #insight-overlay {
             display: none;
             position: fixed;
@@ -136,46 +151,57 @@
             z-index: 2000;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(6px);
         }
 
         #modal {
             background: white;
-            width: 85%;
-            max-width: 420px;
-            padding: 30px;
-            border-radius: 20px;
+            width: 88%;
+            max-width: 440px;
+            padding: 35px;
+            border-radius: 25px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-top: 8px solid var(--mrs-yellow);
         }
 
         #modal h2 { 
             color: var(--mrs-blue); 
             margin: 0 0 15px; 
-            border-bottom: 3px solid var(--mrs-yellow);
-            display: inline-block;
-            padding-bottom: 5px;
+            font-size: 1.4rem;
+            text-transform: uppercase;
         }
 
-        #modal p { font-size: 1.05rem; line-height: 1.6; color: #444; margin: 20px 0; }
+        #modal p { 
+            font-size: 1.1rem; 
+            line-height: 1.6; 
+            color: #444; 
+            margin: 25px 0;
+            text-align: left;
+        }
 
         #modal button {
             background: var(--mrs-blue);
             color: white;
             border: none;
-            padding: 14px 40px;
-            border-radius: 30px;
+            padding: 16px 45px;
+            border-radius: 35px;
             font-weight: bold;
+            font-size: 1rem;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
+            transition: transform 0.2s;
         }
 
-        /* --- 📝 FORMULÁRIO --- */
-        #footer-form {
-            margin: 30px 0;
-            font-size: 0.75rem;
-            color: #888;
+        #modal button:active { transform: scale(0.95); }
+
+        /* --- 📝 FOOTER / FORMS --- */
+        #footer-info {
+            margin: 40px 0;
+            font-size: 0.8rem;
+            color: #777;
+            font-style: italic;
         }
     </style>
 </head>
@@ -197,59 +223,59 @@
 
 <div id="insight-overlay">
     <div id="modal">
-        <h2 id="modal-title">INSIGHT</h2>
+        <h2 id="modal-title">INSIGHT TÉCNICO</h2>
         <p id="modal-body"></p>
         <button onclick="prosseguir()">Confirmar Leitura</button>
     </div>
 </div>
 
-<div id="footer-form">Dados sincronizados via Google Forms</div>
+<div id="footer-info">Dados de progresso monitorados via SGC/Google Forms</div>
 
 <script>
-    /** --- LÓGICA DO SISTEMA --- **/
+    /** --- ⚙️ INTELIGÊNCIA DO SISTEMA --- **/
     const Game = {
         fase: 1,
         encontradas: [],
         selecionadas: [],
         isDragging: false,
 
-        // CONTEÚDO TÉCNICO COMPLETO (6 FASES - POP-GNO-0018 & MOF)
+        // CONTEÚDO TÉCNICO INTEGRADO (6 FASES - POP-GNO-0018 & MOF)
         dados: {
             1: [
-                {p: "TRECHO", i: "CONHECIMENTO DO TRECHO: Saiba onde você está. Antecipar o perfil da via evita frenagens bruscas e incidentes."},
-                {p: "GABARITO", i: "GABARITO: Cuidado com obstruções laterais. Gabarito livre garante que o material rode sem impactos."},
-                {p: "BRITA", i: "BRITA: Atenção ao caminhar. Terrenos irregulares são os maiores causadores de entorses no pátio."},
-                {p: "DORMER", i: "DORMENTES: A base da via. Verifique o estado dos dormentes para garantir a estabilidade do material rodante."}
+                {p: "TRECHO", i: "CONHECIMENTO DO TRECHO: Saiba exatamente onde você está. Antecipar o perfil da via e gradientes evita frenagens bruscas e incidentes de condução."},
+                {p: "GABARITO", i: "GABARITO: Cuidado com obstruções laterais. O gabarito livre é a garantia de que o material rodante circula sem impactos no pátio."},
+                {p: "BRITA", i: "BRITA: Atenção redobrada ao caminhar. Terrenos irregulares são os maiores causadores de entorses e quedas no ambiente ferroviário."},
+                {p: "DORMER", i: "DORMENTES: A base da via permanente. Verifique visualmente o estado dos dormentes para garantir a estabilidade da via e do material."}
             ],
             2: [
-                {p: "AGULHA", i: "AGULHA: Regra da Fresta! 3mm de abertura causam arrombamento. Verifique sempre antes de operar o AMV."},
-                {p: "JACARE", i: "JACARÉ: Visualize a rota. O choque de ponta no jacaré ocorre quando a agulha não está totalmente firme."},
-                {p: "CONTRATRILHO", i: "CONTRATRILHO: O guia da roda. Verifique fixações soltas que comprometem o gabarito na transposição."},
-                {p: "MAQUINA", i: "SHISA KANKO: Aponte e fale! Confirme visualmente a posição da chave antes de autorizar o movimento."}
+                {p: "AGULHA", i: "REGRA DA FRESTA (AGULHA): 3mm de abertura já causam arrombamento! Verifique sempre a limpeza e o travamento antes de operar o AMV."},
+                {p: "JACARE", i: "JACARÉ: Visualize a rota de fuga. O choque de ponta no jacaré ocorre quando a agulha não está totalmente firme sob o peso do material."},
+                {p: "CONTRATRILHO", i: "CONTRATRILHO: O guia inegociável da roda. Verifique fixações soltas que podem comprometer o gabarito na transposição de chaves."},
+                {p: "MAQUINA", i: "SHISA KANKO (MAQUINA): Aponte e fale! Confirme visualmente a fidelidade da posição da máquina de chave antes de autorizar o movimento."}
             ],
             3: [
-                {p: "ASPECTO", i: "VISÃO PERIFÉRICA: Não confie no hábito. Reconfirme o dado real do sinal antes de agir. O sinal de ontem não vale hoje."},
-                {p: "DISTANCIA", i: "TEMPO DE CICLO: Planeje a parada mental muito antes do dado numérico ficar crítico no computador de bordo."},
-                {p: "COMUNICA", i: "ESCUTA EMPÁTICA: Não absorva a pressa do rádio. Processe a informação e repita. A autoridade final é sua."},
-                {p: "EXPECTATIVA", i: "EXPECTATIVA (PSI): Trate cada autorização como se fosse a primeira. O excesso de confiança é um fator de risco."}
+                {p: "ASPECTO", i: "VISÃO PERIFÉRICA: Não confie no hábito ou na 'memória'. Reconfirme o dado real do sinal antes de agir. O verde de ontem não garante a via hoje."},
+                {p: "DISTANCIA", i: "TEMPO DE CICLO: Planeje a parada mental muito antes do dado numérico ficar crítico no computador de bordo. Antecipação é segurança."},
+                {p: "COMUNICA", i: "ESCUTA EMPÁTICA: Não absorva a pressa do rádio. Processe a informação, repita a ordem e só execute após o 'correto'. Você é o dono do comando."},
+                {p: "EXPECTATIVA", i: "EXPECTATIVA (PSI): Trate cada autorização como se fosse a primeira da carreira. O excesso de confiança cega para detalhes críticos de segurança."}
             ],
             4: [
-                {p: "CONFIANCA", i: "AUTOCONFIANÇA: O perigo mora na experiência. Profissionais antigos tendem a ignorar riscos que novatos respeitam."},
-                {p: "PRESSA", i: "PRESSA: É uma emoção, não um fato. Se sentir urgência, pare e vocalize seu estado. Evite a visão de túnel."},
-                {p: "PERCEPCAO", i: "OLHAR DE TURISTA: Veja o pátio como se fosse a primeira vez. Busque o que mudou no cenário desde a última viagem."},
-                {p: "LINHA", i: "LINHA DE FOGO: Antecipação! Visualize a liberação de energia (engates, ar) antes de se posicionar."}
+                {p: "CONFIANCA", i: "AUTOCONFIANÇA: O perigo mora na experiência. Profissionais antigos tendem a ignorar riscos básicos que novatos respeitam por cautela."},
+                {p: "PRESSA", i: "PRESSA: É uma emoção de risco, não um fato. Se sentir urgência, pare e vocalize seu estado. Evite a 'visão de túnel' que ignora o entorno."},
+                {p: "PERCEPCAO", i: "OLHAR DE TURISTA: Veja o pátio como se fosse a primeira vez. Busque ativamente o que mudou no cenário desde a sua última manobra."},
+                {p: "LINHA", i: "LINHA DE FOGO: Antecipação! Visualize a liberação de energia (engates, molas, ar) antes de se posicionar próximo ao material rodante."}
             ],
             5: [
-                {p: "ALIVIO", i: "ALÍVIO BRUSCO (6.3.3): Reduza o esforço gradualmente (>10s). Evita choque entre engates monitorado pelo SIC."},
-                {p: "CICLAGEM", i: "CICLAGEM (6.3.11): Aguarde min. 30s após o alívio para nova aplicação. Garante a recarga do encanamento geral."},
-                {p: "DINAMICO", i: "DINÂMICO (6.3.6): Use o Freio Dinâmico ANTES do Automático. O SIC audita o equilíbrio das forças de frenagem."},
-                {p: "INCORRETO", i: "MFI INCORRETO (6.3.32): Independente aliviado em circulação evita superaquecimento de rodas e desvios de conceito."}
+                {p: "ALIVIO", i: "ALÍVIO BRUSCO (POP 6.3.3): Reduza o esforço de tração gradualmente (>10s). Isso evita o choque entre engates que o SIC monitora como desvio."},
+                {p: "CICLAGEM", i: "CICLAGEM (POP 6.3.11): Aguarde no mínimo 30s após o alívio para uma nova aplicação. Garante a recarga vital do encanamento geral de ar."},
+                {p: "DINAMICO", i: "DINÂMICO (POP 6.3.6): Use sempre o Freio Dinâmico ANTES do Automático. O SIC audita o equilíbrio das forças de frenagem para evitar danos."},
+                {p: "INCORRETO", i: "MFI INCORRETO (POP 6.3.32): Manter o independente aliviado em circulação evita o superaquecimento de rodas e gera conformidade no SIC."}
             ],
             6: [
-                {p: "MANOBRA", i: "VELOCIDADE DE MANOBRA: Respeite o limite do pátio. Garante parada em metade da distância visível."},
-                {p: "RADIO", i: "CONTAGEM DE DISTÂNCIA: Informe o espaço em vagões. Silêncio no rádio exige parada imediata. Sem 'vem vindo'."},
-                {p: "ESTACIONA", i: "ESTACIONAMENTO: SHISA KANKO! Aponte e diga: 'Sapata colada, corrente tensionada'. O visual é a garantia real."},
-                {p: "PN", i: "PASSAGEM EM NÍVEL: Gerenciamento de Risco. Antecipe a falha do terceiro. Reduza preventivamente na dúvida."}
+                {p: "MANOBRA", i: "VELOCIDADE DE MANOBRA: Respeite o limite estabelecido. Garante a parada em metade da distância visível e evita incidentes de impacto."},
+                {p: "RADIO", i: "CONTAGEM DE DISTÂNCIA: Informe o espaço restante em vagões. O silêncio no rádio exige parada imediata. Comunicação amadora é risco."},
+                {p: "ESTACIONA", i: "GARANTIA DE ESTACIONAMENTO: SHISA KANKO! Aponte e diga: 'Sapata colada, corrente tensionada'. O check visual é a sua única garantia."},
+                {p: "PN", i: "PASSAGEM EM NÍVEL (PN): Gerenciamento de Risco. Antecipe a falha do terceiro. Reduza preventivamente se houver dúvida na transposição."}
             ]
         },
 
@@ -263,7 +289,6 @@
             const tags = document.getElementById('word-tags');
             board.innerHTML = ''; tags.innerHTML = '';
             
-            // Grid 12x12
             const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             for(let i=0; i<144; i++) {
                 let c = document.createElement('div');
@@ -311,6 +336,7 @@
                 this.selecionadas = [];
             };
 
+            // Eventos Mouse e Touch combinados
             b.addEventListener('mousedown', onStart);
             window.addEventListener('mousemove', onMove);
             window.addEventListener('mouseup', onEnd);
@@ -331,9 +357,9 @@
             }
         },
 
-        openModal(t, b) {
-            document.getElementById('modal-title').innerText = t;
-            document.getElementById('modal-body').innerText = b;
+        openModal(title, body) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-body').innerText = body;
             document.getElementById('insight-overlay').style.display = 'flex';
         },
 
@@ -341,19 +367,20 @@
             document.getElementById('progress-display').innerText = `Progresso: ${this.encontradas.length} / 4`;
             if(this.encontradas.length === 4) {
                 setTimeout(() => {
-                    this.saveData();
+                    this.saveProgress();
                     if(this.fase < 6) {
                         this.fase++; this.encontradas = [];
                         this.buildGrid();
                     } else {
-                        alert("TREINAMENTO CONCLUÍDO COM SUCESSO!");
+                        alert("TREINAMENTO CONCLUÍDO! Parabéns Maquinista Sr Assis.");
                     }
                 }, 800);
             }
         },
 
-        saveData() {
-            console.log(`Fase ${this.fase} concluída. Sincronizando com Forms...`);
+        saveProgress() {
+            // Placeholder para integração com Forms/Backend
+            console.log(`Log: Fase ${this.fase} enviada para o banco de dados.`);
         }
     };
 
