@@ -2,311 +2,390 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Treinamento Operacional - Sr Assis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Treinamento Operacional MRS - Sr Assis</title>
+    
     <style>
-        /* --- ESTILIZAÇÃO (CSS) --- */
         :root {
-            --mrs-blue: #003399;
-            --mrs-yellow: #FFCC00;
-            --mrs-green: #28a745;
-            --mrs-red: #dc3545;
-            --bg-gray: #f8f9fa;
+            --mrs-blue: #003399;      /* Azul Oficial MRS */
+            --mrs-yellow: #FFCC00;    /* Amarelo Segurança */
+            --mrs-green: #28a745;     /* Sucesso Operacional */
+            --mrs-red: #dc3545;       /* Alerta de Risco */
+            --bg-gray: #f4f4f4;       /* Fundo Neutro */
+            --shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             background-color: var(--bg-gray);
             margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
             user-select: none;
+            -webkit-user-select: none;
         }
 
+        /* --- CABEÇALHO --- */
         header {
             background-color: var(--mrs-blue);
             color: white;
             width: 100%;
-            padding: 20px;
+            padding: 20px 0;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        #game-container {
-            margin: 20px;
-            max-width: 600px;
-            width: 95%;
-        }
+        header h2 { margin: 0; letter-spacing: 1px; }
+        header small { opacity: 0.8; font-weight: 300; }
 
-        .stats-bar {
+        /* --- BARRA DE STATUS --- */
+        #game-info {
+            width: 90%;
+            max-width: 500px;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
+            align-items: center;
+            padding: 20px;
             font-weight: bold;
             color: var(--mrs-blue);
         }
 
-        /* --- GRID DO CAÇA-PALAVRAS --- */
-        #word-grid {
+        .status-box {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* --- GRID DE OPERAÇÃO (O JOGO) --- */
+        #grid-container {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             gap: 5px;
-            background-color: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            touch-action: none; /* Crucial para o Arrastar no Mobile */
+            width: 90vw;
+            max-width: 480px;
+            aspect-ratio: 1;
+            touch-action: none; /* ESSENCIAL PARA O ARRASTE NO MOBILE */
         }
 
-        .letter {
-            width: 100%;
-            aspect-ratio: 1;
+        .cell {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 800;
             font-size: 1.2rem;
             border-radius: 4px;
+            transition: background 0.15s ease;
             cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid #ddd;
         }
 
-        .letter.selecting { background-color: var(--mrs-yellow); }
-        .letter.found { background-color: var(--mrs-green); color: white; }
+        /* EFEITO DE ARRASTE */
+        .cell.selected {
+            background-color: var(--mrs-yellow);
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+        /* PALAVRA ENCONTRADA */
+        .cell.found {
+            background-color: var(--mrs-green);
+            color: white;
+            border: none;
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
 
         /* --- LISTA DE PALAVRAS --- */
         #word-list {
-            margin-top: 20px;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            margin: 25px 0;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
+            justify-content: center;
         }
 
-        .word-item {
-            padding: 5px 10px;
-            background: #eee;
-            border-radius: 4px;
+        .word-tag {
+            background: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            border: 2.5px solid var(--mrs-blue);
             font-size: 0.9rem;
+            color: var(--mrs-blue);
+            font-weight: bold;
+            transition: 0.3s;
         }
 
-        .word-item.completed {
+        .word-tag.done {
+            background: var(--mrs-green);
+            color: white;
+            border-color: var(--mrs-green);
             text-decoration: line-through;
-            color: var(--mrs-green);
+            opacity: 0.7;
         }
 
-        /* --- MODAL DE INSIGHT --- */
-        #insight-modal {
+        /* --- MODAL DE INSIGHTS TÉCNICOS --- */
+        #modal-overlay {
             display: none;
             position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            z-index: 1000;
-            width: 80%;
-            max-width: 400px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
         }
 
-        .modal-header { color: var(--mrs-blue); margin-bottom: 10px; }
-        .close-btn { 
-            background: var(--mrs-blue); 
-            color: white; border: none; 
-            padding: 10px 20px; border-radius: 5px; cursor: pointer;
-            margin-top: 15px; width: 100%;
+        #modal {
+            background: white;
+            width: 85%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        #modal h2 { 
+            color: var(--mrs-blue); 
+            margin-top: 0; 
+            border-bottom: 2px solid var(--mrs-yellow);
+            padding-bottom: 10px;
+        }
+
+        #modal p {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        #modal button {
+            background: var(--mrs-blue);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Caça-Palavras Operacional MRS</h1>
-    <p>Maquinista: Sr Assis</p>
+    <h2>CAÇA-PALAVRAS SEGURANÇA</h2>
+    <small>Fase Operacional - Maquinista Sr Assis</small>
 </header>
 
-<div id="game-container">
-    <div class="stats-bar">
-        <span id="fase-txt">Fase: 1</span>
-        <span id="score-txt">Progresso: 0/4</span>
-    </div>
-    
-    <div id="word-grid"></div>
-    
-    <div id="word-list"></div>
+<div id="game-info">
+    <div class="status-box" id="label-fase">Fase: 1/6</div>
+    <div class="status-box" id="label-progresso">Progresso: 0/4</div>
 </div>
 
-<div id="insight-modal">
-    <h2 class="modal-header" id="modal-title">Insight de Segurança</h2>
-    <p id="modal-text"></p>
-    <button class="close-btn" onclick="fecharModal()">Continuar Manobra</button>
+<div id="grid-container"></div>
+
+<div id="word-list"></div>
+
+<div id="modal-overlay">
+    <div id="modal">
+        <h2 id="modal-title">INSIGHT TÉCNICO</h2>
+        <p id="modal-body"></p>
+        <button onclick="fecharModal()">Confirmar e Prosseguir</button>
+    </div>
 </div>
 
 <script>
-    /** --- LÓGICA DO JOGO (JAVASCRIPT) --- **/
+    /** --- LÓGICA DO SISTEMA (JAVASCRIPT) --- **/
+    
     const Jogo = {
-        faseAtual: 1,
-        selecionando: false,
-        palavrasEncontradas: [],
-        letrasSelecionadas: [],
-        
-        // --- BASE DE DADOS INTEGRADA ---
+        fase: 1,
+        encontradas: [],
+        selecionadas: [],
+        estaArrastando: false,
+
+        // BANCO DE DADOS LAPIDADO (6 FASES)
         dados: {
             1: [
-                {t: "TRECHO", i: "Conhecimento do Trecho: Antecipe riscos conhecendo o perfil da via."},
-                {t: "GABARITO", i: "Gabarito: Mantenha olhar atento a obstruções laterais em pátios."},
-                {t: "BRITA", i: "Caminhar na Brita: Terreno irregular causa entorses. Foque no passo."},
-                {t: "DORMER", i: "Dormentes: A saúde da via garante a estabilidade do rodeiro."}
+                {p: "TRECHO", i: "Conhecimento do Trecho: Antecipe riscos conhecendo o perfil da via e pontos críticos."},
+                {p: "GABARITO", i: "Gabarito: Mantenha o olhar atento a obstruções laterais. Gabarito livre evita abalroamentos."},
+                {p: "BRITA", i: "Caminhar na Brita: Terreno irregular causa entorses. Foque no passo e use EPI correto."},
+                {p: "DORMER", i: "Dormentes: A saúde da via garante a estabilidade. Verifique rachaduras ou podridão."}
             ],
             2: [
-                {t: "AGULHA", i: "Regra da Fresta: 3mm de abertura causam arrombamento. Verifique sempre!"},
-                {t: "JACARE", i: "Jacaré: O choque de ponta ocorre se a agulha não estiver firme sob o material."},
-                {t: "CONTRATRILHO", i: "Guia da Segurança: Verifique fixações soltas na transposição de AMVs."},
-                {t: "MAQUINA", i: "Shisa Kanko: Aponte e confirme a fidelidade da posição da chave."}
+                {p: "AGULHA", i: "Regra da Fresta: 3mm de abertura causam arrombamento. Limpe britas antes de operar."},
+                {p: "JACARE", i: "Jacaré: O choque de ponta ocorre se a agulha não estiver firme. Visualize a rota de fuga."},
+                {p: "CONTRATRILHO", i: "Guia da Segurança: Verifique fixações soltas na transposição de AMVs."},
+                {p: "MAQUINA", i: "Shisa Kanko: Aponte e fale. Confirme a fidelidade da posição da chave antes do movimento."}
             ],
             3: [
-                {t: "ASPECTO", i: "Visão Periférica: Não confie no hábito. Reconfirme o dado real do sinal."},
-                {t: "DISTANCIA", i: "Tempo de Ciclo: Planeje a parada mental antes do dado ficar crítico no visor."},
-                {t: "COMUNICA", i: "Escuta Empática: Não absorva a pressa do rádio. Você é o dono do comando."},
-                {t: "EXPECTATIVA", i: "Mente de Principiante: Trate cada autorização como se fosse a primeira."}
+                {p: "ASPECTO", i: "Visão Periférica: Não confie no hábito. Reconfirme o dado real do sinal antes de agir."},
+                {p: "DISTANCIA", i: "Tempo de Ciclo: Planeje a parada mental muito antes do dado ficar crítico no visor."},
+                {p: "COMUNICA", i: "Escuta Empática: Não absorva a pressa do rádio. A autoridade do comando é sua."},
+                {p: "EXPECTATIVA", i: "Mente de Principiante: Trate cada autorização como se fosse a primeira da carreira."}
             ],
             4: [
-                {t: "CONFIANCA", i: "Autoconfiança: O perigo mora na experiência. Não ignore riscos óbvios."},
-                {t: "PRESSA", i: "Pressa: É uma emoção. Vocalize a urgência para recuperar a consciência."},
-                {t: "PERCEPCAO", i: "Olhar de Turista: Veja o pátio como se fosse a primeira vez. Busque mudanças."},
-                {t: "LINHA", i: "Linha de Fogo: Visualize a liberação de energia antes de se posicionar."}
+                {p: "CONFIANCA", i: "Autoconfiança: O perigo mora na experiência. Não ignore riscos que um novato respeitaria."},
+                {p: "PRESSA", i: "Pressa: É uma emoção. Vocalize a urgência para recuperar a consciência operacional imediata."},
+                {p: "PERCEPCAO", i: "Olhar de Turista: Veja o pátio como se fosse a primeira vez. Busque o que mudou no cenário."},
+                {p: "LINHA", i: "Linha de Fogo: Visualize a liberação de energia antes de se posicionar próximo ao engate."}
             ],
             5: [
-                {t: "ALIVIO", i: "Item 6.3.3: Reduza o esforço gradualmente (>10s). Evita choque dinâmico."},
-                {t: "CICLAGEM", i: "Item 6.3.11: Aguarde min. 30s após o alívio para nova aplicação. Recarregue o ar."},
-                {t: "DINAMICO", i: "Item 6.3.6: Freio Dinâmico antes do Automático. SIC audita o equilíbrio."},
-                {t: "INCORRETO", i: "Item 6.3.32: Independente aliviado em circulação evita superaquecimento."}
+                {p: "ALIVIO", i: "Item 6.3.3: Reduza o esforço gradualmente (>10s). Evita choque dinâmico e quebra de engates."},
+                {p: "CICLAGEM", i: "Item 6.3.11: Aguarde min. 30s após o alívio para nova aplicação. Garante a recarga do ar."},
+                {p: "DINAMICO", i: "Item 6.3.6: Freio Dinâmico antes do Automático. O SIC audita o equilíbrio das forças."},
+                {p: "INCORRETO", i: "Item 6.3.32: Independente aliviado em circulação evita superaquecimento de rodas."}
             ],
             6: [
-                {t: "MANOBRA", i: "Limite de Pátio: Garante a parada em metade da distância visível."},
-                {t: "RADIO", i: "Contagem de Distância: Informe espaço em vagões. Silêncio = Parada Imediata."},
-                {t: "ESTACIONA", i: "Shisa Kanko: Aponte e diga: 'Sapata colada, corrente tensionada'."},
-                {t: "PN", i: "Gerenciamento de Risco: Antecipe falha de terceiros. Reduza na dúvida."}
+                {p: "MANOBRA", i: "Limite de Pátio: Garante a parada em metade da distância visível. Evita incidentes graves."},
+                {p: "RADIO", i: "Contagem de Distância: Informe espaço em vagões. Silêncio no rádio exige parada imediata."},
+                {p: "ESTACIONA", i: "Garantia de Estacionamento: Shisa Kanko - Aponte e diga: 'Sapata colada, corrente tensionada'."},
+                {p: "PN", i: "Passagem em Nível: Gerenciamento de Risco. Antecipe a falha de terceiros. Reduza na dúvida."}
             ]
         },
 
         init() {
-            this.montarGrade();
-            this.eventos();
+            console.log("Sistema Iniciado - Sr Assis");
+            this.render();
+            this.bindEventos();
         },
 
-        montarGrade() {
-            const grid = document.getElementById('word-grid');
-            const list = document.getElementById('word-list');
-            grid.innerHTML = '';
-            list.innerHTML = '';
+        render() {
+            const grid = document.getElementById('grid-container');
+            const lista = document.getElementById('word-list');
+            grid.innerHTML = ''; 
+            lista.innerHTML = '';
             
-            // Gerar letras aleatórias e inserir palavras (Simplificado para o exemplo)
+            // Geração da Grade 12x12
             const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            for (let i = 0; i < 144; i++) {
-                const div = document.createElement('div');
-                div.className = 'letter';
-                div.innerText = alfabeto[Math.floor(Math.random() * 26)];
-                div.dataset.index = i;
-                grid.appendChild(div);
+            for(let i=0; i<144; i++) {
+                let celula = document.createElement('div');
+                celula.className = 'cell';
+                celula.innerText = alfabeto[Math.floor(Math.random() * 26)];
+                grid.appendChild(celula);
             }
 
-            this.dados[this.faseAtual].forEach(p => {
-                const span = document.createElement('span');
-                span.className = 'word-item';
-                span.innerText = p.t;
-                span.id = `word-${p.t}`;
-                list.appendChild(span);
+            // Geração das Tags de Palavras
+            this.dados[this.fase].forEach(item => {
+                let tag = document.createElement('div');
+                tag.className = 'word-tag';
+                tag.id = 'tag-' + item.p;
+                tag.innerText = item.p;
+                lista.appendChild(tag);
             });
+
+            document.getElementById('label-fase').innerText = `Fase: ${this.fase}/6`;
+            document.getElementById('label-progresso').innerText = `Progresso: ${this.encontradas.length}/4`;
         },
 
-        eventos() {
-            const grid = document.getElementById('word-grid');
-
-            const start = (e) => {
-                this.selecionando = true;
-                this.letrasSelecionadas = [];
-                this.handleMove(e);
+        bindEventos() {
+            const container = document.getElementById('grid-container');
+            
+            const iniciar = (e) => {
+                this.estaArrastando = true;
+                this.selecionadas = [];
+                this.processarMovimento(e);
             };
 
-            const move = (e) => {
-                if (!this.selecionando) return;
-                const touch = e.touches ? e.touches[0] : e;
-                const el = document.elementFromPoint(touch.clientX, touch.clientY);
-                if (el && el.classList.contains('letter') && !this.letrasSelecionadas.includes(el)) {
-                    el.classList.add('selecting');
-                    this.letrasSelecionadas.push(el);
+            const mover = (e) => {
+                if(!this.estaArrastando) return;
+                e.preventDefault(); // BLOQUEIA SCROLL
+                const ponto = e.touches ? e.touches[0] : e;
+                const alvo = document.elementFromPoint(ponto.clientX, ponto.clientY);
+                
+                if(alvo && alvo.classList.contains('cell') && !this.selecionadas.includes(alvo)) {
+                    alvo.classList.add('selected');
+                    this.selecionadas.push(alvo);
                 }
             };
 
-            const end = () => {
-                this.selecionando = false;
-                const palavra = this.letrasSelecionadas.map(l => l.innerText).join('');
-                this.verificar(palavra);
-                this.letrasSelecionadas.forEach(l => l.classList.remove('selecting'));
+            const finalizar = () => {
+                this.estaArrastando = false;
+                const palavra = this.selecionadas.map(c => c.innerText).join('');
+                this.verificarPalavra(palavra);
+                
+                // Limpa rastro visual de erro
+                this.selecionadas.forEach(c => c.classList.remove('selected'));
+                this.selecionadas = [];
             };
 
-            grid.addEventListener('mousedown', start);
-            window.addEventListener('mousemove', move);
-            window.addEventListener('mouseup', end);
+            // MOUSE
+            container.addEventListener('mousedown', iniciar);
+            window.addEventListener('mousemove', mover);
+            window.addEventListener('mouseup', finalizar);
 
-            grid.addEventListener('touchstart', start);
-            grid.addEventListener('touchmove', move);
-            grid.addEventListener('touchend', end);
+            // TOUCH (MOBILE)
+            container.addEventListener('touchstart', iniciar, {passive: false});
+            container.addEventListener('touchmove', mover, {passive: false});
+            container.addEventListener('touchend', finalizar);
         },
 
-        verificar(p) {
-            const found = this.dados[this.faseAtual].find(item => item.t === p || item.t === p.split('').reverse().join(''));
-            if (found && !this.palavrasEncontradas.includes(found.t)) {
-                this.palavrasEncontradas.push(found.t);
-                document.getElementById(`word-${found.t}`).className = 'word-item completed';
-                this.letrasSelecionadas.forEach(l => l.classList.add('found'));
-                this.abrirModal(found.t, found.i);
-                this.checarFimFase();
+        verificarPalavra(p) {
+            const invertida = p.split('').reverse().join('');
+            const match = this.dados[this.fase].find(o => o.p === p || o.p === invertida);
+            
+            if(match && !this.encontradas.includes(match.p)) {
+                this.encontradas.push(match.p);
+                this.selecionadas.forEach(c => c.classList.add('found'));
+                document.getElementById('tag-' + match.p).classList.add('done');
+                this.abrirModal(match.p, match.i);
+                this.validarFimFase();
             }
         },
 
-        abrirModal(titulo, texto) {
+        abrirModal(titulo, corpo) {
             document.getElementById('modal-title').innerText = titulo;
-            document.getElementById('modal-text').innerText = texto;
-            document.getElementById('insight-modal').style.display = 'block';
+            document.getElementById('modal-body').innerText = corpo;
+            document.getElementById('modal-overlay').style.display = 'flex';
         },
 
-        checarFimFase() {
-            if (this.palavrasEncontradas.length === 4) {
+        validarFimFase() {
+            document.getElementById('label-progresso').innerText = `Progresso: ${this.encontradas.length}/4`;
+            
+            if(this.encontradas.length === 4) {
                 setTimeout(() => {
-                    alert("Fase Concluída! Enviando dados para a coordenação...");
-                    this.enviarForms();
-                    if(this.faseAtual < 6) {
-                        this.faseAtual++;
-                        this.palavrasEncontradas = [];
-                        this.montarGrade();
-                        document.getElementById('fase-txt').innerText = `Fase: ${this.faseAtual}`;
+                    this.enviarDadosCoordenação();
+                    if(this.fase < 6) {
+                        this.fase++;
+                        this.encontradas = [];
+                        this.render();
+                    } else {
+                        alert("TREINAMENTO CONCLUÍDO! Parabéns Maquinista Sr Assis.");
                     }
-                }, 500);
+                }, 1000);
             }
         },
 
-        enviarForms() {
-            // Lógica de integração Google Forms via fetch
-            const url = "https://docs.google.com/forms/d/e/ID_DO_FORM/formResponse";
-            const nome = "Sr_Assis"; // Exemplo
-            const matricula = "12345";
-            fetch(`${url}?entry.1=nome&entry.2=fase${this.faseAtual}`, { mode: 'no-cors' });
+        enviarDadosCoordenação() {
+            console.log("Log: Fase " + this.fase + " concluída. Sincronizando Forms...");
+            // fetch('URL_DO_FORMS', { mode: 'no-cors' });
         }
     };
 
     function fecharModal() {
-        document.getElementById('insight-modal').style.display = 'none';
+        document.getElementById('modal-overlay').style.display = 'none';
     }
 
-    Jogo.init();
-</script>
+    // DISPARO INICIAL
+    window.onload = () => Jogo.init();
 
+</script>
 </body>
 </html>
