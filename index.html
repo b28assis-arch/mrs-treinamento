@@ -10,37 +10,38 @@
             --selected: #5dade2; --danger: #e74c3c; --warning: #f1c40f;
             --info: #2ecc71; --dark: #1a252f;
         }
-        body { margin: 0; font-family: 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%); color: #fff; text-align: center; padding: 10px; min-height: 100vh; }
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%); color: #fff; text-align: center; padding: 10px; min-height: 100vh; }
         .header-game { background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1); }
         h2 { margin: 0; font-size: 1.1rem; text-transform: uppercase; color: var(--accent); letter-spacing: 1px;}
         .progresso-container { margin-top: 5px; font-weight: bold; font-size: 0.9rem; }
         .contador-bolinha { background: rgba(0,0,0,0.3); padding: 2px 10px; border-radius: 20px; border: 1px solid var(--accent); }
-        .legenda-container { max-width: 460px; margin: 10px auto 15px auto; text-align: center; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; }
-        .legenda-item { padding: 6px 10px; border-radius: 6px; margin-bottom: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
-        .leg-verde { background: var(--info); color: #fff; }
+        .legenda-container { max-width: 460px; margin: 10px auto 15px auto; text-align: center; }
+        .legenda-item { padding: 8px 10px; border-radius: 6px; margin-bottom: 6px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .leg-verde { background: var(--info); color: #000; } /* Texto preto para leitura */
         .leg-amarelo { background: var(--warning); color: #000; }
         .leg-vermelho { background: var(--danger); color: #fff; }
-        .grid { display: grid; grid-template-columns: repeat(13, 1fr); gap: 4px; max-width: 460px; margin: 10px auto; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px; }
-        .cell { aspect-ratio: 1; background: var(--cell-bg); color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 3px; font-weight: 800; font-size: 0.75rem; cursor: pointer; }
-        .selected { background: var(--selected) !important; color: #fff !important; }
+        .grid { display: grid; grid-template-columns: repeat(13, 1fr); gap: 4px; max-width: 460px; margin: 10px auto; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+        .cell { aspect-ratio: 1; background: var(--cell-bg); color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 4px; font-weight: 900; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+        .selected { background: var(--selected) !important; color: #fff !important; transform: scale(0.95); }
         .found-grave { background: var(--danger) !important; color: #fff !important; }
         .found-medio { background: var(--warning) !important; color: #000 !important; }
-        .found-leve { background: var(--info) !important; color: #fff !important; }
-        .btn-next { background: var(--accent); color: var(--primary); display: none; width: 100%; max-width: 460px; margin: 15px auto; padding: 16px; font-size: 1rem; font-weight: 800; border-radius: 8px; cursor: pointer; border: none; box-shadow: 0 4px 0 #b38f00;}
-        .controles { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
-        .btn-aux { border: none; padding: 8px 12px; border-radius: 5px; font-weight: 700; cursor: pointer; font-size: 0.7rem; }
+        .found-leve { background: var(--info) !important; color: #000 !important; }
+        .btn-next { background: var(--accent); color: var(--primary); display: none; width: 100%; max-width: 460px; margin: 15px auto; padding: 18px; font-size: 1.1rem; font-weight: 900; border-radius: 10px; cursor: pointer; border: none; box-shadow: 0 5px 0 #b38f00; text-transform: uppercase; }
+        .controles { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .btn-aux { border: none; padding: 10px 15px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; }
         
-        /* SEÇÃO DE ANÁLISE / FORMS */
-        .analise-section { max-width: 460px; margin: 25px auto; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; text-align: left; border: 1px solid rgba(255,255,255,0.1); box-sizing: border-box; }
-        .analise-section h3 { margin: 0 0 10px 0; font-size: 0.9rem; color: var(--accent); text-transform: uppercase; }
-        textarea { width: 100%; height: 70px; border-radius: 8px; border: none; padding: 10px; box-sizing: border-box; font-family: inherit; margin-bottom: 10px; background: #eee; color: #333; }
-        .btn-box { display: flex; justify-content: space-between; gap: 10px; }
-        .btn-acao { background: var(--primary); color: #fff; border: 1px solid var(--accent); padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.75rem; flex: 1; }
-        .btn-forms { background: #2ecc71; color: #fff; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.75rem; flex: 1; }
+        .analise-section { max-width: 460px; margin: 25px auto; background: #f8f9fa; padding: 18px; border-radius: 12px; text-align: left; border: 2px solid var(--accent); box-sizing: border-box; color: #333; }
+        .analise-section h3 { margin: 0 0 10px 0; font-size: 1rem; color: var(--primary); text-transform: uppercase; font-weight: 900; }
+        textarea { width: 100%; height: 80px; border-radius: 8px; border: 1px solid #ccc; padding: 12px; box-sizing: border-box; font-family: inherit; margin-bottom: 12px; font-size: 0.9rem; }
+        .btn-box { display: flex; gap: 10px; }
+        .btn-acao { background: var(--primary); color: #fff; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 0.8rem; flex: 1; }
+        .btn-forms { background: #27ae60; color: #fff; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 0.8rem; flex: 1; }
         
-        #resultado { max-width: 460px; margin: 15px auto; display: flex; flex-direction: column; gap: 8px; padding-bottom: 30px;}
-        .insight { padding: 12px; border-radius: 8px; text-align: left; font-size: 0.85rem; border-left: 6px solid rgba(0,0,0,0.3); }
-        .grave { background: var(--danger); color: #fff; } .medio { background: var(--warning); color: #000; } .leve { background: var(--info); color: #fff; }
+        #resultado { max-width: 460px; margin: 15px auto; display: flex; flex-direction: column; gap: 10px; padding-bottom: 40px;}
+        .insight { padding: 14px; border-radius: 8px; text-align: left; font-size: 0.9rem; font-weight: 600; line-height: 1.4; border-left: 8px solid rgba(0,0,0,0.2); }
+        .grave { background: var(--danger); color: #fff; } 
+        .medio { background: var(--warning); color: #000; } 
+        .leve { background: var(--info); color: #000; }
     </style>
 </head>
 <body>
@@ -48,23 +49,27 @@
         <h2 id="fase-titulo">Fase 01: Conceitos Gerais</h2>
         <div class="progresso-container">Palavras: <span class="contador-bolinha" id="contador-txt">0 / 9</span></div>
     </div>
+
     <div class="legenda-container" id="painel-legenda"></div>
+
     <div class="controles">
         <button class="btn-aux" style="background:#fff; color:var(--primary)" id="btn-reset">Limpar Seleção</button>
         <button class="btn-aux" style="background:var(--danger); color:#fff" id="btn-master">Reiniciar Trilha</button>
     </div>
+
     <div class="grid" id="grid-box"></div>
+    
     <button class="btn-next" id="btn-next">PRÓXIMO NÍVEL ➔</button>
 
     <div class="analise-section">
         <h3>📊 Banco de Dados Operacional</h3>
-        <p style="font-size: 0.7rem; margin-bottom: 8px; opacity: 0.8;">Registre observações técnicas sobre o fator humano observadas em campo.</p>
-        <textarea id="input-comentario" placeholder="Descreva um compromisso ou desvio observado..."></textarea>
+        <p style="font-size: 0.75rem; margin-bottom: 10px; font-weight: bold; color: #555;">Registre aqui desvios de comportamento observados na via ou cabine:</p>
+        <textarea id="input-comentario" placeholder="Descreva o fator humano observado..."></textarea>
         <div class="btn-box">
-            <button class="btn-acao" onclick="salvarComentario()">Registrar Fator</button>
+            <button class="btn-acao" onclick="salvarComentario()">Gravar Local</button>
             <button class="btn-forms" onclick="abrirForms()">Enviar ao Forms</button>
         </div>
-        <div id="lista-comentarios" style="margin-top:10px; font-size:0.75rem; color:var(--accent)"></div>
+        <div id="lista-comentarios" style="margin-top:12px; font-size:0.8rem; font-weight: bold;"></div>
     </div>
 
     <div id="resultado"></div>
@@ -75,70 +80,70 @@
 
         const fasesPalavras = {
             1: [
-                {txt: "AUTOCONTROLE", nome: "AUTOCONTROLE", nivel: "grave", dica: "A pressa é uma decisão consciente de ignorar a segurança. Domine a impulsividade."},
-                {txt: "VIGILANCIA", nome: "VIGILÂNCIA", nivel: "grave", dica: "Mantenha a atenção ativa mesmo em rotinas repetitivas."},
-                {txt: "CONDUTA", nome: "CONDUTA", nivel: "grave", dica: "A segurança não é um manual, é um valor inegociável."},
-                {txt: "HABITUACAO", nome: "HABITUAÇÃO", nivel: "medio", dica: "O perigo de se acostumar com o risco. O trilho nunca fica seguro."},
-                {txt: "PERCEPCAO", nome: "PERCEPÇÃO", nivel: "medio", dica: "Ver não é observar. Treine seus olhos para o desvio sutil."},
-                {txt: "FADIGA", nome: "FADIGA", nivel: "medio", dica: "Reconhecer o próprio cansaço é ferramenta técnica de segurança."},
-                {txt: "PROATIVO", nome: "PROATIVO", nivel: "leve", dica: "Corrigir o risco antes que ele se torne um boletim de acidente."},
-                {txt: "ROTINA", nome: "ROTINA", nivel: "leve", dica: "Onde o erro se esconde. Trate cada turno como o primeiro."},
-                {txt: "ZELO", nome: "ZELO", nivel: "leve", dica: "Cuidado com o ativo e com a vida além do regulamento."}
+                {txt: "AUTOCONTROLE", nome: "AUTOCONTROLE", nivel: "grave", dica: "A pressa é uma falha de julgamento. Segurança é manter o controle sob pressão."},
+                {txt: "VIGILANCIA", nome: "VIGILÂNCIA", nivel: "grave", dica: "Atenção ativa: o cérebro relaxa na rotina. Force o foco no ambiente."},
+                {txt: "CONDUTA", nome: "CONDUTA", nivel: "grave", dica: "Sua postura dita a segurança do time. Siga o regulamento por valor, não por medo."},
+                {txt: "HABITUACAO", nome: "HABITUAÇÃO", nivel: "medio", dica: "Cuidado: o cérebro 'apaga' o perigo de caminhos conhecidos. Reavalie a via sempre."},
+                {txt: "PERCEPCAO", nome: "PERCEPÇÃO", nivel: "medio", dica: "Ver não é observar. Identifique o desvio visual antes que ele vire um incidente."},
+                {txt: "FADIGA", nome: "FADIGA", nivel: "medio", dica: "Reconhecer o cansaço é uma decisão técnica de segurança. Saiba seu limite."},
+                {txt: "PROATIVO", nome: "PROATIVO", nivel: "leve", dica: "Não espere o erro acontecer. Corrija a condição insegura imediatamente."},
+                {txt: "ROTINA", nome: "ROTINA", nivel: "leve", dica: "Onde o excesso de confiança se esconde. Trate cada operação como se fosse a primeira."},
+                {txt: "ZELO", nome: "ZELO", nivel: "leve", dica: "Cuidado genuíno com os ativos e vidas. Vai além do que está escrito no manual."}
             ],
             2: [
-                {txt: "GABARITO", nome: "GABARITO", nivel: "grave", dica: "O corpo não reconhece o perigo do ativo silencioso. Respeite o limite."},
-                {txt: "VISAO360", nome: "VISÃO 360°", nivel: "grave", dica: "Escanear o ambiente além da tarefa imediata a cada 2 minutos."},
-                {txt: "FOCOESTREITO", nome: "FOCO ESTREITO", nivel: "grave", dica: "Estar muito concentrado em algo impede de ver o trem adjacente."},
-                {txt: "DISTRACAO", nome: "DISTRAÇÃO", nivel: "medio", dica: "Celular ou conversas paralelas: o cérebro não é multitarefa."},
-                {txt: "INTERRUPCAO", nome: "INTERRUPÇÃO", nivel: "medio", dica: "Se for interrompido, reinicie o protocolo. A memória falha no retorno."},
-                {txt: "AUDICAO", nome: "AUDIÇÃO", nivel: "medio", dica: "O protetor não deve anular sua percepção sonora do ambiente."},
-                {txt: "TRAJETO", nome: "TRAJETO SEGURO", nivel: "leve", dica: "Caminhar apenas em locais permitidos, fora da movimentação."},
-                {txt: "POSTURA", nome: "POSTURA", nivel: "leve", dica: "A forma como você se posiciona dita seu tempo de reação."},
-                {txt: "EQUIPE", nome: "OLHAR O PAR", nivel: "leve", dica: "Você é responsável pelo colega que entrou no gabarito."}
+                {txt: "GABARITO", nome: "GABARITO", nivel: "grave", dica: "Respeite o limite físico. O trem não desvia; você deve manter a distância de segurança."},
+                {txt: "VISAO360", nome: "VISÃO 360°", nivel: "grave", dica: "Escaneie o ambiente além da sua tarefa imediata. O perigo vem de onde você não olha."},
+                {txt: "FOCOESTREITO", nome: "FOCO ESTREITO", nivel: "grave", dica: "Concentrar-se demais em algo pequeno cega você para o movimento de trens adjacentes."},
+                {txt: "DISTRACAO", nome: "DISTRAÇÃO", nivel: "medio", dica: "Celular ou conversas: o cérebro ferroviário não é multitarefa. Foco total na via."},
+                {txt: "INTERRUPCAO", nome: "INTERRUPÇÃO", nivel: "medio", dica: "Parou a manobra? Reinicie o protocolo. A memória falha no ponto de interrupção."},
+                {txt: "AUDICAO", nome: "AUDIÇÃO", nivel: "medio", dica: "Use a audição como radar. Ruídos diferentes indicam mudanças no ambiente de risco."},
+                {txt: "TRAJETO", nome: "TRAJETO SEGURO", nivel: "leve", dica: "Planeje seus passos. Caminhe apenas onde é permitido e seguro fora da via."},
+                {txt: "POSTURA", nome: "POSTURA", nivel: "leve", dica: "Posicionamento correto agiliza sua reação em caso de emergência."},
+                {txt: "EQUIPE", nome: "OLHAR O PAR", nivel: "leve", dica: "Segurança coletiva: avise o colega se perceber que ele entrou no gabarito."}
             ],
             3: [
-                {txt: "VIES", nome: "VIÉS", nivel: "grave", dica: "Não veja o que espera ver (Verde). Veja o que o sinal realmente mostra."},
-                {txt: "EXPECTATIVA", nome: "EXPECTATIVA", nivel: "grave", dica: "O erro ocorre ao mentalizar a via livre antes de confirmá-la."},
-                {txt: "MARGEM", nome: "MARGEM", nivel: "grave", dica: "Pare sempre antes. Confiar na frenagem final é ignorar a física."},
-                {txt: "MONOTONIA", nome: "MONOTONIA", nivel: "medio", dica: "Em trechos longos, o cérebro cria imagens falsas. Quebre o padrão."},
-                {txt: "CONFIRMACAO", nome: "CONFIRMAÇÃO", nivel: "medio", dica: "A dúvida é sua amiga. Sem certeza, trate como parada absoluta."},
-                {txt: "ESTRESSE", nome: "ESTRESSE", nivel: "medio", dica: "Sob pressão o campo visual diminui. Retome a consciência."},
-                {txt: "CHAMADA", nome: "CHAMADA", nivel: "leve", dica: "A repetição no rádio fixa a realidade e evita a ilusão mental."},
-                {txt: "RECONHECER", nome: "RECONHECER", nivel: "leve", dica: "Identificar o sinal à distância e planejar a reação antecipada."},
-                {txt: "ALERTA", nome: "ALERTA", nivel: "leve", dica: "O som do sistema é um lembrete para sua mente voltar para a cabine."}
+                {txt: "VIES", nome: "VIÉS", nivel: "grave", dica: "Não aceite o 'deve estar verde'. Confirme o aspecto real do sinal sem suposições."},
+                {txt: "EXPECTATIVA", nome: "EXPECTATIVA", nivel: "grave", dica: "A mente projeta o que deseja. Quebre a expectativa e valide cada sinalização."},
+                {txt: "MARGEM", nome: "MARGEM", nivel: "grave", dica: "Segurança é espaço. Pare sempre com margem de sobra antes do impeditivo."},
+                {txt: "MONOTONIA", nome: "MONOTONIA", nivel: "medio", dica: "Em trechos longos, mude o foco visual para manter o cérebro desperto e atento."},
+                {txt: "CONFIRMACAO", nome: "CONFIRMAÇÃO", nivel: "medio", dica: "Dúvida no sinal? Considere parada absoluta. Na ferrovia, a dúvida protege."},
+                {txt: "ESTRESSE", nome: "ESTRESSE", nivel: "medio", dica: "Sob pressão o campo de visão fecha. Respire e retome a consciência situacional."},
+                {txt: "CHAMADA", nome: "CHAMADA", nivel: "leve", dica: "Repetir o sinal no rádio não é protocolo; é ancoragem da realidade mental."},
+                {txt: "RECONHECER", nome: "RECONHECER", nivel: "leve", dica: "Identifique o sinal à distância. O planejamento da frenagem começa no visual."},
+                {txt: "ALERTA", nome: "ALERTA", nivel: "leve", dica: "Use os avisos sonoros para 'resetar' sua atenção para dentro da cabine."}
             ],
             4: [
-                {txt: "ENCOSTO", nome: "ENCOSTO", nivel: "grave", dica: "A falha humana aqui é o achismo. Verifique o encosto positivamente."},
-                {txt: "MEMORIA", nome: "MEMÓRIA", nivel: "grave", dica: "A memória operacional é curta. Travamento exige foco total."},
-                {txt: "REDUNDANCIA", nome: "REDUNDÂNCIA", nivel: "grave", dica: "Fator Humano: Olhar, tocar e conferir. 3 sentidos contra 1 erro."},
-                {txt: "PRESSAO", nome: "PRESSÃO", nivel: "medio", dica: "Não agilize a manobra. O tempo da segurança é o do encosto."},
-                {txt: "AUTOMATISMO", nome: "AUTOMATISMO", nivel: "medio", dica: "O maior inimigo. Fazer sem pensar leva à agulha entreaberta."},
-                {txt: "VERBALIZAR", nome: "VERBALIZAR", nivel: "medio", dica: "Falar 'Agulha colada' reforça a memória de execução."},
-                {txt: "LIMPEZA", nome: "LIMPEZA", nivel: "leve", dica: "Detritos na agulha induzem ao erro de percepção de fechamento."},
-                {txt: "ALINHAR", nome: "ALINHAR", nivel: "leve", dica: "O alinhamento mental precede o físico. Planeje a rota antes."},
-                {txt: "CHAVE", nome: "CHAVE", nivel: "leve", dica: "A ferramenta só funciona se a mente do operador estiver presente."}
+                {txt: "ENCOSTO", nome: "ENCOSTO", nivel: "grave", dica: "Não confie no visual de longe. Verifique o encosto da agulha fisicamente."},
+                {txt: "MEMORIA", nome: "MEMÓRIA", nivel: "grave", dica: "A memória de curto prazo falha. Use o checklist mental em cada AMV."},
+                {txt: "REDUNDANCIA", nome: "REDUNDÂNCIA", nivel: "grave", dica: "Olhar, tocar e conferir. Use múltiplos sentidos para validar a manobra."},
+                {txt: "PRESSAO", nome: "PRESSÃO", nivel: "medio", dica: "A pressa para liberar a via causa a abertura da agulha. Siga o tempo da segurança."},
+                {txt: "AUTOMATISMO", nome: "AUTOMATISMO", nivel: "medio", dica: "Fazer sem pensar é o convite para o erro. Cada chave exige um novo pensamento."},
+                {txt: "VERBALIZAR", nome: "VERBALIZAR", nivel: "medio", dica: "Falar 'Agulha travada' em voz alta reforça a execução correta no cérebro."},
+                {txt: "LIMPEZA", nome: "LIMPEZA", nivel: "leve", dica: "Pedras ou detritos induzem ao falso encosto. Mantenha a área de curso limpa."},
+                {txt: "ALINHAR", nome: "ALINHAR", nivel: "leve", dica: "O alinhamento mental da rota precede o esforço físico na chave."},
+                {txt: "CHAVE", nome: "CHAVE", nivel: "leve", dica: "A ferramenta é extensão da sua decisão. Opere com consciência plena."}
             ],
             5: [
-                {txt: "GRAVACAO", nome: "GRAVAÇÃO", nivel: "grave", dica: "O SIC não é punição, é o espelho do seu comportamento operacional."},
-                {txt: "PADRAO", nome: "PADRÃO", nivel: "grave", dica: "A inovação é manter a mesma condução com ou sem supervisão."},
-                {txt: "DESVIO", nome: "DESVIO", nivel: "grave", dica: "Pequenos desvios aceitáveis hoje são acidentes amanhã."},
-                {txt: "TELEMETRIA", nome: "TELEMETRIA", nivel: "medio", dica: "Os dados mostram a intenção do maquinista nos comandos."},
-                {txt: "CORRECAO", nome: "CORREÇÃO", nivel: "medio", dica: "Aprender com o gráfico para ajustar a sensibilidade da mão."},
-                {txt: "VELOCIDADE", nome: "VELOCIDADE", nivel: "medio", dica: "Respeitar a VMA é prova de maturidade e controle emocional."},
-                {txt: "EVENTO", nome: "EVENTO", nivel: "leve", dica: "Cada registro é oportunidade de melhoria antes da falha real."},
-                {txt: "FEEDBACK", nome: "FEEDBACK", nivel: "leve", dica: "Ouvir a coordenação para calibrar sua percepção de risco."},
-                {txt: "HISTORICO", nome: "HISTÓRICO", nivel: "leve", dica: "Sua carreira é a consistência dos seus gráficos."}
+                {txt: "GRAVACAO", nome: "GRAVAÇÃO", nivel: "grave", dica: "O SIC é seu aliado técnico. Ele registra a precisão do seu profissionalismo."},
+                {txt: "PADRAO", nome: "PADRÃO", nivel: "grave", dica: "Condução de excelência é manter o padrão com ou sem supervisão imediata."},
+                {txt: "DESVIO", nome: "DESVIO", nivel: "grave", dica: "Pequenos erros tolerados hoje pavimentam o caminho para o acidente amanhã."},
+                {txt: "TELEMETRIA", nome: "TELEMETRIA", nivel: "medio", dica: "Seus comandos contam uma história. Garanta que seja uma história de segurança."},
+                {txt: "CORRECAO", nome: "CORREÇÃO", nivel: "medio", dica: "Use os dados do SIC para calibrar sua sensibilidade de tração e frenagem."},
+                {txt: "VELOCIDADE", nome: "VELOCIDADE", nivel: "medio", dica: "Respeitar a VMA é sinal de maturidade operacional e domínio do trem."},
+                {txt: "EVENTO", nome: "EVENTO", nivel: "leve", dica: "Cada registro é um aprendizado. Analise seus eventos para evoluir sempre."},
+                {txt: "FEEDBACK", nome: "FEEDBACK", nivel: "leve", dica: "A crítica técnica serve para ajustar sua percepção de risco. Ouça e aplique."},
+                {txt: "HISTORICO", nome: "HISTÓRICO", nivel: "leve", dica: "Sua carreira na MRS é escrita pela consistência dos seus bons gráficos."}
             ],
             6: [
-                {txt: "INTEGRIDADE", nome: "INTEGRIDADE", nivel: "grave", dica: "O MOF 2025 foca na integridade do sistema via fator humano."},
-                {txt: "RESPONSAVEL", nome: "RESPONSÁVEL", nivel: "grave", dica: "No final, a segurança depende da sua decisão na cabine."},
-                {txt: "NORMA", nome: "NORMA", nivel: "grave", dica: "A norma protege você quando o instinto falha."},
-                {txt: "PROCEDIMENTO", nome: "PROCEDIMENTO", nivel: "medio", dica: "Seguir o passo a passo evita que o cérebro pule etapas."},
-                {txt: "ATUALIZAR", nome: "ATUALIZAR", nivel: "medio", dica: "Conhecimento técnico que não se renova vira vício operacional."},
-                {txt: "DOMINIO", nome: "DOMÍNIO", nivel: "medio", dica: "Conhecer o manual para agir em condições degradadas."},
-                {txt: "CONSULTA", nome: "CONSULTA", nivel: "leve", dica: "Na dúvida, consulte. O erro por orgulho é o mais difícil."},
-                {txt: "CLAREZA", nome: "CLAREZA", nivel: "leve", dica: "Comunicação clara evita interpretações perigosas."},
-                {txt: "EFICIENCIA", nome: "EFICIÊNCIA", nivel: "leve", dica: "Operar no tempo certo com segurança máxima."}
+                {txt: "INTEGRIDADE", nome: "INTEGRIDADE", nivel: "grave", dica: "O MOF 2025 foca na proteção do sistema através da integridade humana."},
+                {txt: "RESPONSAVEL", nome: "RESPONSÁVEL", nivel: "grave", dica: "A segurança da malha começa e termina na sua decisão individual."},
+                {txt: "NORMA", nome: "NORMA", nivel: "grave", dica: "A regra protege você quando o instinto ou o cansaço tentam falhar."},
+                {txt: "PROCEDIMENTO", nome: "PROCEDIMENTO", nivel: "medio", dica: "Seguir o passo a passo impede que o cérebro pule etapas críticas de segurança."},
+                {txt: "ATUALIZAR", nome: "ATUALIZAR", nivel: "medio", dica: "Conhecimento que não se renova vira vício. Estude o manual constantemente."},
+                {txt: "DOMINIO", nome: "DOMÍNIO", nivel: "medio", dica: "Dominar o manual é ter calma para agir corretamente sob condições adversas."},
+                {txt: "CONSULTA", nome: "CONSULTA", nivel: "leve", dica: "Na dúvida, não arrisque. Consulte o MOF e garanta a ação correta."},
+                {txt: "CLAREZA", nome: "CLAREZA", nivel: "leve", dica: "Comunicação padronizada elimina interpretações perigosas entre equipes."},
+                {txt: "EFICIENCIA", nome: "EFICIÊNCIA", nivel: "leve", dica: "A verdadeira eficiência ferroviária é operar no tempo certo, com risco zero."}
             ]
         };
 
@@ -234,8 +239,8 @@
         function salvarComentario() {
             const texto = document.getElementById("input-comentario").value;
             if (!texto) return;
-            document.getElementById("lista-comentarios").innerHTML = `✅ Fator registrado localmente! Envie ao Forms para consolidar.`;
-            alert("Observação técnica registrada.");
+            document.getElementById("lista-comentarios").innerHTML = `✅ Registrado! Não esqueça de enviar ao Forms.`;
+            alert("Observação guardada.");
         }
 
         function abrirForms() { window.open("https://forms.gle/ut3jDiKRPWSGVXw37", '_blank'); }
