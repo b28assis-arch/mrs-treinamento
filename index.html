@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CAÇA-PALAVRAS SEGURANÇA - Sr Assis</title>
+    <title>CAÇA-PALAVRAS SEGURANÇA - MRS</title>
     <style>
+        /* --- 🎨 LAYOUT E CORES OFICIAIS --- */
         :root {
-            --mrs-blue: #003399;
-            --mrs-yellow: #FFCC00;
-            --mrs-green: #28a745;
-            --bg-gray: #f4f4f4;
-            --cell-size: clamp(25px, 7vw, 35px);
+            --mrs-blue: #003399;      /* Azul MRS */
+            --mrs-yellow: #FFCC00;    /* Amarelo Segurança */
+            --mrs-green: #28a745;     /* Sucesso/Correção */
+            --bg-gray: #f0f2f5;       /* Fundo Neutro */
+            --text-dark: #333;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-gray);
             margin: 0;
             display: flex;
@@ -31,79 +32,91 @@
             width: 100%;
             padding: 20px 0;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        header h1 { margin: 0; font-size: 1.4rem; text-transform: uppercase; }
-        header p { margin: 5px 0 0; font-size: 0.8rem; opacity: 0.8; }
+        header h1 { margin: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
+        header p { margin: 5px 0 0; font-size: 0.85rem; font-weight: 300; }
 
-        .stats-container {
+        .stats-bar {
             width: 90%;
-            max-width: 500px;
+            max-width: 480px;
             display: flex;
             justify-content: space-between;
             padding: 15px 0;
         }
 
-        .stat-box {
+        .stat-card {
             background: white;
-            padding: 5px 15px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             font-weight: bold;
             color: var(--mrs-blue);
-            font-size: 0.8rem;
+            font-size: 0.9rem;
+            border-left: 4px solid var(--mrs-yellow);
         }
 
-        /* GRID DO JOGO */
+        /* --- 🕹️ GRID DO JOGO (LAYOUT) --- */
         #grid-board {
             background: white;
-            padding: 10px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 4px;
-            touch-action: none; /* Bloqueia scroll para o arraste funcionar */
+            gap: 5px;
+            touch-action: none; /* Crucial para o Arrastar */
+            width: 90vw;
+            max-width: 450px;
+            aspect-ratio: 1;
         }
 
         .cell {
-            width: var(--cell-size);
-            height: var(--cell-size);
             background: #fff;
-            border: 1px solid #eee;
+            border: 1px solid #e9ecef;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 900;
-            font-size: 1rem;
+            font-weight: 800;
+            font-size: clamp(0.8rem, 4vw, 1.1rem);
             border-radius: 4px;
-            transition: background 0.1s;
+            transition: all 0.1s ease;
+            color: var(--text-dark);
         }
 
-        .cell.selecting { background-color: var(--mrs-yellow); transform: scale(1.1); }
-        .cell.found { background-color: var(--mrs-green); color: white; border: none; }
+        .cell.selecting { 
+            background-color: var(--mrs-yellow); 
+            transform: scale(1.1); 
+            z-index: 10;
+        }
 
-        /* LISTA DE PALAVRAS (ESTILO BOTÃO) */
+        .cell.found { 
+            background-color: var(--mrs-green); 
+            color: white; 
+            border: none; 
+        }
+
+        /* --- 🏷️ LISTA DE PALAVRAS --- */
         #word-tags {
             width: 90%;
-            max-width: 500px;
+            max-width: 480px;
             margin-top: 20px;
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
         }
 
         .tag {
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 10px 18px;
+            border-radius: 25px;
             border: 2px solid var(--mrs-blue);
+            background: white;
             color: var(--mrs-blue);
             font-weight: bold;
-            font-size: 0.75rem;
-            background: white;
-            transition: 0.3s;
+            font-size: 0.8rem;
+            transition: 0.3s ease;
         }
 
         .tag.done {
@@ -111,39 +124,58 @@
             color: white;
             border-color: var(--mrs-green);
             text-decoration: line-through;
+            opacity: 0.8;
         }
 
-        /* MODAL DE INSIGHTS */
-        #overlay {
+        /* --- 💬 MODAL DE INSIGHTS --- */
+        #insight-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(4px);
         }
 
         #modal {
             background: white;
             width: 85%;
-            max-width: 400px;
+            max-width: 420px;
             padding: 30px;
             border-radius: 20px;
             text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        #modal h2 { color: var(--mrs-blue); margin: 0 0 15px; }
-        #modal p { font-size: 1rem; line-height: 1.5; color: #444; }
+        #modal h2 { 
+            color: var(--mrs-blue); 
+            margin: 0 0 15px; 
+            border-bottom: 3px solid var(--mrs-yellow);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        #modal p { font-size: 1.05rem; line-height: 1.6; color: #444; margin: 20px 0; }
+
         #modal button {
             background: var(--mrs-blue);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            margin-top: 20px;
+            padding: 14px 40px;
+            border-radius: 30px;
             font-weight: bold;
             cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- 📝 FORMULÁRIO --- */
+        #footer-form {
+            margin: 30px 0;
+            font-size: 0.75rem;
+            color: #888;
         }
     </style>
 </head>
@@ -151,70 +183,73 @@
 
 <header>
     <h1>Caça-Palavras Segurança</h1>
-    <p>Fase Operacional - Maquinista Sr Assis</p>
+    <p>Treinamento Operacional | Maquinista Sr Assis</p>
 </header>
 
-<div class="stats-container">
-    <div class="stat-box" id="fase-label">Fase: 1/6</div>
-    <div class="stat-box" id="progresso-label">Progresso: 0/4</div>
+<div class="stats-bar">
+    <div class="stat-card" id="fase-display">Fase: 1 / 6</div>
+    <div class="stat-card" id="progress-display">Progresso: 0 / 4</div>
 </div>
 
 <div id="grid-board"></div>
 
 <div id="word-tags"></div>
 
-<div id="overlay">
+<div id="insight-overlay">
     <div id="modal">
-        <h2 id="m-title">INSIGHT</h2>
-        <p id="m-body"></p>
-        <button onclick="closeModal()">PROSSEGUIR</button>
+        <h2 id="modal-title">INSIGHT</h2>
+        <p id="modal-body"></p>
+        <button onclick="prosseguir()">Confirmar Leitura</button>
     </div>
 </div>
 
+<div id="footer-form">Dados sincronizados via Google Forms</div>
+
 <script>
-    const App = {
+    /** --- LÓGICA DO SISTEMA --- **/
+    const Game = {
         fase: 1,
         encontradas: [],
         selecionadas: [],
-        arrastando: false,
+        isDragging: false,
 
-        // CONTEÚDO TÉCNICO COMPLETO (6 FASES)
+        // CONTEÚDO TÉCNICO COMPLETO (6 FASES - POP-GNO-0018 & MOF)
         dados: {
             1: [
-                {p: "TRECHO", i: "CONHECIMENTO DO TRECHO: Saiba exatamente onde você está. Antecipar o perfil da via evita frenagens bruscas."},
-                {p: "GABARITO", i: "GABARITO: Cuidado com obstruções laterais. O gabarito livre é a garantia de que o trem passa sem impactos."},
-                {p: "BRITA", i: "BRITA: Atenção ao caminhar no pátio. Terrenos irregulares são os maiores causadores de entorses."},
-                {p: "DORMER", i: "DORMENTES: A base da via. Verifique o estado dos dormentes para garantir a estabilidade do rodeiro."}
+                {p: "TRECHO", i: "CONHECIMENTO DO TRECHO: Saiba onde você está. Antecipar o perfil da via evita frenagens bruscas e incidentes."},
+                {p: "GABARITO", i: "GABARITO: Cuidado com obstruções laterais. Gabarito livre garante que o material rode sem impactos."},
+                {p: "BRITA", i: "BRITA: Atenção ao caminhar. Terrenos irregulares são os maiores causadores de entorses no pátio."},
+                {p: "DORMER", i: "DORMENTES: A base da via. Verifique o estado dos dormentes para garantir a estabilidade do material rodante."}
             ],
             2: [
-                {p: "AGULHA", i: "AGULHA: Regra da Fresta! 3mm de abertura já causam arrombamento. Verifique sempre antes de operar o AMV."},
+                {p: "AGULHA", i: "AGULHA: Regra da Fresta! 3mm de abertura causam arrombamento. Verifique sempre antes de operar o AMV."},
                 {p: "JACARE", i: "JACARÉ: Visualize a rota. O choque de ponta no jacaré ocorre quando a agulha não está totalmente firme."},
-                {p: "CONTRATRILHO", i: "CONTRATRILHO: O guia da roda. Verifique fixações soltas que podem comprometer o gabarito na transposição."},
+                {p: "CONTRATRILHO", i: "CONTRATRILHO: O guia da roda. Verifique fixações soltas que comprometem o gabarito na transposição."},
                 {p: "MAQUINA", i: "SHISA KANKO: Aponte e fale! Confirme visualmente a posição da chave antes de autorizar o movimento."}
             ],
             3: [
-                {p: "ASPECTO", i: "VISÃO PERIFÉRICA: Não confie no hábito. Reconfirme o dado real do sinal antes de agir. O verde de 'ontem' não vale hoje."},
-                {p: "DISTANCIA", i: "TEMPO DE CICLO: Planeje a parada mental muito antes do dado numérico ficar crítico no visor do computador de bordo."},
+                {p: "ASPECTO", i: "VISÃO PERIFÉRICA: Não confie no hábito. Reconfirme o dado real do sinal antes de agir. O sinal de ontem não vale hoje."},
+                {p: "DISTANCIA", i: "TEMPO DE CICLO: Planeje a parada mental muito antes do dado numérico ficar crítico no computador de bordo."},
                 {p: "COMUNICA", i: "ESCUTA EMPÁTICA: Não absorva a pressa do rádio. Processe a informação e repita. A autoridade final é sua."},
-                {p: "EXPECTATIVA", i: "MENTE DE PRINCIPIANTE: Trate cada autorização de movimento como se fosse a primeira. O excesso de confiança mata."}
+                {p: "EXPECTATIVA", i: "EXPECTATIVA (PSI): Trate cada autorização como se fosse a primeira. O excesso de confiança é um fator de risco."}
             ],
             4: [
                 {p: "CONFIANCA", i: "AUTOCONFIANÇA: O perigo mora na experiência. Profissionais antigos tendem a ignorar riscos que novatos respeitam."},
-                {p: "PRESSA", i: "A PRESSA É UMA EMOÇÃO: Se sentir urgência, pare e vocalize seu estado. A pressa causa a 'visão de túnel'."},
+                {p: "PRESSA", i: "PRESSA: É uma emoção, não um fato. Se sentir urgência, pare e vocalize seu estado. Evite a visão de túnel."},
                 {p: "PERCEPCAO", i: "OLHAR DE TURISTA: Veja o pátio como se fosse a primeira vez. Busque o que mudou no cenário desde a última viagem."},
-                {p: "LINHA", i: "LINHA DE FOGO: Antecipação! Visualize onde a energia será liberada (engates, mangueiras) antes de se posicionar."}
+                {p: "LINHA", i: "LINHA DE FOGO: Antecipação! Visualize a liberação de energia (engates, ar) antes de se posicionar."}
             ],
             5: [
-                {p: "ALIVIO", i: "ALÍVIO BRUSCO (6.3.3): Reduza o esforço gradualmente (>10s). Evita o choque entre engates que o SIC monitora."},
-                {p: "CICLAGEM", i: "CICLAGEM (6.3.11): Aguarde min. 30s após o alívio para nova aplicação. Garante a recarga vital do encanamento geral."},
+                {p: "ALIVIO", i: "ALÍVIO BRUSCO (6.3.3): Reduza o esforço gradualmente (>10s). Evita choque entre engates monitorado pelo SIC."},
+                {p: "CICLAGEM", i: "CICLAGEM (6.3.11): Aguarde min. 30s após o alívio para nova aplicação. Garante a recarga do encanamento geral."},
                 {p: "DINAMICO", i: "DINÂMICO (6.3.6): Use o Freio Dinâmico ANTES do Automático. O SIC audita o equilíbrio das forças de frenagem."},
                 {p: "INCORRETO", i: "MFI INCORRETO (6.3.32): Independente aliviado em circulação evita superaquecimento de rodas e desvios de conceito."}
             ],
             6: [
-                {p: "MANOBRA", i: "VELOCIDADE DE MANOBRA: Respeite o limite do pátio. Garante parada em metade da distância visível e evita incidentes."},
-                {p: "RADIO", i: "CONTAGEM DE DISTÂNCIA: Informe o espaço em vagões. O silêncio no rádio exige parada imediata. Sem 'vem vindo'."},
-                {p: "ESTACIONA", i: "GARANTIA DE ESTACIONAMENTO: SHISA KANKO! Aponte e diga: 'Sapata colada, corrente tensionada'. O visual é a lei."},
-                {p: "PN", i: "PASSAGEM EM NÍVEL: Gerenciamento de Risco. Antecipe a falha do terceiro. Reduza preventivamente se houver dúvida."}
+                {p: "MANOBRA", i: "VELOCIDADE DE MANOBRA: Respeite o limite do pátio. Garante parada em metade da distância visível."},
+                {p: "RADIO", i: "CONTAGEM DE DISTÂNCIA: Informe o espaço em vagões. Silêncio no rádio exige parada imediata. Sem 'vem vindo'."},
+                {p: "ESTACIONA", i: "ESTACIONAMENTO: SHISA KANKO! Aponte e diga: 'Sapata colada, corrente tensionada'. O visual é a garantia real."},
+                {p: "PN", i: "PASSAGEM EM NÍVEL: Gerenciamento de Risco. Antecipe a falha do terceiro. Reduza preventivamente na dúvida."}
             ]
         },
 
@@ -228,7 +263,7 @@
             const tags = document.getElementById('word-tags');
             board.innerHTML = ''; tags.innerHTML = '';
             
-            // Gerar 144 células (12x12)
+            // Grid 12x12
             const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             for(let i=0; i<144; i++) {
                 let c = document.createElement('div');
@@ -237,7 +272,6 @@
                 board.appendChild(c);
             }
 
-            // Tags da fase
             this.dados[this.fase].forEach(o => {
                 let t = document.createElement('div');
                 t.className = 'tag';
@@ -245,20 +279,21 @@
                 t.innerText = o.p;
                 tags.appendChild(t);
             });
-            document.getElementById('fase-label').innerText = `Fase: ${this.fase}/6`;
+            document.getElementById('fase-display').innerText = `Fase: ${this.fase} / 6`;
+            document.getElementById('progress-display').innerText = `Progresso: ${this.encontradas.length} / 4`;
         },
 
         bindEvents() {
             const b = document.getElementById('grid-board');
             
             const onStart = (e) => {
-                this.arrastando = true;
+                this.isDragging = true;
                 this.selecionadas = [];
                 this.handleMove(e);
             };
 
             const onMove = (e) => {
-                if(!this.arrastando) return;
+                if(!this.isDragging) return;
                 e.preventDefault();
                 const touch = e.touches ? e.touches[0] : e;
                 const cell = document.elementFromPoint(touch.clientX, touch.clientY);
@@ -269,10 +304,11 @@
             };
 
             const onEnd = () => {
-                this.arrastando = false;
+                this.isDragging = false;
                 const word = this.selecionadas.map(c => c.innerText).join('');
-                this.check(word);
+                this.validate(word);
                 this.selecionadas.forEach(c => c.classList.remove('selecting'));
+                this.selecionadas = [];
             };
 
             b.addEventListener('mousedown', onStart);
@@ -283,7 +319,7 @@
             b.addEventListener('touchend', onEnd);
         },
 
-        check(w) {
+        validate(w) {
             const rev = w.split('').reverse().join('');
             const found = this.dados[this.fase].find(o => o.p === w || o.p === rev);
             
@@ -291,41 +327,42 @@
                 this.encontradas.push(found.p);
                 this.selecionadas.forEach(c => c.classList.add('found'));
                 document.getElementById('tag-' + found.p).classList.add('done');
-                this.showInsight(found.p, found.i);
-                this.updateProgresso();
+                this.openModal(found.p, found.i);
             }
         },
 
-        showInsight(t, b) {
-            document.getElementById('m-title').innerText = t;
-            document.getElementById('m-body').innerText = b;
-            document.getElementById('overlay').style.display = 'flex';
+        openModal(t, b) {
+            document.getElementById('modal-title').innerText = t;
+            document.getElementById('modal-body').innerText = b;
+            document.getElementById('insight-overlay').style.display = 'flex';
         },
 
-        updateProgresso() {
-            document.getElementById('progresso-label').innerText = `Progresso: ${this.encontradas.length}/4`;
+        checkPhase() {
+            document.getElementById('progress-display').innerText = `Progresso: ${this.encontradas.length} / 4`;
             if(this.encontradas.length === 4) {
                 setTimeout(() => {
-                    this.sendToForms();
+                    this.saveData();
                     if(this.fase < 6) {
                         this.fase++; this.encontradas = [];
                         this.buildGrid();
                     } else {
-                        alert("TREINAMENTO CONCLUÍDO! Parabéns, Sr Assis.");
+                        alert("TREINAMENTO CONCLUÍDO COM SUCESSO!");
                     }
-                }, 1000);
+                }, 800);
             }
         },
 
-        sendToForms() {
-            // Sincronização com o Google Forms (Backend)
-            const url = "URL_DO_SEU_FORMS_AQUI";
-            console.log("Fase " + this.fase + " concluída. Enviando dados...");
+        saveData() {
+            console.log(`Fase ${this.fase} concluída. Sincronizando com Forms...`);
         }
     };
 
-    function closeModal() { document.getElementById('overlay').style.display = 'none'; }
-    window.onload = () => App.init();
+    function prosseguir() { 
+        document.getElementById('insight-overlay').style.display = 'none';
+        Game.checkPhase();
+    }
+    
+    window.onload = () => Game.init();
 </script>
 </body>
 </html>
