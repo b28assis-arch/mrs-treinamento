@@ -16,7 +16,7 @@
         }
         body { margin: 0; font-family: 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%); color: #fff; text-align: center; padding: 15px 10px; min-height: 100vh; overflow-x: hidden; }
         
-        /* CABEÇALHO COM A SUA IMAGEM ÉPICA */
+        /* CABEÇALHO COM A SUA IMAGEM ÉPICA (Caminho Relativo) */
         .header-game { 
             background: linear-gradient(rgba(4, 28, 56, 0.6), rgba(4, 28, 56, 0.8)), url('1000121485.png');
             background-size: cover; 
@@ -125,7 +125,7 @@
     <div id="resultado"></div>
 
     <script>
-        // GRID RESTRITO A 10x10 AQUI:
+        // GRID RESTRITO A 10x10
         const SIZE = 10;
         let selecionadas = [], encontradas = [], gridData = [], faseAtual = 1;
         
