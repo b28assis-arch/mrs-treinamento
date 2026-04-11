@@ -6,51 +6,100 @@
     <title>MRS - Trilha de Conhecimento: DDS Trajeto</title>
     <style>
         :root {
-            --primary: #0b3a6f; --accent: #ffffff; --cell-bg: #ffffff;
-            --selected: #5dade2; --danger: #e74c3c; --warning: #f1c40f;
-            --info: #2ecc71; --dark: #082a50;
+            --primary: #0b3a6f; /* Azul MRS */
+            --accent: #ffffff;
+            --selected: #5dade2; 
+            --danger: #e74c3c; 
+            --warning: #f1c40f;
+            --info: #2ecc71; 
+            --dark: #041c38;
         }
-        body { margin: 0; font-family: 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%); color: #fff; text-align: center; padding: 10px; min-height: 100vh; overflow-x: hidden; }
-        .header-game { background: rgba(255, 255, 255, 0.15); padding: 20px 10px; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .mrs-titulo { margin: 0; font-size: 1.2rem; font-weight: 900; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
-        .slogan { font-size: 0.85rem; color: #ffffff; margin: 12px 0; font-weight: 700; font-style: italic; text-shadow: 1px 1px 3px rgba(0,0,0,0.6); line-height: 1.4; }
-        .fase-badge { background: var(--accent); color: var(--primary); display: inline-block; padding: 6px 14px; border-radius: 6px; font-weight: 900; font-size: 0.85rem; margin: 5px 0; text-transform: uppercase; box-shadow: 0 4px 0 rgba(0,0,0,0.2); }
-        .progresso-container { margin-top: 10px; font-weight: bold; font-size: 0.9rem; }
-        .contador-bolinha { background: var(--primary); padding: 3px 12px; border-radius: 20px; border: 2px solid var(--accent); color: var(--accent); }
-        .legenda-container { max-width: 100%; margin: 10px auto; }
-        .legenda-item { padding: 8px; border-radius: 6px; margin-bottom: 5px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+        body { margin: 0; font-family: 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%); color: #fff; text-align: center; padding: 15px 10px; min-height: 100vh; overflow-x: hidden; }
+        
+        /* CABEÇALHO COM A SUA IMAGEM ÉPICA */
+        .header-game { 
+            background: linear-gradient(rgba(4, 28, 56, 0.6), rgba(4, 28, 56, 0.8)), url('1000121485.png');
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat;
+            padding: 25px 10px; 
+            border-radius: 16px; 
+            margin-bottom: 15px; 
+            border: 1px solid rgba(255,255,255,0.2); 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4); 
+        }
+        
+        .mrs-titulo { margin: 0; font-size: 1.3rem; font-weight: 900; color: var(--accent); letter-spacing: 1.5px; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+        .slogan { font-size: 0.85rem; color: #e0e0e0; margin: 12px 0; font-weight: 600; line-height: 1.4; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+        .fase-badge { background: linear-gradient(90deg, var(--accent), #e0e0e0); color: var(--primary); display: inline-block; padding: 6px 16px; border-radius: 20px; font-weight: 900; font-size: 0.85rem; margin: 5px 0; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        
+        .progresso-container { margin-top: 12px; font-weight: bold; font-size: 0.95rem; display: flex; justify-content: center; align-items: center; gap: 10px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
+        .contador-bolinha { background: rgba(0,0,0,0.5); padding: 4px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.5); color: var(--accent); letter-spacing: 1px; }
+        
+        .legenda-container { max-width: 440px; margin: 10px auto; display: flex; flex-direction: column; gap: 6px;}
+        .legenda-item { padding: 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .leg-verde { background: var(--info); color: #000; }
         .leg-amarelo { background: var(--warning); color: #000; }
         .leg-vermelho { background: var(--danger); color: #fff; }
-        .grid { display: grid; grid-template-columns: repeat(13, 1fr); gap: 3px; width: 100%; max-width: 440px; margin: 10px auto; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .cell { aspect-ratio: 1; background: var(--cell-bg); color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 3px; font-weight: 900; font-size: 0.75rem; cursor: pointer; transition: all 0.1s ease; user-select: none; }
-        .cell:active { transform: scale(0.9); opacity: 0.8; }
-        .selected { background: var(--selected) !important; color: #fff !important; }
-        .found-grave { background: var(--danger) !important; color: #fff !important; }
-        .found-medio { background: var(--warning) !important; color: #000 !important; }
-        .found-leve { background: var(--info) !important; color: #000 !important; }
-        .controles { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
-        .btn-aux { border: none; padding: 10px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; flex: 1; max-width: 215px; }
         
-        /* CAIXA DO FORMS MANTIDA */
-        .analise-section { width: 100%; max-width: 440px; margin: 20px auto; background: #ffffff; padding: 15px; border-radius: 12px; text-align: left; border: 3px solid var(--primary); box-sizing: border-box; color: #333; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .analise-section h3 { margin: 0 0 10px 0; font-size: 0.9rem; color: var(--primary); text-transform: uppercase; font-weight: 900; border-bottom: 2px solid var(--primary); padding-bottom: 5px; }
-        textarea { width: 100%; height: 80px; border-radius: 8px; border: 1px solid #ccc; padding: 10px; box-sizing: border-box; font-family: inherit; margin-bottom: 10px; font-size: 0.9rem; background: #fdfdfd; }
-        .btn-box { display: flex; gap: 8px; }
-        .btn-acao { background: var(--primary); color: #fff; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 0.75rem; flex: 1; }
-        .btn-forms { background: #27ae60; color: #fff; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 0.75rem; flex: 1; }
+        /* Controles Modernos */
+        .controles { display: flex; justify-content: center; gap: 10px; margin-top: 15px; margin-bottom: 15px; }
+        .btn-aux { border: none; padding: 12px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; flex: 1; max-width: 200px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: transform 0.1s; }
+        .btn-aux:active { transform: scale(0.95); }
         
-        #resultado { width: 100%; max-width: 440px; margin: 15px auto; display: flex; flex-direction: column; gap: 8px; padding-bottom: 40px;}
-        .insight { padding: 12px; border-radius: 8px; text-align: left; font-size: 0.85rem; font-weight: 600; line-height: 1.4; border-left: 8px solid rgba(0,0,0,0.2); }
-        .grave { background: var(--danger); color: #fff; } .medio { background: var(--warning); color: #000; } .leve { background: var(--info); color: #000; }
+        /* GRID 10x10 MODERNO (Reduzido e Estilizado) */
+        .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; width: 100%; max-width: 400px; margin: 10px auto; background: rgba(255,255,255,0.05); backdrop-filter: blur(5px); padding: 12px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 20px rgba(0,0,0,0.2), 0 10px 30px rgba(0,0,0,0.3); }
+        .cell { aspect-ratio: 1; background: #ffffff; color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 6px; font-weight: 900; font-size: 0.95rem; cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); user-select: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .cell:active { transform: scale(0.85); background: #e0e0e0; }
+        
+        /* Cores e Animações de Acerto */
+        .selected { background: var(--selected) !important; color: #fff !important; transform: scale(0.95); box-shadow: inset 0 0 8px rgba(0,0,0,0.3); }
+        
+        @keyframes pulseSuccess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); box-shadow: 0 0 15px rgba(255,255,255,0.8); z-index: 10; }
+            100% { transform: scale(1); }
+        }
+        
+        .found-grave { background: var(--danger) !important; color: #fff !important; animation: pulseSuccess 0.5s ease; }
+        .found-medio { background: var(--warning) !important; color: #000 !important; animation: pulseSuccess 0.5s ease; }
+        .found-leve { background: var(--info) !important; color: #000 !important; animation: pulseSuccess 0.5s ease; }
+        
+        /* Área do Forms (Dashboard Style) */
+        .analise-section { width: 100%; max-width: 440px; margin: 25px auto; background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 16px; text-align: left; box-sizing: border-box; color: #333; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .analise-section h3 { margin: 0 0 12px 0; font-size: 0.95rem; color: var(--primary); text-transform: uppercase; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+        textarea { width: 100%; height: 80px; border-radius: 10px; border: 2px solid #e0e0e0; padding: 12px; box-sizing: border-box; font-family: inherit; margin-bottom: 12px; font-size: 0.9rem; background: #f8f9fa; transition: border-color 0.3s; resize: none; }
+        textarea:focus { outline: none; border-color: var(--primary); }
+        .btn-box { display: flex; gap: 10px; }
+        .btn-acao, .btn-forms { border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 0.8rem; flex: 1; transition: opacity 0.2s; text-transform: uppercase; }
+        .btn-acao { background: var(--primary); color: #fff; }
+        .btn-forms { background: #27ae60; color: #fff; }
+        .btn-acao:active, .btn-forms:active { opacity: 0.8; }
+        
+        /* Insights como Notificações Modernas */
+        #resultado { width: 100%; max-width: 440px; margin: 20px auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 40px;}
+        .insight { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 16px; border-radius: 12px; text-align: left; font-size: 0.85rem; font-weight: 500; line-height: 1.5; color: #fff; border: 1px solid rgba(255,255,255,0.2); display: flex; flex-direction: column; gap: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); animation: slideIn 0.4s ease-out; }
+        .insight strong { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; padding-bottom: 4px; border-bottom: 2px solid; margin-bottom: 4px; }
+        
+        .insight.grave strong { border-color: var(--danger); color: #ff7675; }
+        .insight.medio strong { border-color: var(--warning); color: #ffeaa7; }
+        .insight.leve strong { border-color: var(--info); color: #55efc4; }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
     <div class="header-game">
         <h1 class="mrs-titulo">MRS - TRILHA DE CONHECIMENTO</h1>
-        <p class="slogan">"Sua segurança começa ao sair de casa. <br> O percurso também faz parte da operação."</p>
+        <p class="slogan">Sua segurança começa ao sair de casa.<br> O percurso também faz parte da operação.</p>
         <div id="fase-badge" class="fase-badge">DDS: Segurança no Trajeto</div>
-        <div class="progresso-container">Palavras: <span class="contador-bolinha" id="contador-txt">0 / 5</span></div>
+        <div class="progresso-container">
+            <span>PALAVRAS ENCONTRADAS:</span>
+            <span class="contador-bolinha" id="contador-txt">0 / 5</span>
+        </div>
     </div>
     
     <div class="legenda-container" id="painel-legenda"></div>
@@ -63,30 +112,30 @@
     <div class="grid" id="grid-box"></div>
     
     <div class="analise-section">
-        <h3>📊 BANCO DE DADOS OPERACIONAL</h3>
-        <p style="font-size: 0.7rem; margin-bottom: 8px; font-weight: bold; color: #555;">Registre aqui observações técnicas ou desvios sobre o fator humano:</p>
-        <textarea id="input-comentario" placeholder="Descreva um compromisso ou desvio observado..."></textarea>
+        <h3>📋 COMPROMISSO DDS</h3>
+        <p style="font-size: 0.75rem; margin-bottom: 10px; font-weight: 600; color: #666;">Registre um compromisso pessoal para o seu trajeto diário:</p>
+        <textarea id="input-comentario" placeholder="Ex: Vou programar meu alarme 10 min mais cedo para evitar correr..."></textarea>
         <div class="btn-box">
-            <button class="btn-acao" onclick="salvarComentario()">Registrar Fator</button>
-            <button class="btn-forms" onclick="abrirForms()">Enviar ao Forms</button>
+            <button class="btn-acao" onclick="salvarComentario()">Salvar</button>
+            <button class="btn-forms" onclick="abrirForms()">Enviar Formulário</button>
         </div>
-        <div id="lista-comentarios" style="margin-top:10px; font-size:0.8rem; font-weight: bold; color: var(--primary);"></div>
+        <div id="lista-comentarios" style="margin-top:12px; font-size:0.8rem; font-weight: bold; color: #27ae60; text-align: center;"></div>
     </div>
 
     <div id="resultado"></div>
 
     <script>
-        const SIZE = 13;
+        // GRID RESTRITO A 10x10 AQUI:
+        const SIZE = 10;
         let selecionadas = [], encontradas = [], gridData = [], faseAtual = 1;
         
-        // Jogo configurado com 5 palavras sobre o DDS de trajeto
         const fasesPalavras = {
             1: [
-                {txt: "PRESSA", nome: "PRESSA", nivel: "grave", dica: "A pressa é a maior inimiga da segurança. O tempo ganho na rua correndo nunca compensa o risco de um acidente."},
-                {txt: "CELULAR", nome: "CELULAR", nivel: "grave", dica: "O uso do celular destrói a atenção periférica. Pare de caminhar ou estacione se precisar olhar a tela."},
-                {txt: "FADIGA", nome: "FADIGA", nivel: "medio", dica: "O cansaço reduz drasticamente os seus reflexos. Redobre o cuidado no trajeto de volta para casa após o turno."},
-                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "medio", dica: "O cérebro relaxa na rotina do trajeto diário. Force a atenção e redobre o cuidado com chuva ou à noite."},
-                {txt: "TEMPO", nome: "TEMPO", nivel: "leve", dica: "Programe seu tempo e saia com antecedência. O planejamento elimina a urgência e garante uma viagem mais calma."}
+                {txt: "PRESSA", nome: "PRESSA", nivel: "grave", dica: "A pressa é a maior inimiga da segurança. O tempo ganho correndo nunca compensa o risco do acidente."},
+                {txt: "CELULAR", nome: "CELULAR", nivel: "grave", dica: "O uso do celular destrói a atenção periférica. Pare de caminhar ou estacione o veículo se precisar olhar a tela."},
+                {txt: "FADIGA", nome: "FADIGA", nivel: "medio", dica: "O cansaço afeta os reflexos. Redobre o cuidado no trajeto de volta para casa após o término do turno."},
+                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "medio", dica: "O cérebro relaxa na rotina do trajeto diário. Force a atenção e redobre o cuidado em dias de chuva."},
+                {txt: "TEMPO", nome: "TEMPO", nivel: "leve", dica: "Programe seu relógio e saia com antecedência. O planejamento elimina a urgência e garante uma viagem calma."}
             ]
         };
 
@@ -162,7 +211,8 @@
         function exibirInsight(p) {
             const res = document.getElementById("resultado");
             const card = document.createElement("div"); card.className = `insight ${p.nivel}`;
-            card.innerHTML = `<strong>✔ ${p.nome}</strong>: ${p.dica}`; res.prepend(card);
+            card.innerHTML = `<strong>ALERTA DE ROTA: ${p.nome}</strong><span>${p.dica}</span>`; 
+            res.prepend(card);
         }
 
         function atualizarUI() {
@@ -178,22 +228,21 @@
         function checarFimFase() { 
             if (encontradas.length === fasesPalavras[faseAtual].length) { 
                 setTimeout(() => {
-                    alert("🎯 Parabéns! Você concluiu as palavras do DDS. Lembre-se de registrar sua observação no Forms!");
-                }, 400);
+                    alert("🎯 Treinamento Concluído! Você encontrou todas as palavras do DDS. Registre seu compromisso abaixo e envie!");
+                }, 600);
             } 
         }
 
         function salvarComentario() {
             const texto = document.getElementById("input-comentario").value;
             if (!texto) return;
-            document.getElementById("lista-comentarios").innerHTML = `✅ Fator registrado no sistema piloto da MRS.`;
-            alert("Observação guardada.");
+            document.getElementById("lista-comentarios").innerHTML = `✔ Registrado localmente. Não esqueça de clicar em "Enviar Formulário".`;
         }
 
         function abrirForms() { window.open("https://forms.gle/ut3jDiKRPWSGVXw37", '_blank'); }
 
         document.getElementById("btn-reset").onclick = function() { document.querySelectorAll(".cell.selected").forEach(el => el.classList.remove("selected")); selecionadas = []; };
-        document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar jogo?")) { encontradas = []; selecionadas = []; document.getElementById("resultado").innerHTML = ""; init(); } };
+        document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar o treinamento?")) { encontradas = []; selecionadas = []; document.getElementById("resultado").innerHTML = ""; init(); } };
 
         init();
     </script>
