@@ -3,178 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MRS - Dashboard Trem Bão</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <title>MRS - Dashboard Operacional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
-           CONFIGURAÇÕES DE CORES E VARIÁVEIS (SISTEMA NEON)
-           ============================================================ */
+           SISTEMA DE CORES E VARIÁVEIS DE DESIGN 
+           ============================================================
+        */
         :root {
             --mrs-blue: #0b3a6f; 
-            --accent: #ffffff;
+            --accent: #ffffff; 
             --selected: #3b82f6; 
-            --danger: #ff2a2a;   
-            --warning: #ffcc00;  
-            --info: #00ffaa;     
+            --danger: #ff2a2a; 
+            --warning: #ffcc00; 
+            --info: #00ffaa; 
             --neon-blue: #00d2ff;
             --glass-bg: rgba(10, 15, 30, 0.95); 
             --glass-border: rgba(0, 210, 255, 0.3);
         }
         
-        /* --- RESET E FUNDO --- */
         body { 
-            margin: 0; font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            font-family: 'Inter', sans-serif; 
             background: #020617 url('fundo-mrs.png') no-repeat center center fixed; 
-            background-size: cover; color: #f8fafc; min-height: 100vh; 
-            display: flex; flex-direction: column; align-items: center; 
-            padding: 15px; box-sizing: border-box; overflow-x: hidden;
+            background-size: cover; 
+            color: #f8fafc; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 15px; 
+            box-sizing: border-box; 
+            overflow-x: hidden;
         }
 
-        /* --- BANNER PRINCIPAL --- */
+        /* --- BANNER SUPERIOR --- */
         .banner-topo { 
-            width: 100%; max-width: 1200px; margin-bottom: 15px; 
-            border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            width: 100%; 
+            max-width: 1200px; 
+            margin-bottom: 20px; 
+            border-radius: 16px; 
+            overflow: hidden; 
+            border: 1px solid var(--glass-border); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
         }
         .banner-topo img { width: 100%; display: block; }
 
-        /* --- GRID E PAINÉIS --- */
+        /* --- CONTAINER PRINCIPAL --- */
         .dashboard-container { 
-            display: grid; grid-template-columns: 1fr 1.5fr 1fr; 
-            gap: 15px; width: 100%; max-width: 1200px; margin-bottom: 15px; 
+            display: grid; 
+            grid-template-columns: 1fr 1.5fr 1fr; 
+            gap: 20px; 
+            width: 100%; 
+            max-width: 1200px; 
+            margin-bottom: 20px; 
         }
 
         .panel { 
-            background: var(--glass-bg); backdrop-filter: blur(25px); 
-            border: 1px solid var(--glass-border); border-radius: 20px; 
-            padding: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.7); 
-            display: flex; flex-direction: column; position: relative;
+            background: var(--glass-bg); 
+            backdrop-filter: blur(25px); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 20px; 
+            padding: 25px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7); 
+            display: flex; 
+            flex-direction: column; 
         }
 
-        /* --- STATUS E CONTADORES --- */
+        /* --- PAINEL DE STATUS --- */
         .status-panel { text-align: center; justify-content: center; }
-        .mrs-titulo { margin: 0; font-size: 1.6rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
-        .contador-container { margin: 15px 0; font-size: 0.9rem; font-weight: 800; }
+        .mrs-titulo { margin: 0; font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+        .contador-container { margin: 20px 0; font-size: 1rem; font-weight: 700; }
         .contador { 
-            background: #000; padding: 4px 12px; border-radius: 6px; 
-            color: var(--neon-blue); border: 1px solid var(--neon-blue);
-            text-shadow: 0 0 8px var(--neon-blue); font-family: monospace;
+            background: #000; 
+            padding: 5px 15px; 
+            border-radius: 8px; 
+            color: var(--neon-blue); 
+            border: 1px solid var(--neon-blue); 
+            text-shadow: 0 0 10px var(--neon-blue); 
+            font-family: monospace; 
         }
 
-        /* --- DESIGN DAS CÉLULAS DO CAÇA-PALAVRAS --- */
+        /* --- CONFIGURAÇÃO DO CAÇA-PALAVRAS (GRID) --- */
         .grid { 
-            display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; 
-            width: 100%; max-width: 320px; margin: 0 auto; padding: 10px; 
-            background: rgba(0,0,0,0.5); border-radius: 12px;
+            display: grid; 
+            grid-template-columns: repeat(10, 1fr); 
+            gap: 5px; 
+            width: 100%; 
+            max-width: 350px; 
+            margin: 0 auto; 
+            padding: 12px; 
+            background: rgba(0,0,0,0.5); 
+            border-radius: 15px; 
         }
         .cell { 
-            aspect-ratio: 1; background: #ffffff; color: #0b1120; 
-            display: flex; align-items: center; justify-content: center; 
-            border-radius: 4px; font-weight: 900; font-size: 1.3rem; 
-            cursor: pointer; transition: 0.2s; user-select: none;
+            aspect-ratio: 1; 
+            background: #ffffff; 
+            color: #0b1120; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 5px; 
+            font-weight: 700; /* Reduzido de 900 para 700 para evitar o borrão */
+            font-size: 1.4rem; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            user-select: none; 
         }
         .selected { background: var(--selected) !important; color: #fff !important; box-shadow: 0 0 15px var(--selected); }
         .found-grave { background: var(--danger) !important; color: #fff !important; box-shadow: 0 0 10px var(--danger); }
         .found-medio { background: var(--warning) !important; color: #000 !important; box-shadow: 0 0 10px var(--warning); }
         .found-leve { background: var(--info) !important; color: #000 !important; box-shadow: 0 0 10px var(--info); }
 
-        /* --- MASCOTE TREM BÃO (HOLOGRAMA) --- */
-        .mascote-wrapper { 
-            position: relative; width: 140px; height: 140px; margin: 0 auto 15px; 
-            display: flex; align-items: center; justify-content: center;
+        /* --- PAINEL DE INTELIGÊNCIA OPERACIONAL (CAIXA AUMENTADA) --- */
+        .intel-panel { 
+            border-left: 5px solid var(--neon-blue); 
+            min-height: 350px; /* Aumentado para comportar os textos e o "Fato" */
         }
-        .trem-bao { 
-            width: 130px; height: 130px; object-fit: cover; border-radius: 50%;
-            border: 3px solid var(--neon-blue); animation: flutuar 3s ease-in-out infinite; 
-            box-shadow: 0 0 25px rgba(0, 210, 255, 0.6); z-index: 2;
+        .intel-title { 
+            font-size: 1.2rem; 
+            font-weight: 800; 
+            margin-bottom: 15px; 
+            text-transform: uppercase; 
+            color: var(--neon-blue); 
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 10px;
         }
-        .hologram-base { 
-            position: absolute; bottom: -5px; width: 80px; height: 12px; 
-            background: rgba(0, 210, 255, 0.3); border-radius: 50%; 
-            filter: blur(5px); animation: pulsarBase 3s ease-in-out infinite; 
-        }
-
-        @keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        @keyframes pulsarBase { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.3); opacity: 0.6; } }
-
-        /* --- TERMINAL DE INTELIGÊNCIA --- */
-        .intel-panel { border-left: 4px solid var(--neon-blue); min-height: 320px; }
-        .intel-title { font-size: 1.1rem; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
-        .intel-text { font-size: 1rem; line-height: 1.5; color: #e2e8f0; }
+        .intel-text { font-size: 1.1rem; line-height: 1.6; color: #f1f5f9; }
         .fato-box { 
-            margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);
-            font-style: italic; color: #94a3b8; font-size: 0.9rem;
+            margin-top: 20px; 
+            padding: 15px; 
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            font-style: italic; 
+            color: #cbd5e1; 
+            font-size: 1rem; 
+            border-left: 3px solid var(--warning);
         }
 
-        /* --- RODAPÉ E FEEDBACK --- */
-        .footer-panel { width: 100%; max-width: 1200px; border-bottom: 4px solid var(--selected); gap: 10px; }
+        /* --- RODAPÉ E CAIXA DE FEEDBACK (FORMS/TEAMS) --- */
+        .footer-panel { 
+            width: 100%; 
+            max-width: 1200px; 
+            border-bottom: 5px solid var(--selected); 
+            gap: 15px; 
+            margin-top: 20px; 
+        }
         .input-mrs { 
-            background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); 
-            padding: 15px; border-radius: 10px; color: #fff; width: 100%; 
-            box-sizing: border-box; margin-bottom: 10px; font-family: inherit; font-size: 1rem;
+            background: rgba(0,0,0,0.7); 
+            border: 2px solid var(--glass-border); 
+            padding: 20px; /* Aumentado para melhor toque no celular */
+            border-radius: 12px; 
+            color: #fff; 
+            width: 100%; 
+            box-sizing: border-box; 
+            margin-bottom: 15px; 
+            font-family: inherit; 
+            font-size: 1.1rem; 
+            transition: 0.3s;
         }
+        .input-mrs:focus { border-color: var(--neon-blue); outline: none; background: rgba(0,0,0,0.9); }
+        
         .btn-main { 
-            background: linear-gradient(90deg, #2563eb, #3b82f6); color: #fff; 
-            border: none; padding: 18px; border-radius: 10px; font-weight: 900; 
-            font-size: 1.1rem; cursor: pointer; text-transform: uppercase; width: 100%;
-            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.5); transition: 0.3s;
+            background: linear-gradient(90deg, #2563eb, #3b82f6); 
+            color: #fff; 
+            border: none; 
+            padding: 22px; 
+            border-radius: 12px; 
+            font-weight: 900; 
+            font-size: 1.2rem; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            width: 100%; 
+            box-shadow: 0 5px 25px rgba(59, 130, 246, 0.6); 
+            transition: 0.3s; 
         }
-        .btn-main:hover { transform: translateY(-2px); filter: brightness(1.2); }
+        .btn-main:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
-        /* --- RESPONSIVIDADE --- */
+        /* --- RESPONSIVIDADE PARA CELULAR --- */
         @media (max-width: 1024px) {
-            .dashboard-container { grid-template-columns: 1fr; }
-            .grid { max-width: 300px; }
-            .panel { padding: 15px; }
+            .dashboard-container { grid-template-columns: 1fr; gap: 15px; }
+            .grid { max-width: 320px; }
+            .cell { font-size: 1.2rem; }
+            .panel { padding: 20px; }
+            .input-mrs { font-size: 1rem; padding: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="banner-topo"><img src="1000121485.png" alt="MRS"></div>
+    <div class="banner-topo"><img src="1000121485.png" alt="MRS LOGÍSTICA"></div>
 
     <div class="dashboard-container">
         <div class="panel status-panel">
             <h1 class="mrs-titulo">MRS LOGÍSTICA</h1>
-            <div class="contador-container">STATUS: <span class="contador" id="contador-txt">0/5</span></div>
-            <button class="btn-main" style="padding: 10px; font-size: 0.75rem; background: #1e293b;" onclick="location.reload()">REINICIAR SISTEMA</button>
+            <div class="contador-container">PROGRESSO DA VARREDURA: <span class="contador" id="contador-txt">0/5</span></div>
+            <button class="btn-main" style="padding: 12px; font-size: 0.8rem; background: #1e293b;" onclick="location.reload()">REINICIAR SISTEMA</button>
         </div>
 
-        <div class="panel"><div class="grid" id="grid-box"></div></div>
+        <div class="panel">
+            <div class="grid" id="grid-box"></div>
+        </div>
 
         <div class="panel intel-panel">
-            <div class="mascote-wrapper">
-                <img src="1000123476.png" alt="Trem Bão" class="trem-bao">
-                <div class="hologram-base"></div>
-            </div>
             <div id="intel-content" class="intel-text">
-                "Sistemas de monitoramento ativos. Localize os pontos de atenção no grid acima para iniciar a análise de segurança."
+                <div class="intel-title">INTELIGÊNCIA OPERACIONAL</div>
+                "Terminal aguardando análise. Identifique os comportamentos de risco no grid central para processar os dados de segurança."
             </div>
         </div>
     </div>
 
     <div class="panel footer-panel">
-        <input type="text" class="input-mrs" id="feedback-caixa" placeholder="Registre aqui sua sugestão ou relato de segurança do trecho...">
+        <input type="text" class="input-mrs" id="feedback-caixa" placeholder="Digite aqui sua percepção de risco, pegadinha ou sugestão para o trecho...">
         <button class="btn-main" onclick="transmitirRelatorio()">TRANSMITIR RELATÓRIO AO FORMS</button>
     </div>
 
     <script>
         /* ============================================================
-           LÓGICA DO JOGO E INTELIGÊNCIA ARTIFICIAL
-           ============================================================ */
+           LÓGICA DO MOTOR DE BUSCA E VOZ
+           ============================================================
+        */
         const SIZE = 10;
         let selecionadas = [], encontradas = [], gridData = [];
         
-        // Banco de Dados de Conhecimento
         const bancoDados = [
-            {txt: "PRESSA", nivel: "grave", dica: "A pressa é a inimiga da segurança operacional.", fato: "FATO: 46% das amputações ferroviárias em pátios ocorrem por pressa nas manobras de engate."},
-            {txt: "CELULAR", nivel: "grave", dica: "Foco total na via! O celular anula sua percepção.", fato: "FATO: O desastre de Chatsworth ocorreu porque o maquinista ignorou o sinal ao enviar um SMS."},
-            {txt: "FADIGA", nivel: "medio", dica: "Cansaço reduz reflexos de forma crítica.", fato: "FATO: Micro-sonos de 2 segundos a 40km/h são suficientes para causar descarrilamentos fatais."},
-            {txt: "ATENCAO", nivel: "medio", dica: "A rotina pode criar cegueira operacional.", fato: "FATO: A maioria dos incidentes ocorre em locais conhecidos, onde o excesso de confiança baixa a guarda."},
-            {txt: "TEMPO", nivel: "leve", dica: "Planejamento evita urgências desnecessárias.", fato: "FATO: Saídas antecipadas reduzem o estresse cognitivo e falhas de comunicação em 70%."}
+            {txt: "PRESSA", nivel: "grave", dica: "A pressa é a principal causa de incidentes em manobras.", fato: "FATO REAL: 46% das amputações ferroviárias registradas em pátios no Brasil ocorrem devido à pressa durante o engate de vagões."},
+            {txt: "CELULAR", nivel: "grave", dica: "O uso do celular durante a jornada anula sua percepção de risco.", fato: "PEGADINHA: O desastre ferroviário de Chatsworth ocorreu porque o maquinista estava enviando SMS e ignorou um sinal vermelho de parada."},
+            {txt: "FADIGA", nivel: "medio", dica: "O cansaço físico e mental reduz reflexos de forma crítica.", fato: "FATO TÉCNICO: Micro-sonos de apenas 2 segundos a 40km/h são suficientes para que um trem percorra 22 metros sem comando."},
+            {txt: "ATENCAO", nivel: "medio", dica: "A rotina gera excesso de confiança e cegueira operacional.", fato: "PEGADINHA: Estatísticas provam que a maioria dos acidentes ocorre em trechos conhecidos, onde o colaborador 'baixa a guarda'."},
+            {txt: "TEMPO", nivel: "leve", dica: "O planejamento do tempo de jornada é uma ferramenta de segurança.", fato: "FATO: Maquinistas que iniciam a jornada com planejamento de tempo reduzem em 70% o estresse cognitivo em manobras complexas."}
         ];
 
-        // Inicialização do Tabuleiro
         function init() {
             let pronto = false;
             while (!pronto) { 
@@ -186,15 +245,16 @@
         }
 
         function distribuirPalavras() {
-            for (let p of bancoDados) {
+            const lista = [...bancoDados].sort((a,b) => b.txt.length - a.txt.length);
+            for (let p of lista) {
                 let colocada = false, tentativas = 0;
-                while (!colocada && tentativas < 2500) {
+                while (!colocada && tentativas < 3000) {
                     let h = Math.random() > 0.5;
                     let r = Math.floor(Math.random() * (h ? SIZE : SIZE - p.txt.length));
                     let c = Math.floor(Math.random() * (h ? SIZE - p.txt.length : SIZE));
                     let ok = true;
                     for (let i = 0; i < p.txt.length; i++) {
-                        if (gridData[h ? r : r + i][h ? c + i : c] !== '') ok = false;
+                        if (gridData[h ? r : r + i][h ? c + i : c] !== '') { ok = false; break; }
                     }
                     if (ok) {
                         for (let i = 0; i < p.txt.length; i++) gridData[h ? r : r + i][h ? c + i : c] = p.txt[i];
@@ -217,23 +277,24 @@
             const container = document.getElementById("grid-box"); container.innerHTML = '';
             gridData.forEach((row, r) => row.forEach((letra, c) => {
                 const div = document.createElement("div"); 
-                div.className = "cell"; div.innerText = letra;
-                div.onclick = () => processarClique(div, letra, r, c); 
+                div.className = "cell"; 
+                div.innerText = letra;
+                div.onclick = () => gerenciarClique(div, letra, r, c); 
                 container.appendChild(div);
             }));
         }
 
-        function processarClique(el, letra, r, c) {
+        function gerenciarClique(el, letra, r, c) {
             if (el.classList.contains('found-grave') || el.classList.contains('found-medio') || el.classList.contains('found-leve')) return;
             
-            // Rebobinar seleção
+            // Rebobinar seleção se clicar na última letra
             if (el.classList.contains('selected')) {
                 const index = selecionadas.findIndex(s => s.el === el);
                 if (index === selecionadas.length - 1) { el.classList.remove('selected'); selecionadas.pop(); }
                 return;
             }
 
-            // Trava direcional e adjacência
+            // Validação de adjacência e linha reta
             if (selecionadas.length > 0) {
                 const last = selecionadas[selecionadas.length - 1];
                 const dr = Math.abs(r - last.r), dc = Math.abs(c - last.c);
@@ -258,41 +319,38 @@
             if (alvo) {
                 const corClas = `found-${alvo.nivel}`;
                 selecionadas.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(corClas); });
-                encontradas.push(alvo.txt); selecionadas = [];
+                encontradas.push(alvo.txt); 
+                selecionadas = [];
                 document.getElementById("contador-txt").innerText = `${encontradas.length}/5`;
-                dispararInteligencia(alvo);
+                processarAudioVisual(alvo);
             }
         }
 
-        // SISTEMA DE VOZ E TERMINAL
-        function dispararInteligencia(alvo) {
+        function processarAudioVisual(alvo) {
             const painel = document.getElementById("intel-content");
             const corHex = alvo.nivel === 'grave' ? '#ff2a2a' : alvo.nivel === 'medio' ? '#ffcc00' : '#00ffaa';
             
             painel.innerHTML = `
-                <div class="intel-title" style="color:${corHex}">[!] ${alvo.txt} DETECTADO</div>
-                <div id="typewriter"></div>
-                <div id="fato-box" class="fato-box"></div>
+                <div class="intel-title" style="color:${corHex}">[!] ALERTA: ${alvo.txt}</div>
+                <div id="typing" style="margin-bottom:15px"></div>
+                <div class="fato-box" id="fato"></div>
             `;
             
             let i = 0;
-            const msg = alvo.dica;
             function digitar() {
-                if (i < msg.length) {
-                    document.getElementById("typewriter").innerHTML += msg.charAt(i);
-                    i++; setTimeout(digitar, 15); // TURBO SPEED
+                if (i < alvo.dica.length) {
+                    document.getElementById("typing").innerHTML += alvo.dica.charAt(i);
+                    i++; setTimeout(digitar, 15);
                 } else {
-                    document.getElementById("fato-box").innerHTML = alvo.fato;
+                    document.getElementById("fato").innerHTML = alvo.fato;
                 }
             }
 
-            // VOZ MASCULINA ROBÓTICA
+            // VOZ MASCULINA RÁPIDA
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const voz = new SpeechSynthesisUtterance(msg + ". " + alvo.fato);
-                voz.lang = 'pt-BR'; 
-                voz.pitch = 0.5; // GRAVE MASCULINO
-                voz.rate = 1.2;  // RÁPIDO
+                const voz = new SpeechSynthesisUtterance(alvo.dica + ". " + alvo.fato);
+                voz.lang = 'pt-BR'; voz.pitch = 0.5; voz.rate = 1.2;
                 window.speechSynthesis.speak(voz);
             }
             digitar();
@@ -300,7 +358,7 @@
 
         function transmitirRelatorio() {
             const feedback = document.getElementById("feedback-caixa").value;
-            if(!feedback) { alert("Atenção: Registre sua percepção antes de transmitir."); return; }
+            if(!feedback) { alert("Atenção: Registre sua percepção de segurança antes de transmitir."); return; }
             window.open('https://forms.gle/ut3jDiKRPWSGVXw37');
         }
 
