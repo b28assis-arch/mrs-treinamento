@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MRS - Dashboard Trem Bão</title>
+    <title>MRS - Dashboard Operacional</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -20,7 +20,6 @@
             padding: 15px; box-sizing: border-box; overflow-x: hidden;
         }
 
-        /* --- CABEÇALHO --- */
         .banner-topo { 
             width: 100%; max-width: 1200px; margin-bottom: 20px; 
             border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-border);
@@ -43,31 +42,31 @@
         /* --- STATUS --- */
         .status-panel { text-align: center; justify-content: center; }
         .mrs-titulo { margin: 0; font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
-        .fase-badge { background: #1e3a8a; padding: 8px 16px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; margin: 15px 0; border: 1px solid var(--neon-blue); }
-        .contador { background: #000; padding: 6px 16px; border-radius: 8px; color: var(--neon-blue); font-family: monospace; font-weight: 800; border: 1px solid var(--neon-blue); }
+        .contador-container { margin: 20px 0; font-size: 1rem; font-weight: 700; }
+        .contador { background: #000; padding: 5px 15px; border-radius: 8px; color: var(--neon-blue); border: 1px solid var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); font-family: monospace; }
 
-        /* --- GRID (QUEBRA-CABEÇA) --- */
+        /* --- GRID (LETRAS NÍTIDAS) --- */
         .grid { 
             display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; 
-            width: 100%; max-width: 300px; margin: 0 auto; padding: 10px; 
+            width: 100%; max-width: 320px; margin: 0 auto; padding: 12px; 
             background: rgba(0,0,0,0.5); border-radius: 15px; 
         }
         .cell { 
             aspect-ratio: 1; background: #ffffff; color: #0b1120; 
             display: flex; align-items: center; justify-content: center; 
-            border-radius: 5px; font-weight: 600; /* Negrito corrigido para nitidez */
-            font-size: 1.4rem; cursor: pointer; transition: 0.2s; 
+            border-radius: 5px; font-weight: 600; /* Negrito corrigido */
+            font-size: 1.4rem; cursor: pointer; transition: 0.2s; user-select: none;
         }
-        .selected { background: var(--selected) !important; color: #fff !important; box-shadow: 0 0 15px var(--selected); }
-        .found-grave { background: var(--danger) !important; color: #fff !important; box-shadow: 0 0 10px var(--danger); }
-        .found-medio { background: var(--warning) !important; color: #000 !important; box-shadow: 0 0 10px var(--warning); }
-        .found-leve { background: var(--info) !important; color: #000 !important; box-shadow: 0 0 10px var(--info); }
+        .selected { background: var(--selected) !important; color: #fff !important; }
+        .found-grave { background: var(--danger) !important; color: #fff !important; }
+        .found-medio { background: var(--warning) !important; color: #000 !important; }
+        .found-leve { background: var(--info) !important; color: #000 !important; }
 
-        /* --- INTELIGÊNCIA OPERACIONAL (CAIXA GRANDE) --- */
-        .intel-panel { border-left: 5px solid var(--neon-blue); min-height: 400px; }
+        /* --- INTELIGÊNCIA OPERACIONAL (CAIXA AMPLA) --- */
+        .intel-panel { border-left: 5px solid var(--neon-blue); min-height: 380px; }
         .intel-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 15px; text-transform: uppercase; color: var(--neon-blue); border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; }
         .intel-text { font-size: 1.1rem; line-height: 1.6; color: #f1f5f9; }
-        .fato-box { margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; font-style: italic; color: #cbd5e1; border-left: 3px solid var(--warning); }
+        .fato-box { margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; font-style: italic; color: #cbd5e1; font-size: 1rem; border-left: 3px solid var(--warning); }
 
         /* --- RÁDIO TRECHO / FORMS (CAIXA GIGANTE) --- */
         .footer-panel { width: 100%; max-width: 1200px; border-bottom: 5px solid var(--selected); margin-top: 20px; }
@@ -79,7 +78,8 @@
             background: rgba(0,0,0,0.7); border: 2px solid var(--glass-border); 
             padding: 25px; border-radius: 12px; color: #fff; width: 100%; 
             box-sizing: border-box; margin-bottom: 20px; font-family: inherit; 
-            font-size: 1.2rem; min-height: 100px; /* Altura aumentada */
+            font-size: 1.2rem; min-height: 150px; /* Altura Gigante */
+            resize: none;
         }
         .btn-main { 
             background: linear-gradient(90deg, #2563eb, #3b82f6); color: #fff; 
@@ -90,7 +90,7 @@
 
         @media (max-width: 1024px) {
             .dashboard-container { grid-template-columns: 1fr; }
-            .grid { max-width: 280px; }
+            .grid { max-width: 300px; }
             .panel { padding: 20px; }
         }
     </style>
@@ -102,17 +102,16 @@
     <div class="dashboard-container">
         <div class="panel status-panel">
             <h1 class="mrs-titulo">MRS LOGÍSTICA</h1>
-            <div class="fase-badge">BOAS PRÁTICAS: TRAJETO</div>
-            <div style="margin-bottom:20px">VARREDURA: <span class="contador" id="contador-txt">0/5</span></div>
-            <button class="btn-main" style="padding:10px; font-size:0.8rem; background:#1e293b;" onclick="location.reload()">REINICIAR</button>
+            <div class="contador-container">VARREDURA: <span class="contador" id="contador-txt">0/5</span></div>
+            <button class="btn-main" style="padding:12px; font-size:0.8rem; background:#1e293b;" onclick="location.reload()">REINICIAR SISTEMA</button>
         </div>
 
         <div class="panel"><div class="grid" id="grid-box"></div></div>
 
         <div class="panel intel-panel">
-            <div class="intel-title">Inteligência Operacional</div>
             <div id="intel-content" class="intel-text">
-                "Aguardando análise de campo. Identifique comportamentos de risco e sinalização no grid para liberar protocolos de segurança."
+                <div class="intel-title">Inteligência Operacional</div>
+                "Terminal aguardando análise. Identifique os riscos de Fadiga, Atenção e Celular no grid para processar os dados."
             </div>
         </div>
     </div>
@@ -120,9 +119,9 @@
     <div class="panel footer-panel">
         <div class="radio-header">
             <h3>📡 Rádio Trecho: Sua voz na operação</h3>
-            <p>Relate riscos no trajeto, anomalias em sinais ou sugestões da equipe levantadas no DDS.</p>
+            <p>Registre abaixo sua percepção sobre fadiga, atenção ou sugestões levantadas no DDS.</p>
         </div>
-        <textarea class="input-mrs" id="feedback-caixa" placeholder="Digite aqui os detalhes para o relatório..."></textarea>
+        <textarea class="input-mrs" id="feedback-caixa" placeholder="Digite aqui o relatório detalhado do DDS..."></textarea>
         <button class="btn-main" onclick="transmitir()">TRANSMITIR RELATÓRIO AO FORMS</button>
     </div>
 
@@ -131,11 +130,11 @@
         let selecionadas = [], encontradas = [], gridData = [];
         
         const bancoDados = [
-            {txt: "SINAL", nivel: "grave", dica: "Em modo degradado, use mapas e anote a sinalização.", fato: "FATO: 'Cantar' a sinalização em voz alta mantém o foco e evita o avanço indevido."},
-            {txt: "MARCHA", nivel: "grave", dica: "Mantenha a atenção total na quilometragem e sentido da via.", fato: "PEGADINHA: Muitos incidentes ocorrem por confusão na quilometragem em trechos de via singela."},
-            {txt: "PRESSA", nivel: "grave", dica: "A pressa no trajeto casa-trabalho é a maior causadora de atropelamentos.", fato: "FATO: Correr para não perder o horário gera 'visão de túnel', anulando a percepção lateral."},
-            {txt: "AMARELO", nivel: "medio", dica: "Sinais amarelos exigem despertar de atenção imediato.", fato: "TÉCNICO: O sinal amarelo não é 'corra que vai fechar', mas sim 'prepare a parada com segurança'."},
-            {txt: "MANUTENCAO", nivel: "leve", dica: "Mantenha o veículo de trajeto com manutenção em dia.", fato: "DICA: Pneus carecas ou luzes queimadas aumentam o estresse do condutor em 40% no trajeto."}
+            {txt: "FADIGA", nivel: "grave", dica: "A fadiga afeta os reflexos. Sono é fisiologia, não falta de vontade.", fato: "FATO: Micro-sonos de 2 segundos a 40km/h fazem o trem percorrer 22 metros sem comando do maquinista."},
+            {txt: "CELULAR", nivel: "grave", dica: "O uso do celular anula sua percepção de risco na via.", fato: "PEGADINHA: O desastre de Chatsworth ocorreu porque o maquinista enviou um SMS e ignorou o sinal vermelho."},
+            {txt: "ATENCAO", nivel: "medio", dica: "A rotina gera excesso de confiança e cegueira operacional.", fato: "PEGADINHA: A maioria dos acidentes ocorre em locais conhecidos, onde o colaborador 'baixa a guarda'."},
+            {txt: "SINAL", nivel: "grave", dica: "Em modo degradado, 'cante' a sinalização em voz alta para manter o foco.", fato: "FATO: Anotar e repetir a sinalização reduz em 80% o risco de avanço indevido de sinal."},
+            {txt: "PRESSA", nivel: "grave", dica: "A pressa é a principal causa de incidentes em manobras e trajeto.", fato: "FATO REAL: 46% das amputações em pátios ocorrem devido à pressa durante o engate de vagões."}
         ];
 
         function init() {
@@ -222,7 +221,7 @@
         }
 
         function transmitir() {
-            if(!document.getElementById("feedback-caixa").value) { alert("Atenção: Registre o DDS antes de transmitir."); return; }
+            if(!document.getElementById("feedback-caixa").value) { alert("Registre o DDS antes de transmitir."); return; }
             window.open('https://forms.gle/ut3jDiKRPWSGVXw37');
         }
 
