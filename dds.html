@@ -2,206 +2,178 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MRS - Trilha de Conhecimento: DDS Trajeto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRS - Dashboard de Conhecimento</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --mrs-blue: #0b3a6f; 
-            --bg-dark: #0f172a; 
-            --bg-darker: #020617;
             --accent: #ffffff;
             --selected: #3b82f6; 
-            
-            --danger-btn: #ef4444; 
-            --warning-btn: #f59e0b;
-            --info-btn: #10b981; 
-            
-            --danger-text: #fb7185; 
-            --warning-text: #fbbf24;
-            --info-text: #34d399;
-
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --danger: #ef4444; 
+            --warning: #f59e0b;
+            --info: #10b981; 
+            --glass-bg: rgba(15, 23, 42, 0.7); /* Fundo escuro translúcido */
+            --glass-border: rgba(255, 255, 255, 0.15);
         }
         
-        body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%); color: #f8fafc; text-align: center; padding: 15px 15px 0 15px; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
-        
-        /* CABEÇALHO COM O CARD MRS DE FUNDO */
-        .header-simple { 
-            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.5), rgba(2, 6, 23, 0.95)), url('1000121485.png');
-            background-size: cover;
-            background-position: center;
-            padding: 30px 15px; 
-            border-radius: 20px; 
-            margin: 0 auto 20px auto; 
-            border: 1px solid var(--glass-border); 
+        body { 
+            margin: 0; 
+            font-family: 'Inter', system-ui, sans-serif; 
+            /* AQUI ENTRA A SUA IMAGEM DE FUNDO */
+            background: #020617 url('fundo-mrs.png') no-repeat center center fixed; 
+            background-size: cover; 
+            color: #f8fafc; 
+            min-height: 100vh; 
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
-            max-width: 440px;
+            padding: 20px;
             box-sizing: border-box;
-            transition: all 0.3s;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
         }
-        
-        .mrs-titulo { margin: 0; font-size: 1.4rem; font-weight: 900; color: var(--accent); letter-spacing: 1.2px; text-transform: uppercase; transition: all 0.3s; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
-        .fase-badge { background: var(--mrs-blue); color: var(--accent); display: inline-block; padding: 6px 16px; border-radius: 30px; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); margin: 12px 0; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        
-        .progresso-container { font-weight: 600; font-size: 0.85rem; display: flex; gap: 8px; color: #cbd5e1; align-items: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .contador-bolinha { background: rgba(0,0,0,0.6); padding: 4px 14px; border-radius: 20px; color: var(--accent); font-weight: 800; border: 1px solid rgba(255,255,255,0.1); }
-        
-        /* Controles */
-        .controles { display: flex; justify-content: center; gap: 12px; margin: 0 auto 20px auto; width: 100%; max-width: 440px; transition: all 0.3s; }
-        .btn-aux { background: var(--glass-bg); color: #cbd5e1; border: 1px solid var(--glass-border); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; flex: 1; transition: all 0.2s; }
-        .btn-aux:active { transform: scale(0.95); background: rgba(255,255,255,0.15); color: #fff; }
-        
-        /* GRID 10x10 */
-        .grid { 
-            display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; 
-            width: 100%; max-width: 440px; margin: 0 auto 30px auto; 
-            background: var(--glass-bg); padding: 15px; border-radius: 24px; 
-            border: 1px solid var(--glass-border); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
-            box-sizing: border-box; transition: all 0.3s;
+
+        /* Banner Superior (Opcional, se o logo já estiver no fundo, você pode ocultar isso) */
+        .banner-topo {
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        
-        .cell { 
-            aspect-ratio: 1; background: rgba(255, 255, 255, 0.9); color: var(--bg-darker); 
-            display: flex; align-items: center; justify-content: center; border-radius: 6px; 
-            font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: all 0.2s; 
-            user-select: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+        .banner-topo img {
+            width: 100%;
+            display: block;
         }
-        .cell:active { transform: scale(0.85); }
-        
-        /* Cores de Acerto */
+
+        /* CONTAINER PRINCIPAL DO DASHBOARD */
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr; /* 3 Colunas: Esquerda, Meio, Direita */
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+        }
+
+        /* PAINÉIS ESTILO VIDRO */
+        .panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- COLUNA ESQUERDA: STATUS --- */
+        .status-panel { text-align: center; justify-content: center; }
+        .mrs-titulo { margin: 0 0 10px 0; font-size: 1.8rem; font-weight: 900; letter-spacing: 1.5px; }
+        .fase-badge { background: var(--selected); padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 20px; display: inline-block; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        .progresso { font-weight: 600; font-size: 0.9rem; color: #cbd5e1; margin-bottom: 30px; }
+        .contador { background: rgba(0,0,0,0.5); padding: 6px 16px; border-radius: 20px; color: #fff; font-weight: 900; margin-left: 8px; border: 1px solid rgba(255,255,255,0.2); }
+        .controles { display: flex; gap: 10px; width: 100%; }
+        .btn-aux { background: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid var(--glass-border); padding: 14px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; flex: 1; transition: all 0.2s; }
+        .btn-aux:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+        /* --- COLUNA CENTRAL: GRID --- */
+        .center-panel { align-items: center; }
+        .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; width: 100%; max-width: 400px; }
+        .cell { aspect-ratio: 1; background: rgba(255, 255, 255, 0.9); color: #020617; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: 900; font-size: 1.2rem; cursor: pointer; user-select: none; transition: all 0.2s; box-shadow: inset 0 -2px 5px rgba(0,0,0,0.2); }
+        .cell:active { transform: scale(0.9); }
         .selected { background: var(--selected) !important; color: #fff !important; }
-        .found-grave { background: var(--danger-btn) !important; color: #fff !important; animation: successPulse 0.6s; border: none; }
-        .found-medio { background: var(--warning-btn) !important; color: #000 !important; animation: successPulse 0.6s; border: none; }
-        .found-leve { background: var(--info-btn) !important; color: #000 !important; animation: successPulse 0.6s; border: none; }
+        .found-grave { background: var(--danger) !important; color: #fff !important; animation: pulse 0.5s; border: none; }
+        .found-medio { background: var(--warning) !important; color: #000 !important; animation: pulse 0.5s; border: none; }
+        .found-leve { background: var(--info) !important; color: #000 !important; animation: pulse 0.5s; border: none; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255,255,255,0.8); z-index: 10; } 100% { transform: scale(1); } }
 
-        @keyframes successPulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); box-shadow: 0 0 25px rgba(255,255,255,0.8); z-index: 10; } 100% { transform: scale(1); } }
-        
-        /* POP-UP (MODAL) */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-            padding: 20px; box-sizing: border-box;
-        }
-        .modal-overlay.active { opacity: 1; pointer-events: all; }
-        
-        .modal-card {
-            background: var(--bg-darker); width: 100%; max-width: 400px;
-            padding: 25px; border-radius: 24px; border: 1px solid var(--glass-border);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
-            transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            text-align: left;
-        }
-        .modal-overlay.active .modal-card { transform: scale(1) translateY(0); }
+        /* --- COLUNA DIREITA: INTELIGÊNCIA OPERACIONAL --- */
+        .intel-panel { justify-content: flex-start; text-align: left; }
+        .intel-panel h3 { margin: 0 0 15px 0; font-size: 1rem; color: #94a3b8; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; }
+        .intel-content { font-size: 0.95rem; line-height: 1.6; color: #e2e8f0; }
+        .intel-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
+        .txt-grave { color: #fb7185; }
+        .txt-medio { color: #fbd38d; }
+        .txt-leve { color: #6ee7b7; }
 
-        .modal-titulo { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 15px; font-weight: 900; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; transition: all 0.3s;}
-        .modal-texto { font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; transition: all 0.3s;}
-        .modal-texto strong { color: #ffffff; }
+        /* --- RODAPÉ: RÁDIO TRECHO --- */
+        .footer-panel { width: 100%; max-width: 1200px; display: flex; gap: 20px; align-items: center; }
+        .radio-info { flex: 1; }
+        .radio-info h3 { margin: 0 0 5px 0; font-size: 1rem; color: var(--accent); }
+        .radio-info p { margin: 0; font-size: 0.85rem; color: #94a3b8; }
+        .radio-form { flex: 2; display: flex; gap: 15px; }
+        .radio-form input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 15px; border-radius: 12px; color: #fff; font-family: 'Inter', sans-serif; outline: none; }
+        .radio-form input:focus { border-color: var(--selected); }
+        .btn-action { background: var(--selected); color: #fff; border: none; padding: 0 25px; border-radius: 12px; font-weight: 800; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
+        .btn-action:hover { background: #2563eb; }
 
-        .titulo-grave { color: var(--danger-text); border-bottom-color: var(--danger-btn) !important;}
-        .titulo-medio { color: var(--warning-text); border-bottom-color: var(--warning-btn) !important;}
-        .titulo-leve { color: var(--info-text); border-bottom-color: var(--info-btn) !important;}
-
-        .btn-modal { width: 100%; padding: 16px; background: var(--selected); color: #fff; border: none; border-radius: 12px; font-weight: 800; font-size: 0.9rem; margin-top: 20px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
-        .btn-modal:active { transform: scale(0.97); }
-
-        /* Área do Rádio Trecho */
-        .analise-section { width: 100%; max-width: 440px; margin: 0 auto 40px auto; background: var(--glass-bg); padding: 30px 20px; border-radius: 24px; text-align: left; box-sizing: border-box; border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); transition: all 0.3s;}
-        .analise-section h3 { margin: 0 0 10px 0; font-size: 0.95rem; color: var(--accent); text-transform: uppercase; font-weight: 800; }
-        .analise-section p { font-size: 0.8rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 15px; }
-        textarea { width: 100%; height: 90px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); padding: 15px; box-sizing: border-box; font-family: 'Inter', sans-serif; margin-bottom: 15px; font-size: 0.9rem; background: rgba(0,0,0,0.2); color: #fff; transition: all 0.3s; resize: none; }
-        textarea:focus { outline: none; border-color: var(--selected); }
-        .btn-box { display: flex; gap: 12px; }
-        .btn-acao, .btn-forms { border: none; padding: 14px; border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 0.75rem; flex: 1; text-transform: uppercase; }
-        .btn-acao { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
-        .btn-forms { background: var(--selected); color: #fff; }
-        
-        /* RODAPÉ ÉPICO */
-        .footer-logo-section {
-            width: 100vw; position: relative; left: 50%; right: 50%;
-            margin-left: -50vw; margin-right: -50vw; margin-top: 20px; margin-bottom: 0; line-height: 0; 
-        }
-        .footer-logo-section img {
-            width: 100%; max-width: 600px; height: auto; display: block; margin: 0 auto;
-            border-top-left-radius: 24px; border-top-right-radius: 24px;
-            border-top: 2px solid var(--glass-border); box-shadow: 0 -10px 40px rgba(0,0,0,0.8); 
-            transition: all 0.3s;
-        }
-
-        /* RESPONSIVIDADE PARA DESKTOP */
-        @media (min-width: 768px) {
-            .header-simple { max-width: 800px; padding: 40px 20px; border-radius: 30px; }
-            .controles, .analise-section { max-width: 800px; padding: 30px; }
-            .mrs-titulo { font-size: 2rem; letter-spacing: 2px; }
-            .grid { max-width: 650px; padding: 25px; gap: 8px; }
-            .cell { font-size: 1.6rem; border-radius: 10px; }
-            .modal-card { max-width: 600px; padding: 40px; }
-            .modal-titulo { font-size: 1.5rem; margin-bottom: 20px; }
-            .modal-texto { font-size: 1.1rem; line-height: 1.8; }
-            .btn-modal { font-size: 1rem; padding: 20px; }
-            .footer-logo-section img { max-width: 1000px; border-top-left-radius: 40px; border-top-right-radius: 40px; }
+        /* Responsividade (Para telas menores que 1024px) */
+        @media (max-width: 1024px) {
+            .dashboard-container { grid-template-columns: 1fr; }
+            .footer-panel { flex-direction: column; }
+            .radio-form { width: 100%; flex-direction: column; }
+            .btn-action { padding: 15px; }
         }
     </style>
 </head>
 <body>
-    <div class="header-simple">
-        <h1 class="mrs-titulo">MRS LOGÍSTICA</h1>
-        <div id="fase-badge" class="fase-badge">DDS: Segurança no Trajeto</div>
-        <div class="progresso-container">
-            <span>PALAVRAS ENCONTRADAS:</span>
-            <span class="contador-bolinha" id="contador-txt">0 / 5</span>
-        </div>
-    </div>
-    
-    <div class="controles">
-        <button class="btn-aux" id="btn-reset">Limpar Seleção</button>
-        <button class="btn-aux" id="btn-master">Reiniciar Trilha</button>
-    </div>
-    
-    <div class="grid" id="grid-box"></div>
-    
-    <div class="analise-section">
-        <h3>📡 RÁDIO TRECHO: SUA VOZ NA OPERAÇÃO</h3>
-        <p>A segurança é feita por quem vive a via. Deixe uma sugestão, relate uma experiência que sirva de lição ou dê seu feedback sobre o DDS.</p>
-        <textarea id="input-comentario" placeholder="Ex: Na chave do pátio X, percebi que..."></textarea>
-        <div class="btn-box">
-            <button class="btn-acao" onclick="salvarComentario()">Salvar Local</button>
-            <button class="btn-forms" onclick="abrirForms()">Enviar ao Forms</button>
-        </div>
-        <div id="lista-comentarios" style="margin-top:12px; font-size:0.8rem; font-weight: 600; color: var(--info-text);"></div>
-    </div>
 
-    <div class="footer-logo-section">
+    <div class="banner-topo">
         <img src="1000121485.png" alt="MRS LOGÍSTICA">
     </div>
 
-    <div class="modal-overlay" id="modal-overlay">
-        <div class="modal-card">
-            <div class="modal-titulo" id="modal-titulo">ALERTA OPERACIONAL</div>
-            <div class="modal-texto" id="modal-texto">Conteúdo</div>
-            <button class="btn-modal" onclick="fecharModal()">Continuar Missão</button>
+    <div class="dashboard-container">
+        
+        <div class="panel status-panel">
+            <h1 class="mrs-titulo">MRS LOGÍSTICA</h1>
+            <div class="fase-badge">DDS: SEGURANÇA NO TRAJETO</div>
+            <div class="progresso">
+                PALAVRAS ENCONTRADAS: <span class="contador" id="contador-txt">0 / 5</span>
+            </div>
+            <div class="controles">
+                <button class="btn-aux" id="btn-reset">Limpar Seleção</button>
+                <button class="btn-aux" id="btn-master">Reiniciar Trilha</button>
+            </div>
+        </div>
+
+        <div class="panel center-panel">
+            <div class="grid" id="grid-box"></div>
+        </div>
+
+        <div class="panel intel-panel">
+            <h3>📍 ÁREA DE INTELIGÊNCIA OPERACIONAL</h3>
+            <div class="intel-content" id="intel-content">
+                <p>Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="panel footer-panel">
+        <div class="radio-info">
+            <h3>📡 RÁDIO TRECHO</h3>
+            <p>Deixe uma sugestão ou relate uma experiência.</p>
+        </div>
+        <div class="radio-form">
+            <input type="text" id="input-comentario" placeholder="Ex: Na chave do pátio X, percebi que...">
+            <button class="btn-action" onclick="abrirForms()">ENVIAR AO FORMS</button>
         </div>
     </div>
 
     <script>
         const SIZE = 10;
         let selecionadas = [], encontradas = [], gridData = [], faseAtual = 1;
-        let esperandoFechamentoFinal = false; 
         
         const fasesPalavras = {
             1: [
-                {txt: "PRESSA", nome: "PRESSA", nivel: "grave", dica: "A pressa é a maior inimiga da segurança; o tempo ganho correndo nunca compensa o risco do acidente. <br><br><strong>FATO Ferroviário:</strong> Segundo a FRA (EUA), a pressa nas manobras é a causa raiz de 46% das amputações no pátio. <br><br><strong>PEGADINHA Reflexiva:</strong> Vale a pena arriscar um escorregão no lastro para ganhar 2 minutos na troca de turno?"},
-                {txt: "CELULAR", nome: "CELULAR", nivel: "grave", dica: "O uso do celular destrói a atenção periférica. Pare de caminhar ou estacione se precisar olhar a tela. <br><br><strong>FATO Ferroviário:</strong> O desastre de Chatsworth (EUA) forçou a adoção do Freio Automático após um maquinista passar o sinal vermelho enviando SMS. <br><br><strong>PEGADINHA Reflexiva:</strong> Você caminharia de olhos vendados entre dois vagões na pera de manobra?"},
-                {txt: "FADIGA", nome: "FADIGA", nivel: "medio", dica: "O cansaço afeta os reflexos; redobre o cuidado no trajeto de volta para casa após o turno. <br><br><strong>FATO Ferroviário:</strong> No desastre de Hinton (Canadá), a exaustão causou micro-sonos que ignoraram sinais, tornando obrigatórios os vigilantes no mundo. <br><br><strong>PEGADINHA Reflexiva:</strong> Acha que um café forte vence a biologia do micro-sono? Se o corpo apagar, acione o CCO. Fadiga é fisiologia, não falta de vontade."},
-                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "medio", dica: "O cérebro relaxa na rotina do trajeto diário. Force a atenção e redobre o cuidado em dias de chuva. <br><br><strong>FATO Ferroviário:</strong> Ferrovias do Japão reduziram falhas humanas em 85% com o método 'Apontar e Falar' (Shisa Kanko) para combater a 'cegueira da rotina'. <br><br><strong>PEGADINHA Reflexiva:</strong> Desafio de hoje: No próximo sinal, aponte fisicamente com a mão e verbalize o aspecto em voz alta na cabine para focar no 'agora'."},
-                {txt: "TEMPO", nome: "TEMPO", nivel: "leve", dica: "Programe seu relógio e saia com antecedência. O planejamento elimina a urgência e garante uma viagem calma. <br><br><strong>FATO Ferroviário:</strong> Em Amagasaki (Japão), o medo de uma punição por atraso de apenas 90 segundos fez o maquinista perder o controle emocional, causando um descarrilamento letal. <br><br><strong>PEGADINHA Reflexiva:</strong> Você gerencia seu tempo ou o estresse do relógio guia sua tração? A segurança começa no seu despertador em casa."}
+                {txt: "PRESSA", nome: "PRESSA", nivel: "grave", dica: "A pressa é a maior inimiga da segurança. O tempo ganho correndo nunca compensa o risco.<br><br><strong>FATO:</strong> Segundo a FRA, a pressa nas manobras é a causa raiz de 46% das amputações no pátio."},
+                {txt: "CELULAR", nome: "CELULAR", nivel: "grave", dica: "O uso do celular destrói a atenção periférica. Pare de caminhar ou estacione para usar.<br><br><strong>FATO:</strong> O desastre de Chatsworth forçou a adoção do Freio Automático após envio de SMS."},
+                {txt: "FADIGA", nome: "FADIGA", nivel: "medio", dica: "O cansaço afeta os reflexos. Fadiga é fisiologia, não falta de vontade.<br><br><strong>FATO:</strong> Exaustão causou micro-sonos em Hinton (Canadá), tornando obrigatórios os vigilantes."},
+                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "medio", dica: "O cérebro relaxa na rotina. Force a atenção e redobre o cuidado.<br><br><strong>FATO:</strong> O método 'Apontar e Falar' do Japão reduziu falhas em 85% contra a cegueira da rotina."},
+                {txt: "TEMPO", nome: "TEMPO", nivel: "leve", dica: "Programe seu relógio e saia com antecedência. O planejamento elimina a urgência.<br><br><strong>FATO:</strong> O medo de punição por atraso de 90s gerou descarrilamento em Amagasaki (Japão)."}
             ]
         };
 
@@ -209,6 +181,7 @@
             let pronto = false;
             while (!pronto) { gridData = Array(SIZE).fill(null).map(() => Array(SIZE).fill('')); pronto = distribuirPalavras(); }
             preencherLixo(); desenhar(); atualizarUI();
+            document.getElementById("intel-content").innerHTML = "<p>Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área.</p>";
         }
 
         function distribuirPalavras() {
@@ -252,89 +225,80 @@
         }
 
         function clicarCelula(el, letra, r, c) {
-            if ('vibrate' in navigator) { navigator.vibrate(30); }
-
             if (el.classList.contains('found-grave') || el.classList.contains('found-medio') || el.classList.contains('found-leve')) return;
             
-            // INTELIGÊNCIA DE SELEÇÃO: Efeito Rebobinar
             if (el.classList.contains('selected')) { 
                 const index = selecionadas.findIndex(s => s.el === el);
-                
-                if (index === selecionadas.length - 1) {
-                    // Se clicou exatamente na última: desmarca apenas ela
-                    el.classList.remove('selected');
-                    selecionadas.pop();
-                } else if (index !== -1) {
-                    // Se clicou no meio para corrigir rota: desmarca tudo que veio DEPOIS dela
-                    while (selecionadas.length - 1 > index) {
-                        const removida = selecionadas.pop();
-                        removida.el.classList.remove('selected');
-                    }
-                }
+                if (index === selecionadas.length - 1) { el.classList.remove('selected'); selecionadas.pop(); } 
+                else { while (selecionadas.length - 1 > index) { selecionadas.pop().el.classList.remove('selected'); } }
                 return; 
             }
             
+            // Trava de Direção e Adjacência
             if (selecionadas.length > 0) {
                 const last = selecionadas[selecionadas.length - 1];
-                if (Math.abs(r - last.r) > 1 || Math.abs(c - last.c) > 1 || (Math.abs(r - last.r) === 1 && Math.abs(c - last.c) === 1)) return;
+                const dr = Math.abs(r - last.r), dc = Math.abs(c - last.c);
+                if ((dr > 1 || dc > 1) || (dr === 1 && dc === 1)) return; // Bloqueia saltos e diagonais
                 if (selecionadas.length >= 2) {
                     const first = selecionadas[0], second = selecionadas[1];
-                    if (first.r === second.r && r !== last.r) return; if (first.r !== second.r && c !== last.c) return;
+                    if (first.r === second.r && r !== last.r) return; // Trava Horizontal
+                    if (first.r !== second.r && c !== last.c) return; // Trava Vertical
                 }
             }
+
             el.classList.add('selected'); selecionadas.push({el, letra, r, c}); verificarJogo();
         }
 
         function verificarJogo() {
             const palavraFormada = selecionadas.map(s => s.letra).join('');
-            const alvo = fasesPalavras[faseAtual].find(p => p.txt === palavraFormada && !encontradas.includes(p.txt));
+            const palavraInvertida = [...palavraFormada].reverse().join('');
+            
+            const alvo = fasesPalavras[faseAtual].find(p => (p.txt === palavraFormada || p.txt === palavraInvertida) && !encontradas.includes(p.txt));
+            
             if (alvo) {
-                if ('vibrate' in navigator) { navigator.vibrate([100, 50, 100]); }
-
-                selecionadas.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(alvo.nivel === 'grave' ? 'found-grave' : alvo.nivel === 'medio' ? 'found-medio' : 'found-leve'); });
+                const estiloAcerto = alvo.nivel === 'grave' ? 'found-grave' : alvo.nivel === 'medio' ? 'found-medio' : 'found-leve';
+                const copiaSelecao = [...selecionadas];
+                selecionadas = [];
+                
+                copiaSelecao.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(estiloAcerto); });
                 encontradas.push(alvo.txt); 
-                abrirModalInsight(alvo); 
-                selecionadas = []; 
                 atualizarUI(); 
+                
+                // Exibe no painel direito ao invés do pop-up
+                atualizarPainelInteligencia(alvo);
+
+                if (encontradas.length === fasesPalavras[faseAtual].length) {
+                    setTimeout(() => alert("🎯 Treinamento Concluído! Você dominou o painel de operações."), 800);
+                }
             }
         }
 
-        function abrirModalInsight(p) {
-            const titulo = document.getElementById("modal-titulo");
-            titulo.innerText = `ALERTA: ${p.nome}`;
-            titulo.className = `modal-titulo titulo-${p.nivel}`;
-            document.getElementById("modal-texto").innerHTML = p.dica;
-            document.getElementById("modal-overlay").classList.add("active");
+        function atualizarPainelInteligencia(alvo) {
+            const painel = document.getElementById("intel-content");
+            const corClass = alvo.nivel === 'grave' ? 'txt-grave' : alvo.nivel === 'medio' ? 'txt-medio' : 'txt-leve';
             
-            if (encontradas.length === fasesPalavras[faseAtual].length) {
-                esperandoFechamentoFinal = true;
-            }
-        }
-
-        function fecharModal() {
-            document.getElementById("modal-overlay").classList.remove("active");
-            
-            if (esperandoFechamentoFinal) {
-                setTimeout(() => {
-                    if ('vibrate' in navigator) { navigator.vibrate([200, 100, 200, 100, 400]); }
-                    alert("🎯 Treinamento Concluído! Você encontrou todas as palavras da MRS. Deixe sua voz e sugestões no Rádio Trecho abaixo!");
-                    esperandoFechamentoFinal = false;
-                }, 500);
-            }
+            // Animação suave para trocar o texto
+            painel.style.opacity = 0;
+            setTimeout(() => {
+                painel.innerHTML = `
+                    <div class="intel-title ${corClass}">► ALERTA: ${alvo.nome}</div>
+                    ${alvo.dica}
+                `;
+                painel.style.opacity = 1;
+                painel.style.transition = "opacity 0.4s ease";
+            }, 200);
         }
 
         function atualizarUI() {
-            const total = fasesPalavras[faseAtual].length;
-            document.getElementById("contador-txt").innerText = `${encontradas.length} / ${total}`;
+            document.getElementById("contador-txt").innerText = `${encontradas.length} / ${fasesPalavras[faseAtual].length}`;
         }
 
-        function salvarComentario() {
-            const texto = document.getElementById("input-comentario").value;
-            if (!texto) return;
-            document.getElementById("lista-comentarios").innerHTML = `✔ Rascunho salvo. Clique em "Enviar ao Forms" para finalizar.`;
+        function abrirForms() { 
+            const coment = document.getElementById("input-comentario").value;
+            // Aqui você pode concatenar o comentário na URL do forms se desejar:
+            // window.open("https://docs.google.com/forms/d/e/.../viewform?usp=pp_url&entry.XXXXX=" + encodeURIComponent(coment), '_blank');
+            window.open("https://forms.gle/ut3jDiKRPWSGVXw37", '_blank'); 
         }
-
-        function abrirForms() { window.open("https://forms.gle/ut3jDiKRPWSGVXw37", '_blank'); }
 
         document.getElementById("btn-reset").onclick = function() { document.querySelectorAll(".cell.selected").forEach(el => el.classList.remove("selected")); selecionadas = []; };
         document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar a trilha?")) { encontradas = []; selecionadas = []; init(); } };
