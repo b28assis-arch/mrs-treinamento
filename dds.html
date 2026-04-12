@@ -13,10 +13,10 @@
             --selected: #3b82f6; 
             
             /* Cores Neon / Digitalizadas */
-            --danger: #ff2a2a;   /* Vermelho Neon */
-            --warning: #ffcc00;  /* Amarelo/Âmbar Neon */
-            --info: #00ffaa;     /* Verde Cyber */
-            --neon-blue: #00d2ff;/* Azul Digital */
+            --danger: #ff2a2a;   
+            --warning: #ffcc00;  
+            --info: #00ffaa;     
+            --neon-blue: #00d2ff;
 
             /* Vidro Tecnológico */
             --glass-bg: rgba(10, 15, 30, 0.85); 
@@ -99,7 +99,16 @@
 
         /* --- COLUNA CENTRAL: GRID --- */
         .center-panel { align-items: center; border: 2px solid rgba(255,255,255,0.1); }
-        .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; width: 100%; max-width: 420px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 12px;}
+        .grid { 
+            display: grid; grid-template-columns: repeat(10, 1fr); 
+            gap: 4px; /* Menos espaço entre as caixas */
+            width: 100%; 
+            max-width: 380px; /* Grid mais compacto */
+            margin: 0 auto;
+            padding: 10px; 
+            background: rgba(0,0,0,0.3); 
+            border-radius: 12px;
+        }
         
         /* Células de Alta Legibilidade */
         .cell { 
@@ -109,7 +118,7 @@
             display: flex; align-items: center; justify-content: center; 
             border-radius: 6px; 
             font-weight: 900; 
-            font-size: 1.4rem; /* Fonte maior */
+            font-size: 1.6rem; /* Fonte maior para preencher a caixa */
             cursor: pointer; user-select: none; transition: all 0.2s; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.5); 
         }
@@ -128,11 +137,12 @@
         /* --- COLUNA DIREITA: INTELIGÊNCIA OPERACIONAL --- */
         .intel-panel { 
             justify-content: flex-start; text-align: left; 
-            border-left: 4px solid var(--neon-blue); /* Detalhe lateral digital */
+            border-left: 4px solid var(--neon-blue);
             background: linear-gradient(90deg, rgba(0, 210, 255, 0.05) 0%, rgba(10, 15, 30, 0.85) 100%);
+            min-height: 180px; /* Garante que a caixa não fique espremida */
         }
         .intel-panel h3 { margin: 0 0 15px 0; font-size: 0.9rem; color: var(--neon-blue); display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
-        .intel-content { font-size: 0.95rem; line-height: 1.6; color: #e2e8f0; }
+        .intel-content { font-size: 1.05rem; line-height: 1.6; color: #e2e8f0; }
         
         /* Títulos Neon na Área de Inteligência */
         .intel-title { font-size: 1.3rem; font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
@@ -144,22 +154,28 @@
         .footer-panel { width: 100%; max-width: 1200px; display: flex; gap: 20px; align-items: center; border-bottom: 3px solid var(--selected);}
         .radio-info { flex: 1; }
         .radio-info h3 { margin: 0 0 5px 0; font-size: 1rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px;}
-        .radio-info p { margin: 0; font-size: 0.85rem; color: #94a3b8; }
+        .radio-info p { margin: 0; font-size: 0.9rem; color: #94a3b8; }
         .radio-form { flex: 2; display: flex; gap: 15px; }
-        .radio-form input { flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); padding: 15px; border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; font-size: 0.9rem;}
+        .radio-form input { flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); padding: 18px; border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; font-size: 1rem;}
         .radio-form input:focus { border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 210, 255, 0.3); }
-        .btn-action { background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%); color: #fff; border: none; padding: 0 25px; border-radius: 8px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5); letter-spacing: 1px;}
+        .btn-action { background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%); color: #fff; border: none; padding: 18px 25px; border-radius: 8px; font-weight: 900; font-size: 1rem; text-transform: uppercase; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5); letter-spacing: 1px;}
         .btn-action:hover { filter: brightness(1.2); transform: translateY(-2px); }
         .btn-action:active { transform: translateY(0); }
 
-        /* Responsividade Mobile */
+        /* Responsividade Mobile - O SEGREDO DO AJUSTE ESTÁ AQUI */
         @media (max-width: 1024px) {
-            .dashboard-container { grid-template-columns: 1fr; }
+            .dashboard-container { grid-template-columns: 1fr; gap: 15px;}
             .footer-panel { flex-direction: column; text-align: center; }
-            .radio-form { width: 100%; flex-direction: column; }
-            .btn-action { padding: 15px; }
-            .grid { max-width: 100%; padding: 5px;}
-            .cell { font-size: 1.2rem; border-radius: 4px;}
+            .radio-form { width: 100%; flex-direction: column; gap: 10px;}
+            .btn-action { padding: 16px; }
+            .radio-form input { padding: 16px; }
+            
+            /* Trava o tamanho do grid no celular para sobrar espaço */
+            .grid { max-width: 340px; padding: 8px; gap: 4px; margin: 0 auto;}
+            .cell { font-size: 1.4rem; border-radius: 4px;} /* Letra grande dentro de caixa menor */
+            
+            .intel-content { font-size: 1rem; }
+            .panel { padding: 20px; }
         }
     </style>
 </head>
