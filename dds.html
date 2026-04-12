@@ -3,159 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MRS - Dashboard Operacional</title>
+    <title>MRS - Dashboard Operacional DDS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* SISTEMA DE ESTILIZAÇÃO OPERACIONAL MRS 
+           Desenvolvido para alto contraste e durabilidade de leitura em campo.
+        */
         :root {
-            --mrs-blue: #0b3a6f; --accent: #ffffff; --selected: #3b82f6; 
-            --danger: #ff2a2a; --warning: #ffcc00; --info: #00ffaa; --neon-blue: #00d2ff;
-            --glass-bg: rgba(10, 15, 30, 0.95); --glass-border: rgba(0, 210, 255, 0.3);
+            --mrs-blue: #0b3a6f; 
+            --accent: #ffffff; 
+            --selected: #3b82f6; 
+            --danger: #ff2a2a; 
+            --warning: #ffcc00; 
+            --info: #00ffaa; 
+            --neon-blue: #00d2ff;
+            --glass-bg: rgba(10, 15, 30, 0.95); 
+            --glass-border: rgba(0, 210, 255, 0.3);
         }
         
         body { 
-            margin: 0; font-family: 'Inter', sans-serif; 
-            background: #020617 url('fundo-mrs.png') no-repeat center center fixed; 
-            background-size: cover; color: #f8fafc; min-height: 100vh; 
-            display: flex; flex-direction: column; align-items: center; 
-            padding: 15px; box-sizing: border-box; overflow-x: hidden;
+            margin: 0; 
+            font-family: 'Inter', sans-serif; 
+            background: #020617; 
+            color: #f8fafc; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 15px; 
+            box-sizing: border-box; 
+            overflow-x: hidden;
         }
 
+        /* --- LAYOUT DE TOPO --- */
         .banner-topo { 
-            width: 100%; max-width: 1200px; margin-bottom: 20px; 
-            border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            width: 100%; 
+            max-width: 1200px; 
+            margin-bottom: 20px; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .banner-topo img { width: 100%; display: block; }
 
+        /* --- CONTAINER PRINCIPAL --- */
         .dashboard-container { 
-            display: grid; grid-template-columns: 1fr 1.5fr 1fr; 
-            gap: 20px; width: 100%; max-width: 1200px; margin-bottom: 20px; 
+            display: grid; 
+            grid-template-columns: 1fr 1.5fr 1fr; 
+            gap: 20px; 
+            width: 100%; 
+            max-width: 1200px; 
+            margin-bottom: 20px; 
         }
 
         .panel { 
-            background: var(--glass-bg); backdrop-filter: blur(25px); 
-            border: 1px solid var(--glass-border); border-radius: 20px; 
-            padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.7); 
-            display: flex; flex-direction: column; 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(25px); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 15px; 
+            padding: 25px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6); 
+            display: flex; 
+            flex-direction: column; 
         }
 
+        /* --- PAINEL DE STATUS --- */
         .status-panel { text-align: center; justify-content: center; }
-        .mrs-titulo { margin: 0; font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
-        .contador-container { margin: 20px 0; font-size: 1rem; font-weight: 700; }
-        .contador { background: #000; padding: 5px 15px; border-radius: 8px; color: var(--neon-blue); border: 1px solid var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); font-family: monospace; }
+        .mrs-titulo { 
+            margin: 0; 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+            color: var(--accent);
+        }
+        .contador-label { margin-top: 20px; font-weight: 700; color: #94a3b8; font-size: 0.9rem; }
+        .contador { 
+            background: #000; 
+            padding: 6px 16px; 
+            border-radius: 8px; 
+            color: var(--neon-blue); 
+            border: 1px solid var(--neon-blue); 
+            font-family: monospace;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
 
+        /* --- GRID DE BUSCA (ESTRUTURA ANTI-BORRÃO) --- */
         .grid { 
-            display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; 
-            width: 100%; max-width: 320px; margin: 0 auto; padding: 12px; 
-            background: rgba(0,0,0,0.5); border-radius: 15px; 
+            display: grid; 
+            grid-template-columns: repeat(10, 1fr); 
+            gap: 5px; 
+            width: 100%; 
+            max-width: 330px; 
+            margin: 0 auto; 
+            padding: 12px; 
+            background: rgba(0,0,0,0.4); 
+            border-radius: 12px; 
         }
         .cell { 
-            aspect-ratio: 1; background: #ffffff; color: #0b1120; 
-            display: flex; align-items: center; justify-content: center; 
-            border-radius: 5px; font-weight: 600; font-size: 1.4rem; 
-            cursor: pointer; transition: 0.2s; user-select: none;
+            aspect-ratio: 1; 
+            background: #ffffff; 
+            color: #0b1120; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 4px; 
+            font-weight: 600; /* Peso 600 para nitidez máxima no celular */
+            font-size: 1.4rem; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            user-select: none;
         }
         .selected { background: var(--selected) !important; color: #fff !important; }
         .found-grave { background: var(--danger) !important; color: #fff !important; box-shadow: 0 0 12px var(--danger); }
         .found-medio { background: var(--warning) !important; color: #000 !important; box-shadow: 0 0 12px var(--warning); }
         .found-leve { background: var(--info) !important; color: #000 !important; box-shadow: 0 0 12px var(--info); }
 
-        /* TERMINAL DE INTELIGÊNCIA OPERACIONAL */
-        .intel-panel { border-left: 5px solid var(--neon-blue); min-height: 450px; }
-        .intel-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 15px; text-transform: uppercase; color: var(--neon-blue); border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; }
-        .intel-text { font-size: 1.1rem; line-height: 1.5; color: #f1f5f9; }
+        /* --- TERMINAL DE INTELIGÊNCIA OPERACIONAL (EXPANDIDO) --- */
+        .intel-panel { 
+            border-left: 5px solid var(--neon-blue); 
+            min-height: 520px; 
+        }
+        .intel-title { 
+            font-size: 1.1rem; 
+            font-weight: 800; 
+            margin-bottom: 15px; 
+            color: var(--neon-blue); 
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 8px;
+        }
+        .intel-content-wrapper { font-size: 1rem; line-height: 1.5; color: #f1f5f9; }
         
-        .fato-box { margin-top: 15px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 10px; color: #cbd5e1; font-size: 0.95rem; border-left: 3px solid var(--warning); }
-        .exemplo-box { margin-top: 10px; padding: 12px; background: rgba(0, 210, 255, 0.1); border-radius: 10px; color: var(--neon-blue); font-size: 0.95rem; border-left: 3px solid var(--neon-blue); }
+        .box-info { 
+            margin-bottom: 15px; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-size: 0.95rem; 
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .expl-box { background: rgba(255,255,255,0.05); border-left: 4px solid var(--info); }
+        .fato-box { background: rgba(255,42,42,0.1); border-left: 4px solid var(--danger); }
+        .simu-box { background: rgba(0,210,255,0.1); border-left: 4px solid var(--neon-blue); }
 
-        .footer-panel { width: 100%; max-width: 1200px; border-bottom: 5px solid var(--selected); margin-top: 20px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- RÁDIO TRECHO GIGANTE (FORMS) --- */
+        .footer-panel { 
+            width: 100%; 
+            max-width: 1200px; 
+            border-bottom: 5px solid var(--selected); 
+            margin-top: 15px; 
+        }
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .radio-label h3 { margin: 0; font-size: 1.3rem; text-transform: uppercase; color: var(--accent); }
+        
         .input-mrs { 
-            background: rgba(0,0,0,0.7); border: 2px solid var(--glass-border); 
-            padding: 25px; border-radius: 12px; color: #fff; width: 100%; 
-            box-sizing: border-box; margin-bottom: 20px; font-family: inherit; 
-            font-size: 1.2rem; min-height: 180px; resize: none;
+            background: rgba(0,0,0,0.6); 
+            border: 2px solid var(--glass-border); 
+            padding: 25px; 
+            border-radius: 12px; 
+            color: #fff; 
+            width: 100%; 
+            box-sizing: border-box; 
+            font-family: inherit; 
+            font-size: 1.3rem; 
+            min-height: 250px; /* Tamanho Gigante conforme solicitado */
+            resize: none;
+            margin-bottom: 20px;
         }
-        .btn-main { 
-            background: linear-gradient(90deg, #2563eb, #3b82f6); color: #fff; 
-            border: none; padding: 25px; border-radius: 12px; font-weight: 900; 
-            font-size: 1.3rem; cursor: pointer; text-transform: uppercase; width: 100%; 
-            box-shadow: 0 5px 25px rgba(59, 130, 246, 0.6); 
-        }
+        .input-mrs:focus { border-color: var(--neon-blue); outline: none; background: rgba(0,0,0,0.8); }
 
+        .btn-main { 
+            background: linear-gradient(90deg, #1e40af, #3b82f6); 
+            color: #fff; 
+            border: none; 
+            padding: 25px; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            font-size: 1.4rem; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            width: 100%; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            transition: 0.3s;
+        }
+        .btn-main:hover { filter: brightness(1.2); transform: translateY(-2px); }
+
+        /* --- AJUSTES MOBILE --- */
         @media (max-width: 1024px) {
-            .dashboard-container { grid-template-columns: 1fr; }
-            .grid { max-width: 300px; }
+            .dashboard-container { grid-template-columns: 1fr; gap: 15px; }
+            .grid { max-width: 310px; }
+            .intel-panel { min-height: auto; }
             .panel { padding: 20px; }
+            .input-mrs { font-size: 1.1rem; min-height: 200px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="banner-topo"><img src="1000121485.png" alt="MRS LOGÍSTICA"></div>
+    <div class="banner-topo">
+        <img src="1000121485.png" alt="BANNER MRS LOGÍSTICA">
+    </div>
 
     <div class="dashboard-container">
         <div class="panel status-panel">
             <h1 class="mrs-titulo">MRS LOGÍSTICA</h1>
-            <div class="contador-container">VARREDURA: <span class="contador" id="contador-txt">0/5</span></div>
-            <button class="btn-main" style="padding:12px; font-size:0.8rem; background:#1e293b;" onclick="location.reload()">REINICIAR SISTEMA</button>
+            <div class="contador-label">VARREDURA DE RISCOS HUMANO</div>
+            <div style="margin: 10px 0;"><span class="contador" id="contador-txt">0/5</span></div>
+            <button class="btn-main" style="padding:12px; font-size:0.8rem; background:#1e293b; margin-top:15px;" onclick="location.reload()">REINICIAR SISTEMA</button>
         </div>
 
-        <div class="panel"><div class="grid" id="grid-box"></div></div>
+        <div class="panel">
+            <div class="grid" id="grid-box"></div>
+        </div>
 
         <div class="panel intel-panel">
-            <div class="intel-title">TERMINAL DE INTELIGÊNCIA OPERACIONAL</div>
-            <div id="intel-content" class="intel-text">
-                "Aguardando varredura... Identifique os riscos de SONO, CELULAR, ATENÇÃO, SINAL e PRESSA no grid central."
+            <div class="intel-title">Terminal de Inteligência Operacional</div>
+            <div id="intel-content" class="intel-content-wrapper">
+                "Sistema online. Identifique no grid central as 5 palavras-chave discutidas no DDS (SONO, CELULAR, ATENCAO, SINAL, PRESSA) para processar os protocolos de segurança."
             </div>
         </div>
     </div>
 
     <div class="panel footer-panel">
-        <div style="margin-bottom: 15px; text-align: center;">
-            <h3 style="margin:0; text-transform: uppercase;">📡 RÁDIO TRECHO: SUA VOZ NA OPERAÇÃO</h3>
-            <p style="margin:5px 0; color:#94a3b8;">A segurança é feita por quem vive a via. Relate desvios ou sugestões.</p>
+        <div class="radio-label">
+            <h3>📡 Rádio Trecho: Registro de Compromisso DDS</h3>
         </div>
-        <textarea class="input-mrs" id="feedback-caixa" placeholder="Registre aqui detalhes do DDS ou sugestões da equipe..."></textarea>
-        <button class="btn-main" onclick="transmitir()">TRANSMITIR DADOS</button>
+        <textarea class="input-mrs" id="feedback-caixa" placeholder="Descreva aqui as percepções da equipe sobre os riscos abordados, sugestões de melhoria ou relatos de situações vivenciadas no trecho..."></textarea>
+        <button class="btn-main" onclick="transmitir()">TRANSMITIR RELATÓRIO AO FORMS</button>
     </div>
 
     <script>
+        /* MOTOR LÓGICO DO DASHBOARD OPERACIONAL
+        */
         const SIZE = 10;
         let selecionadas = [], encontradas = [], gridData = [];
         
+        // BANCO DE DADOS INTEGRAL (EXPLICAÇÃO -> MUNDO -> DIA A DIA)
         const bancoDados = [
             {
                 txt: "SONO", nivel: "grave", 
-                dica: "Fadiga é fisiológica. O sono não avisa quando chega.", 
-                fato: "FATO: Micro-sonos de 2s a 40km/h fazem o trem percorrer 22m sem controle. O desastre em Hinton (Canadá) foi causado por fadiga extrema.",
-                exemplo: "BOA PRÁTICA: Identifique o cansaço antes de assumir. Se sentir sinais durante a via, peça parada segura conforme regulamento."
+                expl: "A fadiga ferroviária é um estado fisiológico de redução da capacidade mental ou física. Ela compromete o tempo de reação e a consciência situacional.",
+                fato: "OCORRÊNCIA NO MUNDO: Desastre de Hinton (Canadá, 1986). A fadiga extrema da tripulação resultou na colisão frontal entre um trem de carga e um de passageiros, causando 23 mortes.",
+                simu: "DIA A DIA: Você percebe 'visão turva' ou micro-sonos no final do turno. Ação: Reporte imediatamente ao CCO e solicite parada segura. Sono é fisiologia, não força de vontade."
             },
             {
                 txt: "CELULAR", nivel: "grave", 
-                dica: "O uso do celular destrói a atenção periférica.", 
-                fato: "FATO: O desastre de Chatsworth forçou a adoção do Freio Automático após o maquinista ignorar o sinal ao enviar um SMS.",
-                exemplo: "BOA PRÁTICA: Celular deve ser desligado ou guardado antes de entrar na cabine. Nunca use cruzando a via ou caminhando no pátio."
-            },
-            {
-                txt: "ATENCAO", nivel: "medio", 
-                dica: "A rotina gera cegueira operacional e excesso de confiança.", 
-                fato: "PEGADINHA: Estatísticas mostram que a maioria dos incidentes ocorre em locais que o colaborador conhece bem, onde ele baixa a guarda.",
-                exemplo: "BOA PRÁTICA: Force o despertar da atenção em sinais amarelos. Utilize mecanismos como 'Anotar e Cantar' cada sinalização."
+                expl: "O uso de dispositivos eletrônicos causa cegueira atencional. O cérebro foca na tela e ignora estímulos externos vitais, como sons de alerta e sinalização.",
+                fato: "OCORRÊNCIA NO MUNDO: Colisão em Chatsworth (EUA, 2008). O maquinista enviou mensagens de texto segundos antes de ignorar o sinal vermelho, matando 25 pessoas.",
+                simu: "DIA A DIA: Surge uma notificação urgente no celular durante a condução. Ação: O aparelho deve estar desligado e guardado. A atenção na via é sua única proteção."
             },
             {
                 txt: "SINAL", nivel: "grave", 
-                dica: "Em modo degradado, a atenção deve ser absoluta.", 
-                fato: "FATO: Avanços de sinal em modo degradado são causados por perda de referência. A sinalização é sua garantia de vida.",
-                exemplo: "BOA PRÁTICA: Utilize mapas de sinalização e layouts de pátios. Em caso de dúvidas: pare o trem e peça instruções."
+                expl: "A sinalização é a linguagem da ferrovia. Em modo degradado ou dúvida, o protocolo exige a interpretação mais restritiva para evitar ocupação indevida de trecho.",
+                fato: "OCORRÊNCIA NO MUNDO: Acidente de Bad Aibling (Alemanha, 2016). Falha na comunicação e interpretação de sinais resultou na colisão de dois trens em via singela.",
+                simu: "DIA A DIA: Você avista um sinal com aspecto duvidoso ou apagado. Ação: Considere como PARADA. Utilize o 'Anotar e Cantar' para confirmar cada aspecto com o auxiliar."
+            },
+            {
+                txt: "ATENCAO", nivel: "medio", 
+                expl: "A rotina gera o excesso de confiança. O cérebro entra em 'modo automático', deixando de processar riscos em locais que o colaborador conhece bem.",
+                fato: "OCORRÊNCIA NO MUNDO: Descarrilamento de Santiago de Compostela (Espanha, 2013). O maquinista perdeu a noção de localização em trecho rotineiro e entrou na curva a 179km/h.",
+                simu: "DIA A DIA: Cruzar uma PN que raramente tem tráfego. Ação: Trate cada cruzamento como se fosse o primeiro. Verifique visualmente ambos os lados, ignorando a familiaridade."
             },
             {
                 txt: "PRESSA", nivel: "grave", 
-                dica: "A pressa é a principal causa de incidentes no trajeto.", 
-                fato: "FATO: O descarrilamento em Amagasaki ocorreu porque o maquinista correu para compensar um atraso de apenas 90 segundos.",
-                exemplo: "BOA PRÁTICA: Evite pressa no trajeto casa x trabalho. Ela causa visão de túnel e anula a percepção lateral no trânsito."
+                expl: "A urgência para cumprir horários ou liberar a via gera 'visão de túnel', onde o colaborador ignora protocolos de segurança em prol do resultado imediato.",
+                fato: "OCORRÊNCIA NO MUNDO: Tragédia de Amagasaki (Japão, 2005). O condutor acelerou excessivamente para compensar um atraso de apenas 90 segundos, causando 107 fatalidades.",
+                simu: "DIA A DIA: Pressão para liberar a via para um trem de carga prioritária. Ação: Respeite rigorosamente a velocidade do trecho. A segurança precede o relógio."
             }
         ];
 
+        // INICIALIZAÇÃO DO SISTEMA
         function init() {
             let pronto = false;
             while (!pronto) { 
@@ -166,15 +292,21 @@
             renderizarGrid();
         }
 
+        // DISTRIBUIÇÃO DAS PALAVRAS NO GRID
         function distribuirPalavras() {
             const lista = [...bancoDados].sort((a,b) => b.txt.length - a.txt.length);
             for (let p of lista) {
                 let colocada = false, tentativas = 0;
                 while (!colocada && tentativas < 3000) {
-                    let h = Math.random() > 0.5, r = Math.floor(Math.random() * (h ? SIZE : SIZE - p.txt.length)), c = Math.floor(Math.random() * (h ? SIZE - p.txt.length : SIZE));
+                    let h = Math.random() > 0.5;
+                    let r = Math.floor(Math.random() * (h ? SIZE : SIZE - p.txt.length));
+                    let c = Math.floor(Math.random() * (h ? SIZE - p.txt.length : SIZE));
                     let ok = true;
                     for (let i = 0; i < p.txt.length; i++) if (gridData[h?r:r+i][h?c+i:c] !== '') ok = false;
-                    if (ok) { for (let i = 0; i < p.txt.length; i++) gridData[h?r:r+i][h?c+i:c] = p.txt[i]; colocada = true; }
+                    if (ok) { 
+                        for (let i = 0; i < p.txt.length; i++) gridData[h?r:r+i][h?c+i:c] = p.txt[i]; 
+                        colocada = true; 
+                    }
                     tentativas++;
                 }
                 if (!colocada) return false;
@@ -183,7 +315,8 @@
 
         function preencherLixo() {
             const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            for (let r = 0; r < SIZE; r++) for (let c = 0; c < SIZE; c++) if (gridData[r][c] === '') gridData[r][c] = abc[Math.floor(Math.random() * abc.length)];
+            for (let r = 0; r < SIZE; r++) for (let c = 0; c < SIZE; c++) 
+                if (gridData[r][c] === '') gridData[r][c] = abc[Math.floor(Math.random() * abc.length)];
         }
 
         function renderizarGrid() {
@@ -195,8 +328,9 @@
             }));
         }
 
+        // LÓGICA DE SELEÇÃO (SUPORTE A REBOBINAR E LINHA RETA)
         function gerenciarClique(el, letra, r, c) {
-            if (el.classList.contains('found-grave') || el.classList.contains('found-medio') || el.classList.contains('found-leve')) return;
+            if (el.classList.contains('found-grave') || el.classList.contains('found-medio')) return;
             
             if (el.classList.contains('selected')) {
                 const index = selecionadas.findIndex(s => s.el === el);
@@ -219,49 +353,36 @@
             verificarMatch();
         }
 
+        // VERIFICAÇÃO DE PALAVRA (NORMAL E INVERTIDA)
         function verificarMatch() {
             const formada = selecionadas.map(s => s.letra).join('');
             const invertida = [...formada].reverse().join('');
             
-            // Aceita normal ou de trás para frente
             const alvo = bancoDados.find(p => (p.txt === formada || p.txt === invertida) && !encontradas.includes(p.txt));
             
             if (alvo) {
                 const corClas = `found-${alvo.nivel}`;
                 selecionadas.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(corClas); });
-                encontradas.push(alvo.txt); 
-                selecionadas = [];
+                encontradas.push(alvo.txt); selecionadas = [];
                 document.getElementById("contador-txt").innerText = `${encontradas.length}/5`;
-                processarAnimacao(alvo);
+                processarInteligencia(alvo);
             }
         }
 
-        function processarAnimacao(alvo) {
+        function processarInteligencia(alvo) {
             const painel = document.getElementById("intel-content");
-            const corHex = alvo.nivel === 'grave' ? '#ff2a2a' : alvo.nivel === 'medio' ? '#ffcc00' : '#00ffaa';
+            const cor = alvo.nivel === 'grave' ? '#ff2a2a' : '#ffcc00';
             
             painel.innerHTML = `
-                <div style="color:${corHex}; font-weight:800; margin-bottom:10px; font-size:1.2rem; text-shadow: 0 0 10px ${corHex}55;">[ ! ] ALERTA: ${alvo.txt}</div>
-                <div id="typing" style="margin-bottom:15px; font-weight:600;"></div>
-                <div class="fato-box" id="fato"></div>
-                <div class="exemplo-box" id="exemplo"></div>
+                <div style="color:${cor}; font-weight:800; margin-bottom:15px; font-size:1.1rem; border-bottom: 2px solid ${cor}; padding-bottom:5px;">[ ! ] ALERTA DETECTADO: ${alvo.txt}</div>
+                <div class="box-info expl-box"><b>EXPLICAÇÃO TÉCNICA:</b> ${alvo.expl}</div>
+                <div class="box-info fato-box"><b>OCORRÊNCIA NO MUNDO:</b> ${alvo.fato}</div>
+                <div class="box-info simu-box"><b>SIMULAÇÃO NO DIA A DIA:</b> ${alvo.simu}</div>
             `;
-            
-            let i = 0;
-            function digitar() {
-                if (i < alvo.dica.length) {
-                    document.getElementById("typing").innerHTML += alvo.dica.charAt(i);
-                    i++; setTimeout(digitar, 20);
-                } else {
-                    document.getElementById("fato").innerHTML = "<b>FATO:</b> " + alvo.fato;
-                    document.getElementById("exemplo").innerHTML = "<b>EXEMPLO PRÁTICO:</b> " + alvo.exemplo;
-                }
-            }
-            digitar();
         }
 
         function transmitir() {
-            if(!document.getElementById("feedback-caixa").value) { alert("Registre o DDS antes de transmitir."); return; }
+            if(!document.getElementById("feedback-caixa").value) { alert("Atenção: Registre o DDS antes de transmitir os dados."); return; }
             window.open('https://forms.gle/ut3jDiKRPWSGVXw37');
         }
 
