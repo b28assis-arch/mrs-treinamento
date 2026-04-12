@@ -18,23 +18,28 @@
             --glass-bg: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.3);
         }
-        body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%); color: #f8fafc; text-align: center; padding: 20px 12px; min-height: 100vh; overflow-x: hidden; }
+        body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%); color: #f8fafc; text-align: center; padding: 15px 12px; min-height: 100vh; overflow-x: hidden; }
         
-        /* CABEÇALHO */
+        /* CABEÇALHO COM IMAGEM 100% VISÍVEL */
         .header-game { 
-            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.4), rgba(2, 6, 23, 0.9)), url('1000121485.png');
-            background-size: cover; 
-            background-position: center; 
+            background-color: var(--bg-darker);
+            /* Gradiente suave + imagem sem zoom */
+            background-image: linear-gradient(to bottom, rgba(2, 6, 23, 0.1) 0%, rgba(2, 6, 23, 0.95) 100%), url('1000121485.png');
+            background-size: 100% auto; /* Mostra a arte inteira na largura */
+            background-position: top center; 
             background-repeat: no-repeat;
-            padding: 30px 15px; 
+            padding: 120px 15px 25px 15px; /* Empurra os textos para baixo da arte */
             border-radius: 24px; 
             margin-bottom: 20px; 
             border: 1px solid var(--glass-border); 
             box-shadow: 0 20px 40px rgba(0,0,0,0.5); 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
         }
         
-        .mrs-titulo { margin: 0; font-size: 1.4rem; font-weight: 900; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
-        .slogan { font-size: 0.9rem; color: #cbd5e1; margin: 10px 0 15px 0; font-weight: 400; line-height: 1.5; }
+        .mrs-titulo { margin: 0; font-size: 1.3rem; font-weight: 900; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
+        .slogan { font-size: 0.85rem; color: #cbd5e1; margin: 10px 0 15px 0; font-weight: 400; line-height: 1.5; }
         .fase-badge { background: var(--mrs-blue); color: var(--accent); display: inline-block; padding: 6px 16px; border-radius: 30px; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(11, 58, 111, 0.6); border: 1px solid rgba(255,255,255,0.2); }
         
         .progresso-container { margin-top: 20px; font-weight: 600; font-size: 0.85rem; display: flex; justify-content: center; align-items: center; gap: 10px; color: #94a3b8; }
@@ -45,18 +50,18 @@
         .btn-aux { background: var(--glass-bg); color: #cbd5e1; border: 1px solid var(--glass-border); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; flex: 1; max-width: 180px; backdrop-filter: blur(10px); transition: all 0.2s; }
         .btn-aux:active { transform: scale(0.95); background: rgba(255,255,255,0.15); color: #fff; }
         
-        /* GRID 8x8 NEUMÓRFICO (Alinhamento Perfeito) */
+        /* GRID 10x10 NEUMÓRFICO RETORNADO */
         .grid { 
             display: grid; 
-            grid-template-columns: repeat(8, 1fr); /* Reduzido para 8 colunas */
-            gap: 6px; /* Espaço um pouco maior para facilitar o clique */
+            grid-template-columns: repeat(10, 1fr); /* Voltou para 10 colunas */
+            gap: 4px; /* Ajustado para caber 10 perfeitamente */
             width: 100%; 
-            max-width: 340px; /* Reduzido para não esticar demais no celular */
+            max-width: 380px; 
             margin: 0 auto 20px auto; 
             background: var(--glass-bg); 
             backdrop-filter: blur(16px); 
             -webkit-backdrop-filter: blur(16px); 
-            padding: 16px; 
+            padding: 15px; 
             border-radius: 24px; 
             border: 1px solid var(--glass-border); 
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
@@ -69,14 +74,13 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            border-radius: 8px; 
+            border-radius: 6px; /* Cantos levemente menores para 10x10 */
             font-weight: 900; 
-            font-size: 1.1rem; /* Letra um pouco maior para preencher melhor */
+            font-size: 0.95rem; /* Fonte ajustada */
             cursor: pointer; 
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
             user-select: none; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-            padding: 0; /* Removido padding interno para centralização absoluta */
         }
         .cell:active { transform: scale(0.85); }
         
@@ -85,7 +89,7 @@
         
         @keyframes pulseModern {
             0% { transform: scale(1); }
-            50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255,255,255,0.4); z-index: 10; }
+            50% { transform: scale(1.15); box-shadow: 0 0 20px rgba(255,255,255,0.6); z-index: 10; }
             100% { transform: scale(1); }
         }
         
@@ -93,7 +97,7 @@
         .found-medio { background: var(--warning) !important; color: #000 !important; animation: pulseModern 0.5s ease; border: none; }
         .found-leve { background: var(--info) !important; color: #000 !important; animation: pulseModern 0.5s ease; border: none; }
         
-        /* Insights Estilo Notificação de App (AGORA VEM ANTES DO FORMS) */
+        /* Insights Estilo Notificação de App */
         #resultado { width: 100%; max-width: 440px; margin: 0 auto 20px auto; display: flex; flex-direction: column; gap: 15px; }
         .insight { background: var(--bg-darker); padding: 20px; border-radius: 16px; text-align: left; font-size: 0.85rem; font-weight: 400; line-height: 1.6; color: #cbd5e1; border-left: 4px solid transparent; box-shadow: 0 10px 25px rgba(0,0,0,0.5); animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; }
         .insight strong { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px; color: #fff; font-weight: 800; }
@@ -110,7 +114,7 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
-        /* Área do Rádio Trecho (AGORA FICA NO FINAL) */
+        /* Área do Rádio Trecho */
         .analise-section { width: 100%; max-width: 440px; margin: 0 auto 40px auto; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 25px 20px; border-radius: 24px; text-align: left; box-sizing: border-box; border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
         .analise-section h3 { margin: 0 0 8px 0; font-size: 0.9rem; color: var(--accent); text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
         .analise-section p { font-size: 0.8rem; color: #94a3b8; line-height: 1.5; margin-bottom: 15px; }
@@ -156,8 +160,8 @@
     </div>
 
     <script>
-        // GRID RESTRITO A 8x8 PERFEITO
-        const SIZE = 8;
+        // GRID RETORNOU PARA 10x10
+        const SIZE = 10;
         let selecionadas = [], encontradas = [], gridData = [], faseAtual = 1;
         
         const fasesPalavras = {
@@ -217,6 +221,9 @@
         }
 
         function clicarCelula(el, letra, r, c) {
+            // FUNÇÃO INTELIGENTE: Vibração Tátil (Android)
+            if ('vibrate' in navigator) { navigator.vibrate(50); }
+
             if (el.classList.contains('found-grave') || el.classList.contains('found-medio') || el.classList.contains('found-leve')) return;
             if (el.classList.contains('selected')) { if (selecionadas.length > 0 && selecionadas[selecionadas.length - 1].el === el) { el.classList.remove('selected'); selecionadas.pop(); } return; }
             if (selecionadas.length > 0) {
@@ -234,6 +241,9 @@
             const palavraFormada = selecionadas.map(s => s.letra).join('');
             const alvo = fasesPalavras[faseAtual].find(p => p.txt === palavraFormada && !encontradas.includes(p.txt));
             if (alvo) {
+                // FUNÇÃO INTELIGENTE: Dupla Vibração de Sucesso
+                if ('vibrate' in navigator) { navigator.vibrate([100, 50, 100]); }
+
                 selecionadas.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(alvo.nivel === 'grave' ? 'found-grave' : alvo.nivel === 'medio' ? 'found-medio' : 'found-leve'); });
                 encontradas.push(alvo.txt); exibirInsight(alvo); selecionadas = []; atualizarUI(); checarFimFase();
             }
@@ -243,7 +253,7 @@
             const res = document.getElementById("resultado");
             const card = document.createElement("div"); card.className = `insight ${p.nivel}`;
             card.innerHTML = `<strong>ALERTA OPERACIONAL: ${p.nome}</strong>${p.dica}`; 
-            res.appendChild(card); // Modificado de prepend para appendChild para aparecer na ordem certa
+            res.appendChild(card); 
         }
 
         function atualizarUI() {
@@ -254,6 +264,7 @@
         function checarFimFase() { 
             if (encontradas.length === fasesPalavras[faseAtual].length) { 
                 setTimeout(() => {
+                    if ('vibrate' in navigator) { navigator.vibrate([200, 100, 200, 100, 400]); }
                     alert("🎯 Treinamento Concluído! Você encontrou todas as palavras. Deixe sua voz no Rádio Trecho abaixo e envie para a coordenação!");
                 }, 600);
             } 
