@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MRS - Dashboard de Segurança Operacional 4.0</title>
+    <title>MRS - Dashboard de Boas Práticas Operacionais</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* SISTEMA DE DESIGN OPERACIONAL MRS
-           Focado em: Ergonomia visual, Segurança Cognitiva e Resposta Rápida.
-           Contexto: Pátios, Estações e Via Permanente.
+        /* SISTEMA DE DESIGN OPERACIONAL MRS - VERSÃO PROFISSIONAL 4.2
+           Desenvolvido para: Segurança Ferroviária Integrada.
+           Foco: Mitigação de erro humano através de conceitos Neurocomportamentais.
         */
         :root {
             --mrs-blue: #0b3a6f; 
@@ -20,12 +20,12 @@
             --neon-blue: #00d2ff;
             --glass-bg: rgba(10, 15, 30, 0.98); 
             --glass-border: rgba(0, 210, 255, 0.3);
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-main: 'Inter', sans-serif;
         }
         
         body { 
             margin: 0; 
-            font-family: 'Inter', sans-serif; 
+            font-family: var(--font-main); 
             background: #020617; 
             color: #f8fafc; 
             min-height: 100vh; 
@@ -37,7 +37,7 @@
             overflow-x: hidden;
         }
 
-        /* --- ELEMENTOS DE IDENTIDADE --- */
+        /* --- ESTILIZAÇÃO DO CABEÇALHO --- */
         .banner-topo { 
             width: 100%; 
             max-width: 1200px; 
@@ -49,7 +49,7 @@
         }
         .banner-topo img { width: 100%; display: block; }
 
-        /* --- GRID PRINCIPAL DO DASHBOARD --- */
+        /* --- ARQUITETURA DO DASHBOARD --- */
         .dashboard-container { 
             display: grid; 
             grid-template-columns: 1fr 1.5fr 1fr; 
@@ -68,53 +68,47 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.8); 
             display: flex; 
             flex-direction: column; 
-            position: relative;
         }
 
-        /* --- PAINEL DE STATUS E CONTROLE --- */
+        /* --- STATUS E CONTADORES --- */
         .status-panel { text-align: center; justify-content: center; }
         .mrs-titulo { 
             margin: 0; 
-            font-size: 1.6rem; 
+            font-size: 1.8rem; 
             font-weight: 800; 
             text-transform: uppercase; 
             color: var(--accent); 
-            letter-spacing: 1.5px;
-        }
-        .operacao-badge {
-            font-size: 0.75rem;
-            color: var(--neon-blue);
-            font-weight: 700;
-            margin-top: 5px;
             letter-spacing: 2px;
         }
-        .contador-frame {
+        .status-badge { 
+            margin: 15px 0; 
+            font-weight: 700; 
+            color: var(--neon-blue); 
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+        .contador-display {
             background: #000; 
-            padding: 15px; 
-            border-radius: 12px; 
+            padding: 12px 20px; 
+            border-radius: 10px; 
             color: var(--neon-blue); 
             border: 1px solid var(--neon-blue); 
             font-family: monospace; 
-            font-size: 2rem;
+            font-size: 2.2rem;
             text-shadow: 0 0 15px var(--neon-blue); 
-            margin: 20px 0;
-            position: relative;
+            margin-bottom: 20px;
         }
 
-        /* --- GRID DE INTERAÇÃO (CAÇA-PALAVRAS) --- */
-        .grid-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        /* --- INTERFACE DO CAÇA-PALAVRAS --- */
         .grid { 
             display: grid; 
             grid-template-columns: repeat(10, 1fr); 
             gap: 8px; 
             width: 100%; 
             max-width: 360px; 
+            margin: 0 auto; 
             padding: 15px; 
-            background: rgba(0,0,0,0.5); 
+            background: rgba(0,0,0,0.4); 
             border-radius: 16px; 
         }
         .cell { 
@@ -128,25 +122,14 @@
             font-weight: 600; 
             font-size: 1.4rem; 
             cursor: pointer; 
-            transition: var(--transition-smooth); 
+            transition: all 0.2s ease; 
             user-select: none;
         }
-        .cell:hover { transform: scale(1.05); filter: brightness(1.1); }
+        .cell:hover { filter: brightness(1.1); transform: scale(1.05); }
         .selected { background: var(--selected) !important; color: #fff !important; }
-        .found-word { 
-            background: var(--danger) !important; 
-            color: #fff !important; 
-            box-shadow: 0 0 20px var(--danger); 
-            animation: matchPulse 0.5s ease-out;
-        }
+        .found-word { background: var(--danger) !important; color: #fff !important; box-shadow: 0 0 15px var(--danger); }
 
-        @keyframes matchPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* --- TERMINAL DE INTELIGÊNCIA (MAXIMIZADO) --- */
+        /* --- TERMINAL DE INTELIGÊNCIA OPERACIONAL --- */
         .intel-panel { border-left: 8px solid var(--neon-blue); min-height: 750px; }
         .intel-title { 
             font-size: 1.3rem; 
@@ -155,54 +138,40 @@
             text-transform: uppercase; 
             border-bottom: 2px solid rgba(255,255,255,0.1); 
             padding-bottom: 12px; 
-            margin-bottom: 25px; 
+            margin-bottom: 20px; 
         }
         
         .intel-box { 
-            margin-bottom: 25px; 
+            margin-bottom: 22px; 
             padding: 22px; 
-            border-radius: 14px; 
+            border-radius: 15px; 
             font-size: 1.05rem; 
-            line-height: 1.7; 
-            animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1); 
-            position: relative;
+            line-height: 1.6; 
+            animation: slideIn 0.5s ease-out forwards; 
         }
-        .box-neuro { background: rgba(255,255,255,0.05); border-left: 6px solid var(--info); }
-        .box-fatal { background: rgba(255,42,42,0.18); border-left: 6px solid var(--danger); color: #ffa0a0; }
-        .box-protocolo { background: rgba(0,210,255,0.18); border-left: 6px solid var(--neon-blue); }
+        .box-neuro { background: rgba(255,255,255,0.05); border-left: 6px solid var(--info); color: #e2e8f0; }
+        .box-fatal { background: rgba(255,42,42,0.15); border-left: 6px solid var(--danger); color: #ffa0a0; }
+        .box-pratica { background: rgba(0,210,255,0.15); border-left: 6px solid var(--neon-blue); color: #e2e8f0; }
         
-        .label-intel {
+        .label-box {
             display: block;
             font-weight: 800;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             margin-bottom: 8px;
-            opacity: 0.8;
+            color: rgba(255,255,255,0.6);
             letter-spacing: 1px;
         }
 
-        .role-tag { 
-            font-size: 0.7rem; 
-            font-weight: 900; 
-            background: var(--mrs-blue); 
-            color: #fff; 
-            padding: 3px 10px; 
-            border-radius: 5px; 
-            margin-right: 8px; 
-            text-transform: uppercase; 
-            vertical-align: middle;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
-
-        /* --- RÁDIO OPERACIONAL (COMPACTO) --- */
-        .footer-panel { width: 100%; max-width: 1200px; border-bottom: 6px solid var(--selected); margin-top: 15px; }
+        /* --- RODAPÉ OPERACIONAL (REDUZIDO) --- */
+        .footer-panel { width: 100%; max-width: 1200px; border-bottom: 6px solid var(--selected); margin-top: 20px; }
         .input-mrs { 
             background: rgba(0,0,0,0.7); 
             border: 2px solid var(--glass-border); 
-            padding: 18px; 
-            border-radius: 15px; 
+            padding: 15px; 
+            border-radius: 12px; 
             color: #fff; 
             width: 100%; 
             box-sizing: border-box; 
@@ -211,15 +180,14 @@
             min-height: 130px; 
             resize: none; 
             margin-bottom: 15px;
-            transition: var(--transition-smooth);
         }
-        .input-mrs:focus { border-color: var(--neon-blue); outline: none; background: rgba(0,0,0,0.9); }
+        .input-mrs:focus { border-color: var(--neon-blue); outline: none; }
 
         .btn-main { 
             background: linear-gradient(90deg, #1e40af, #3b82f6); 
             color: #fff; 
             border: none; 
-            padding: 24px; 
+            padding: 25px; 
             border-radius: 12px; 
             font-weight: 800; 
             font-size: 1.5rem; 
@@ -227,36 +195,30 @@
             text-transform: uppercase; 
             width: 100%; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: var(--transition-smooth);
         }
-        .btn-main:hover { filter: brightness(1.2); transform: translateY(-2px); }
-        .btn-main:active { transform: translateY(1px); }
+        .btn-main:active { transform: translateY(2px); }
 
-        /* --- RESPONSIVIDADE --- */
         @media (max-width: 1024px) { 
-            .dashboard-container { grid-template-columns: 1fr; gap: 15px; } 
+            .dashboard-container { grid-template-columns: 1fr; } 
+            .grid { max-width: 330px; }
             .intel-panel { min-height: auto; } 
             .panel { padding: 20px; }
-            .mrs-titulo { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="banner-topo">
-        <img src="1000121485.png" alt="MRS LOGÍSTICA">
-    </div>
+    <div class="banner-topo"><img src="1000121485.png" alt="MRS LOGÍSTICA"></div>
 
     <div class="dashboard-container">
-        
         <div class="panel status-panel">
-            <h1 class="mrs-titulo">SEGURANÇA OPERACIONAL</h1>
-            <div class="operacao-badge">ESTAÇÃO • PÁTIO • VIA</div>
-            <div class="contador-frame" id="contador-txt">0/5</div>
-            <button class="btn-main" style="padding:15px; font-size:0.8rem; background:#1e293b;" onclick="location.reload()">REPROGRAMAR SISTEMA</button>
+            <h1 class="mrs-titulo">Boas Práticas!</h1>
+            <div class="status-badge">Segurança Operacional</div>
+            <div class="contador-display" id="contador-txt">0/5</div>
+            <button class="btn-main" style="padding:12px; font-size:0.8rem; background:#1e293b;" onclick="location.reload()">REINICIAR SISTEMA</button>
         </div>
 
-        <div class="panel grid-wrapper">
+        <div class="panel">
             <div class="grid" id="grid-box"></div>
         </div>
 
@@ -264,63 +226,62 @@
             <div class="intel-title">Relatório de Inteligência</div>
             <div id="intel-content">
                 <div style="font-style: italic; color: #94a3b8; text-align: center; margin-top: 50px;">
-                    "Terminal em prontidão operacional.<br>Localize os 5 fatores críticos de risco no grid para processar os dados neurocomportamentais."
+                    "Terminal em prontidão operacional. Identifique os 5 fatores críticos de risco no grid para processar as análises e boas práticas correspondentes."
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="panel footer-panel">
         <div style="margin-bottom: 12px; text-align: center;">
-            <h3 style="margin:0; text-transform: uppercase; font-size:1.2rem; letter-spacing: 1px;">📡 Rádio Operacional: Registro de DDS</h3>
+            <h3 style="margin:0; text-transform: uppercase; font-size:1.1rem; letter-spacing: 1px;">📡 Rádio Operacional: Relatório de DDS</h3>
         </div>
-        <textarea class="input-mrs" id="feedback-caixa" placeholder="Registre a síntese técnica dos compromissos (Maquinista, Manobrador e Controlador de Pátio)..."></textarea>
+        <textarea class="input-mrs" id="feedback-caixa" placeholder="Registre aqui a síntese do compromisso da equipe com as boas práticas discutidas..."></textarea>
         <button class="btn-main" onclick="transmitir()">TRANSMITIR RELATÓRIO</button>
     </div>
 
     <script>
-        /* ARQUITETURA LÓGICA DO DASHBOARD MRS
-           Foco: Detecção Procedural, Validação Neurocomportamental e Segurança Global.
+        /* MOTOR LÓGICO MRS - SEGURANÇA E NEUROCIÊNCIA
+           Responsável pelo processamento de palavras e carga de protocolos técnicos.
         */
         const SIZE = 10;
         let selecionadas = [], encontradas = [], gridData = [];
         
-        // BANCO DE DADOS INTEGRADO: MAQUINISTA, MANOBRADOR E CONTROLADOR
+        // BANCO DE DADOS DE SEGURANÇA INTEGRAL
         const bancoDados = [
             {
-                txt: "SONO", display: "DESSINCRONOSE CIRCADIANA (SONO)",
-                neuro: "O acúmulo de adenosina induz o microssono involuntário. O córtex pré-frontal 'desliga' por até 3s; o indivíduo mantém os olhos abertos em 'visão branca', mas o processamento de riscos e sinais é nulo.",
-                fatal: "OCORRÊNCIA: Hinton (Canadá, 1986). A tripulação em exaustão não registrou o sinal de parada na via. Resultado: colisão frontal com trem de passageiros, 23 fatalidades e fogo descontrolado.",
-                simu: "<span class='role-tag'>Maquinista</span> Desorientação entre estações. <span class='role-tag'>Controlador</span> Lentidão na liberação de agulhas. <span class='role-tag'>Manobrador</span> Reflexo motor retardado no engate. AÇÃO: Parada segura imediata."
+                txt: "SONO", display: "BOAS PRÁTICAS: GESTÃO DA FADIGA",
+                neuro: "A adenosina acumulada gera o 'Microsleep' (microsso). O cérebro entra em modo de repouso por 1 a 3 segundos. O colaborador permanece de olhos abertos, mas o córtex pré-frontal para de processar qualquer sinal de perigo ou movimento na via.",
+                fatal: "OCORRÊNCIA MUNDIAL: Hinton (Canadá, 1986). A tripulação em estado de exaustão extrema não registrou o sinal de parada absoluta. Resultado: Colisão frontal violenta entre dois trens, 23 fatalidades e destruição total da carga e locomotivas.",
+                pratica: "Monitore sinais como fixação ocular e bocejos cíclicos. Se sentir a pálpebra pesada, a única barreira de segurança é interromper a tarefa imediatamente e reportar. Não tente 'vencer' o sono; ele é uma falha mecânica humana."
             },
             {
-                txt: "CELULAR", display: "CEGUEIRA INATENCIONAL (CELULAR)",
-                neuro: "O 'Gargalo de Atenção' impede o cérebro de monitorar a zona de manobra ao processar dados eletrônicos. O sequestro da 'Rede de Saliência' torna o colaborador cego a obstáculos físicos à frente.",
-                fatal: "OCORRÊNCIA: Chatsworth (EUA, 2008). 25 mortos. O maquinista enviou um SMS 22s antes de ignorar o sinal vermelho e colidir frontalmente. O foco estava na rede social, não na vida operacional.",
-                simu: "<span class='role-tag'>Manobrador</span> Notificação durante formação no pátio. <span class='role-tag'>Controlador</span> Distração no console da estação. <span class='role-tag'>Maquinista</span> Dispositivo sobre o painel. AÇÃO: Aparelho desligado."
+                txt: "CELULAR", display: "BOAS PRÁTICAS: FOCO ABSOLUTO",
+                neuro: "O processamento de mensagens causa o 'Attentional Blink'. O cérebro sequestra toda a rede de saliência para o mundo digital, tornando o condutor neurologicamente cego ao que está à sua frente na via física.",
+                fatal: "OCORRÊNCIA MUNDIAL: Chatsworth (EUA, 2008). 25 mortos e 135 feridos. O maquinista estava enviando SMS minutos antes de ignorar o sinal vermelho e colidir com um trem de carga. O dispositivo eletrônico foi o gatilho da tragédia.",
+                pratica: "O cérebro não executa multitarefa real na condução ou manobra; ele alterna focos. Mantenha o dispositivo desligado e fora do alcance visual. O foco deve ser 100% na operação e na sinalização."
             },
             {
-                txt: "ATENCAO", display: "HABITUAÇÃO E HIPNOSE FERROVIÁRIA (ATENÇÃO)",
-                neuro: "O cérebro economiza energia em tarefas repetitivas em pátios conhecidos. O processamento real é substituído pela projeção de memórias (expectativa de via livre habitual), anulando a percepção de mudanças.",
-                fatal: "OCORRÊNCIA: Santiago de Compostela (Espanha, 2013). 79 mortos. Por excesso de familiaridade, o condutor relaxou a vigilância e entrou em uma curva de 80km/h a mais de 179km/h.",
-                simu: "<span class='role-tag'>Controlador</span> Operar painel por rotina. <span class='role-tag'>Maquinista</span> Trecho repetitivo. <span class='role-tag'>Manobrador</span> Cruzar PN familiar sem checagem. AÇÃO: Use o 'Anotar e Cantar' sempre."
+                txt: "ATENCAO", display: "BOAS PRÁTICAS: VIGILÂNCIA ATIVA",
+                neuro: "Em ambientes conhecidos, o cérebro entra em 'Modo Econômico' (Habituação). Ele para de processar dados reais e projeta memórias de 'via livre' sobre obstáculos novos, anulando a capacidade de detectar anomalias.",
+                fatal: "OCORRÊNCIA MUNDIAL: Santiago de Compostela (Espanha, 2013). 79 fatalidades. Por excesso de familiaridade com o trecho, o condutor relaxou a vigilância, perdeu a noção espacial exata e entrou em curva a 179km/h.",
+                pratica: "Quebre o ciclo automático do cérebro. Utilize o protocolo 'Anotar e Cantar' (Shisa Kanko) para cada sinalização ou marco. Ouvir a própria voz força o sistema nervoso a validar a realidade externa sobre a expectativa interna."
             },
             {
-                txt: "SINAL", display: "VIÉS DE EXPECTATIVA (SINALIZAÇÃO)",
-                neuro: "Processamento 'Top-Down': O cérebro projeta o que espera ver. Se o sinal em pátio ou estação é habitualmente verde, o sistema visual camufla o vermelho ou apagado por frações de segundo fatais.",
-                fatal: "OCORRÊNCIA: Bad Aibling (Alemanha, 2016). 12 mortos. O controlador forçou um sinal verde em via singela por estar convencido de que o sistema automático estava em erro, ignorando o perigo físico real.",
-                simu: "<span class='role-tag'>Controlador</span> Forçar comando manual no pátio. <span class='role-tag'>Maquinista</span> Avançar aspecto duvidoso. <span class='role-tag'>Manobrador</span> Avançar zona sem rádio. AÇÃO: Na dúvida, é PARADA."
+                txt: "SINAL", display: "BOAS PRÁTICAS: DISCIPLINA OPERACIONAL",
+                neuro: "O 'Viés de Expectativa' faz o cérebro projetar o verde habitual por antecipação. O sistema visual pode literalmente 'apagar' uma luz vermelha ou um aspecto inoperante para confirmar o que o condutor espera ver.",
+                fatal: "OCORRÊNCIA MUNDIAL: Bad Aibling (Alemanha, 2016). 12 mortos. O descumprimento de protocolos de segurança baseado em pressuposições manuais erradas resultou em colisão frontal em via singela entre dois trens de passageiros.",
+                pratica: "Nunca presuma o aspecto de um sinal ou a posição de uma agulha/AMV. Em caso de sinal apagado ou dúvida interpretativa, a regra ferroviária é absoluta: O aspecto deve ser considerado PARADA."
             },
             {
-                txt: "PRESSA", display: "SEQUESTRO DA AMÍGDALA (URGÊNCIA)",
-                neuro: "O estresse temporal dispara cortisol e adrenalina, causando 'Visão de Túnel'. O sistema límbico assume o comando neural, priorizando a meta (horário) e desligando o raciocínio crítico de segurança.",
-                fatal: "OCORRÊNCIA: Amagasaki (Japão, 2005). 107 mortos. O condutor acelerou em curva perigosa para compensar um atraso de apenas 90 segundos. A pressa química bloqueou o senso de perigo da velocidade física.",
-                simu: "<span class='role-tag'>Manobrador</span> Correr entre vagões para liberar pátio. <span class='role-tag'>Controlador</span> Pressionar equipes por tempo. <span class='role-tag'>Maquinista</span> Recuperar atraso. AÇÃO: Segurança antes do relógio."
+                txt: "PRESSA", display: "BOAS PRÁTICAS: CONSCIÊNCIA TEMPORAL",
+                neuro: "A urgência dispara o 'Sequestro da Amígdala'. O sistema límbico assume o comando neural, priorizando a meta (horário) e desligando o raciocínio crítico, a percepção lateral e a avaliação de riscos colaterais.",
+                fatal: "OCORRÊNCIA MUNDIAL: Amagasaki (Japão, 2005). 107 mortos. O condutor acelerou excessivamente em uma curva perigosa para tentar recuperar um atraso de apenas 90 segundos. A pressa química bloqueou o senso de perigo físico.",
+                pratica: "Monitore sua fisiologia (respiração curta e visão de túnel). Se a pressão por tempo surgir, respire fundo para modular o sistema parassimpático e recuperar o julgamento. A segurança sempre precede o relógio."
             }
         ];
 
-        // INICIALIZAÇÃO DO MOTOR PROCEDURAL
+        // INICIALIZAÇÃO E GERAÇÃO DO GRID
         function init() {
             let pronto = false;
             while (!pronto) { 
@@ -336,9 +297,7 @@
             for (let p of lista) {
                 let colocada = false, tentativas = 0;
                 while (!colocada && tentativas < 6000) {
-                    let h = Math.random() > 0.5, 
-                        r = Math.floor(Math.random() * (h ? SIZE : SIZE - p.txt.length)), 
-                        c = Math.floor(Math.random() * (h ? SIZE - p.txt.length : SIZE));
+                    let h = Math.random() > 0.5, r = Math.floor(Math.random() * (h ? SIZE : SIZE - p.txt.length)), c = Math.floor(Math.random() * (h ? SIZE - p.txt.length : SIZE));
                     let ok = true;
                     for (let i = 0; i < p.txt.length; i++) if (gridData[h?r:r+i][h?c+i:c] !== '') ok = false;
                     if (ok) { for (let i = 0; i < p.txt.length; i++) gridData[h?r:r+i][h?c+i:c] = p.txt[i]; colocada = true; }
@@ -358,11 +317,12 @@
             const container = document.getElementById("grid-box"); container.innerHTML = '';
             gridData.forEach((row, r) => row.forEach((letra, c) => {
                 const div = document.createElement("div"); div.className = "cell"; div.innerText = letra;
-                div.onclick = () => gerenciarClique(div, letra, r, c); container.appendChild(div);
+                div.onclick = () => gerenciarClique(div, letra, r, c); 
+                container.appendChild(div);
             }));
         }
 
-        // LÓGICA DE INTERAÇÃO E REBOBINAR (UNDO)
+        // LÓGICA DE INTERAÇÃO (SUPORTE PARA PALAVRAS INVERTIDAS E REBOBINAR)
         function gerenciarClique(el, letra, r, c) {
             if (el.classList.contains('found-word')) return;
             if (el.classList.contains('selected')) {
@@ -382,7 +342,6 @@
             el.classList.add('selected'); selecionadas.push({el, letra, r, c}); verificarMatch();
         }
 
-        // VALIDAÇÃO DE MATCH (SUPORTE PARA PALAVRAS INVERTIDAS)
         function verificarMatch() {
             const formada = selecionadas.map(s => s.letra).join('');
             const invertida = [...formada].reverse().join('');
@@ -391,26 +350,26 @@
                 selecionadas.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add('found-word'); });
                 encontradas.push(alvo.txt); selecionadas = [];
                 document.getElementById("contador-txt").innerText = `${encontradas.length}/5`;
-                apresentarImpacto(alvo);
+                apresentarAnalise(alvo);
             }
         }
 
-        // CARREGAMENTO DE DADOS NO TERMINAL
-        function apresentarImpacto(alvo) {
+        // APRESENTAÇÃO DOS DADOS NO TERMINAL DE INTELIGÊNCIA
+        function apresentarAnalise(alvo) {
             const painel = document.getElementById("intel-content");
             painel.innerHTML = `
-                <div style="color:var(--danger); font-weight:800; margin-bottom:15px; font-size:1.15rem; border-bottom: 2px solid var(--danger); padding-bottom:10px; text-shadow: 0 0 10px rgba(255,42,42,0.4);">
+                <div style="color:var(--danger); font-weight:800; margin-bottom:15px; font-size:1.15rem; border-bottom: 2px solid var(--danger); padding-bottom:10px; text-shadow: 0 0 10px rgba(255,42,42,0.3);">
                    [ ! ] DETECTADO: ${alvo.display}
                 </div>
-                <div class="intel-box box-neuro"><span class="label-intel">Análise Neuro-Operacional</span>${alvo.neuro}</div>
-                <div class="intel-box box-fatal"><span class="label-intel">Impacto Mundial (Histórico)</span>${alvo.fatal}</div>
-                <div class="intel-box box-protocolo"><span class="label-intel">Protocolo de Segurança MRS</span>${alvo.simu}</div>
+                <div class="intel-box box-neuro"><span class="label-box">ANÁLISE NEURAL (POR QUE ACONTECE?)</span>${alvo.neuro}</div>
+                <div class="intel-box box-fatal"><span class="label-box">IMPACTO MUNDIAL (HISTÓRICO)</span>${alvo.fatal}</div>
+                <div class="intel-box box-pratica"><span class="label-box">BOAS PRÁTICAS (AÇÃO IMEDIATA)</span>${alvo.pratica}</div>
             `;
         }
 
         function transmitir() {
             const feedback = document.getElementById("feedback-caixa").value;
-            if(!feedback) { alert("Atenção: Registre o relatório do DDS antes de transmitir ao sistema."); return; }
+            if(!feedback) { alert("Atenção: Registre o relatório das Boas Práticas antes de transmitir."); return; }
             window.open('https://forms.gle/ut3jDiKRPWSGVXw37');
         }
 
