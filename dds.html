@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MRS - Dashboard Operacional</title>
+    <title>MRS - Trilha de Conhecimento</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -20,6 +20,7 @@
             padding: 15px; box-sizing: border-box; overflow-x: hidden;
         }
 
+        /* --- CABEÇALHO --- */
         .banner-topo { 
             width: 100%; max-width: 1200px; margin-bottom: 20px; 
             border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-border);
@@ -48,13 +49,13 @@
         /* --- GRID (LETRAS NÍTIDAS) --- */
         .grid { 
             display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; 
-            width: 100%; max-width: 320px; margin: 0 auto; padding: 12px; 
+            width: 100%; max-width: 340px; margin: 0 auto; padding: 12px; 
             background: rgba(0,0,0,0.5); border-radius: 15px; 
         }
         .cell { 
             aspect-ratio: 1; background: #ffffff; color: #0b1120; 
             display: flex; align-items: center; justify-content: center; 
-            border-radius: 5px; font-weight: 600; /* Negrito corrigido */
+            border-radius: 5px; font-weight: 600; /* Negrito ajustado para não borrar */
             font-size: 1.4rem; cursor: pointer; transition: 0.2s; user-select: none;
         }
         .selected { background: var(--selected) !important; color: #fff !important; }
@@ -63,7 +64,7 @@
         .found-leve { background: var(--info) !important; color: #000 !important; }
 
         /* --- INTELIGÊNCIA OPERACIONAL (CAIXA AMPLA) --- */
-        .intel-panel { border-left: 5px solid var(--neon-blue); min-height: 380px; }
+        .intel-panel { border-left: 5px solid var(--neon-blue); min-height: 400px; }
         .intel-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 15px; text-transform: uppercase; color: var(--neon-blue); border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; }
         .intel-text { font-size: 1.1rem; line-height: 1.6; color: #f1f5f9; }
         .fato-box { margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; font-style: italic; color: #cbd5e1; font-size: 1rem; border-left: 3px solid var(--warning); }
@@ -71,26 +72,26 @@
         /* --- RÁDIO TRECHO / FORMS (CAIXA GIGANTE) --- */
         .footer-panel { width: 100%; max-width: 1200px; border-bottom: 5px solid var(--selected); margin-top: 20px; }
         .radio-header { margin-bottom: 15px; }
-        .radio-header h3 { margin: 0; font-size: 1.4rem; color: var(--accent); text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
-        .radio-header p { margin: 5px 0 0 0; font-size: 1rem; color: #94a3b8; }
+        .radio-header h3 { margin: 0; font-size: 1.5rem; color: var(--accent); text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+        .radio-header p { margin: 5px 0 0 0; font-size: 1.1rem; color: #94a3b8; }
         
         .input-mrs { 
             background: rgba(0,0,0,0.7); border: 2px solid var(--glass-border); 
             padding: 25px; border-radius: 12px; color: #fff; width: 100%; 
             box-sizing: border-box; margin-bottom: 20px; font-family: inherit; 
-            font-size: 1.2rem; min-height: 150px; /* Altura Gigante */
+            font-size: 1.3rem; min-height: 180px; /* Caixa do Forms Gigante */
             resize: none;
         }
         .btn-main { 
             background: linear-gradient(90deg, #2563eb, #3b82f6); color: #fff; 
             border: none; padding: 25px; border-radius: 12px; font-weight: 900; 
-            font-size: 1.3rem; cursor: pointer; text-transform: uppercase; width: 100%; 
+            font-size: 1.4rem; cursor: pointer; text-transform: uppercase; width: 100%; 
             box-shadow: 0 5px 25px rgba(59, 130, 246, 0.6); 
         }
 
         @media (max-width: 1024px) {
             .dashboard-container { grid-template-columns: 1fr; }
-            .grid { max-width: 300px; }
+            .grid { max-width: 310px; }
             .panel { padding: 20px; }
         }
     </style>
@@ -106,12 +107,14 @@
             <button class="btn-main" style="padding:12px; font-size:0.8rem; background:#1e293b;" onclick="location.reload()">REINICIAR SISTEMA</button>
         </div>
 
-        <div class="panel"><div class="grid" id="grid-box"></div></div>
+        <div class="panel">
+            <div class="grid" id="grid-box"></div>
+        </div>
 
         <div class="panel intel-panel">
+            <div class="intel-title">Inteligência Operacional</div>
             <div id="intel-content" class="intel-text">
-                <div class="intel-title">Inteligência Operacional</div>
-                "Terminal aguardando análise. Identifique os riscos de Fadiga, Atenção e Celular no grid para processar os dados."
+                "Aguardando varredura. Identifique os riscos de Sono, Atenção e Celular no grid central."
             </div>
         </div>
     </div>
@@ -119,10 +122,10 @@
     <div class="panel footer-panel">
         <div class="radio-header">
             <h3>📡 Rádio Trecho: Sua voz na operação</h3>
-            <p>Registre abaixo sua percepção sobre fadiga, atenção ou sugestões levantadas no DDS.</p>
+            <p>Registre observações técnicas ou desvios sobre o fator humano:</p>
         </div>
-        <textarea class="input-mrs" id="feedback-caixa" placeholder="Digite aqui o relatório detalhado do DDS..."></textarea>
-        <button class="btn-main" onclick="transmitir()">TRANSMITIR RELATÓRIO AO FORMS</button>
+        <textarea class="input-mrs" id="feedback-caixa" placeholder="Descreva aqui um compromisso ou desvio observado..."></textarea>
+        <button class="btn-main" onclick="transmitir()">ENVIAR AO FORMS</button>
     </div>
 
     <script>
@@ -130,17 +133,21 @@
         let selecionadas = [], encontradas = [], gridData = [];
         
         const bancoDados = [
-            {txt: "FADIGA", nivel: "grave", dica: "A fadiga afeta os reflexos. Sono é fisiologia, não falta de vontade.", fato: "FATO: Micro-sonos de 2 segundos a 40km/h fazem o trem percorrer 22 metros sem comando do maquinista."},
-            {txt: "CELULAR", nivel: "grave", dica: "O uso do celular anula sua percepção de risco na via.", fato: "PEGADINHA: O desastre de Chatsworth ocorreu porque o maquinista enviou um SMS e ignorou o sinal vermelho."},
-            {txt: "ATENCAO", nivel: "medio", dica: "A rotina gera excesso de confiança e cegueira operacional.", fato: "PEGADINHA: A maioria dos acidentes ocorre em locais conhecidos, onde o colaborador 'baixa a guarda'."},
-            {txt: "SINAL", nivel: "grave", dica: "Em modo degradado, 'cante' a sinalização em voz alta para manter o foco.", fato: "FATO: Anotar e repetir a sinalização reduz em 80% o risco de avanço indevido de sinal."},
-            {txt: "PRESSA", nivel: "grave", dica: "A pressa é a principal causa de incidentes em manobras e trajeto.", fato: "FATO REAL: 46% das amputações em pátios ocorrem devido à pressa durante o engate de vagões."}
+            {txt: "SONO", nivel: "grave", dica: "Fadiga é fisiológica. O sono não avisa quando chega.", fato: "FATO: Micro-sonos de 2s a 40km/h fazem o trem percorrer 22m sem controle."},
+            {txt: "CELULAR", nivel: "grave", dica: "O uso do celular anula a percepção de risco na via.", fato: "PEGADINHA: O desastre de Chatsworth ocorreu por um SMS que causou avanço de sinal."},
+            {txt: "ATENCAO", nivel: "medio", dica: "A rotina gera excesso de confiança e cegueira operacional.", fato: "PEGADINHA: A maioria dos acidentes ocorre em locais que você já conhece bem."},
+            {txt: "SINAL", nivel: "grave", dica: "Em modo degradado, use mapas e 'cante' a sinalização.", fato: "BOA PRÁTICA: Anotar a sinalização mantém o foco e evita o avanço indevido."},
+            {txt: "PRESSA", nivel: "grave", dica: "A pressa é a principal causa de incidentes no trajeto.", fato: "FATO: No trajeto casa x trabalho, a pressa anula a percepção lateral."}
         ];
 
         function init() {
             let pronto = false;
-            while (!pronto) { gridData = Array(SIZE).fill(null).map(() => Array(SIZE).fill('')); pronto = distribuirPalavras(); }
-            preencherLixo(); renderizarGrid();
+            while (!pronto) { 
+                gridData = Array(SIZE).fill(null).map(() => Array(SIZE).fill('')); 
+                pronto = distribuirPalavras(); 
+            }
+            preencherLixo(); 
+            renderizarGrid();
         }
 
         function distribuirPalavras() {
@@ -214,7 +221,7 @@
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 const voz = new SpeechSynthesisUtterance(alvo.dica + ". " + alvo.fato);
-                voz.lang = 'pt-BR'; voz.pitch = 0.5; voz.rate = 1.2;
+                voz.lang = 'pt-BR'; voz.pitch = 0.5; voz.rate = 1.2; // Voz masculina grave
                 window.speechSynthesis.speak(voz);
             }
             digitar();
