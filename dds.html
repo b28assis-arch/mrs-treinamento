@@ -101,16 +101,15 @@
         .center-panel { align-items: center; border: 2px solid rgba(255,255,255,0.1); }
         .grid { 
             display: grid; grid-template-columns: repeat(10, 1fr); 
-            gap: 4px; /* Menos espaço entre as caixas */
+            gap: 4px; 
             width: 100%; 
-            max-width: 380px; /* Grid mais compacto */
+            max-width: 380px; 
             margin: 0 auto;
             padding: 10px; 
             background: rgba(0,0,0,0.3); 
             border-radius: 12px;
         }
         
-        /* Células de Alta Legibilidade */
         .cell { 
             aspect-ratio: 1; 
             background: #ffffff; 
@@ -118,14 +117,13 @@
             display: flex; align-items: center; justify-content: center; 
             border-radius: 6px; 
             font-weight: 900; 
-            font-size: 1.6rem; /* Fonte maior para preencher a caixa */
+            font-size: 1.6rem; 
             cursor: pointer; user-select: none; transition: all 0.2s; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.5); 
         }
         .cell:active { transform: scale(0.85); }
         .selected { background: var(--selected) !important; color: #fff !important; box-shadow: 0 0 15px var(--selected); }
         
-        /* Acertos com Brilho Neon */
         .found-grave { background: var(--danger) !important; color: #fff !important; animation: pulseGrave 0.6s; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); box-shadow: 0 0 15px var(--danger); }
         .found-medio { background: var(--warning) !important; color: #000 !important; animation: pulseMedio 0.6s; box-shadow: 0 0 15px var(--warning); }
         .found-leve { background: var(--info) !important; color: #000 !important; animation: pulseLeve 0.6s; box-shadow: 0 0 15px var(--info); }
@@ -139,12 +137,11 @@
             justify-content: flex-start; text-align: left; 
             border-left: 4px solid var(--neon-blue);
             background: linear-gradient(90deg, rgba(0, 210, 255, 0.05) 0%, rgba(10, 15, 30, 0.85) 100%);
-            min-height: 180px; /* Garante que a caixa não fique espremida */
+            min-height: 180px; 
         }
         .intel-panel h3 { margin: 0 0 15px 0; font-size: 0.9rem; color: var(--neon-blue); display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
         .intel-content { font-size: 1.05rem; line-height: 1.6; color: #e2e8f0; }
         
-        /* Títulos Neon na Área de Inteligência */
         .intel-title { font-size: 1.3rem; font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
         .txt-grave { color: var(--danger); text-shadow: 0 0 12px rgba(255, 42, 42, 0.6); }
         .txt-medio { color: var(--warning); text-shadow: 0 0 12px rgba(255, 204, 0, 0.6); }
@@ -162,20 +159,43 @@
         .btn-action:hover { filter: brightness(1.2); transform: translateY(-2px); }
         .btn-action:active { transform: translateY(0); }
 
-        /* Responsividade Mobile - O SEGREDO DO AJUSTE ESTÁ AQUI */
+        /* ==================================================== */
+        /* RESPONSIVIDADE MOBILE - CORTE DRÁSTICO DE TAMANHO */
+        /* ==================================================== */
         @media (max-width: 1024px) {
-            .dashboard-container { grid-template-columns: 1fr; gap: 15px;}
-            .footer-panel { flex-direction: column; text-align: center; }
+            body { padding: 10px; }
+            .dashboard-container { grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px;}
+            
+            /* Compacta os painéis para economizar espaço vertical */
+            .panel { padding: 15px; border-radius: 16px;}
+            
+            .mrs-titulo { font-size: 1.5rem; margin-bottom: 8px;}
+            .fase-badge { margin-bottom: 12px; font-size: 0.75rem;}
+            .progresso { margin-bottom: 15px; font-size: 0.75rem;}
+            .btn-aux { padding: 10px; font-size: 0.7rem;}
+            
+            /* REDUÇÃO FORTE DO CAÇA-PALAVRAS */
+            .grid { 
+                max-width: 280px; /* Era 340px. Isso diminui bem a altura também */
+                padding: 6px; 
+                gap: 3px; 
+                margin: 0 auto;
+            }
+            .cell { 
+                font-size: 1.15rem; /* Ajustado para caber no quadrado menor */
+                border-radius: 4px;
+            }
+            
+            /* Ajustes de Inteligência Operacional */
+            .intel-panel { min-height: auto; }
+            .intel-title { font-size: 1.15rem; margin-bottom: 8px;}
+            .intel-content { font-size: 0.95rem; line-height: 1.4; }
+            
+            /* Rodapé e Formulário */
+            .footer-panel { flex-direction: column; text-align: center; padding: 15px;}
             .radio-form { width: 100%; flex-direction: column; gap: 10px;}
-            .btn-action { padding: 16px; }
-            .radio-form input { padding: 16px; }
-            
-            /* Trava o tamanho do grid no celular para sobrar espaço */
-            .grid { max-width: 340px; padding: 8px; gap: 4px; margin: 0 auto;}
-            .cell { font-size: 1.4rem; border-radius: 4px;} /* Letra grande dentro de caixa menor */
-            
-            .intel-content { font-size: 1rem; }
-            .panel { padding: 20px; }
+            .btn-action { padding: 14px; font-size: 0.9rem;}
+            .radio-form input { padding: 14px; font-size: 0.9rem;}
         }
     </style>
 </head>
