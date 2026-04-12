@@ -7,20 +7,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* Cores Base */
             --mrs-blue: #0b3a6f; 
             --accent: #ffffff;
             --selected: #3b82f6; 
-            --danger: #ef4444; 
-            --warning: #f59e0b;
-            --info: #10b981; 
-            --glass-bg: rgba(15, 23, 42, 0.7); /* Fundo escuro translúcido */
-            --glass-border: rgba(255, 255, 255, 0.15);
+            
+            /* Cores Neon / Digitalizadas */
+            --danger: #ff2a2a;   /* Vermelho Neon */
+            --warning: #ffcc00;  /* Amarelo/Âmbar Neon */
+            --info: #00ffaa;     /* Verde Cyber */
+            --neon-blue: #00d2ff;/* Azul Digital */
+
+            /* Vidro Tecnológico */
+            --glass-bg: rgba(10, 15, 30, 0.85); 
+            --glass-border: rgba(0, 210, 255, 0.2);
         }
         
         body { 
             margin: 0; 
             font-family: 'Inter', system-ui, sans-serif; 
-            /* AQUI ENTRA A SUA IMAGEM DE FUNDO */
             background: #020617 url('fundo-mrs.png') no-repeat center center fixed; 
             background-size: cover; 
             color: #f8fafc; 
@@ -32,90 +37,129 @@
             box-sizing: border-box;
         }
 
-        /* Banner Superior (Opcional, se o logo já estiver no fundo, você pode ocultar isso) */
+        /* Banner Superior */
         .banner-topo {
             width: 100%;
             max-width: 1200px;
             margin-bottom: 20px;
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 1px solid var(--glass-border);
         }
-        .banner-topo img {
-            width: 100%;
-            display: block;
-        }
+        .banner-topo img { width: 100%; display: block; }
 
         /* CONTAINER PRINCIPAL DO DASHBOARD */
         .dashboard-container {
             display: grid;
-            grid-template-columns: 1fr 1.5fr 1fr; /* 3 Colunas: Esquerda, Meio, Direita */
+            grid-template-columns: 1fr 1.5fr 1fr; 
             gap: 20px;
             width: 100%;
             max-width: 1200px;
             margin-bottom: 20px;
         }
 
-        /* PAINÉIS ESTILO VIDRO */
+        /* PAINÉIS ESTILO VIDRO DIGITAL */
         .panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
+            border-radius: 20px;
             padding: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 20px rgba(0, 210, 255, 0.05);
             display: flex;
             flex-direction: column;
         }
 
         /* --- COLUNA ESQUERDA: STATUS --- */
         .status-panel { text-align: center; justify-content: center; }
-        .mrs-titulo { margin: 0 0 10px 0; font-size: 1.8rem; font-weight: 900; letter-spacing: 1.5px; }
-        .fase-badge { background: var(--selected); padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 20px; display: inline-block; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
-        .progresso { font-weight: 600; font-size: 0.9rem; color: #cbd5e1; margin-bottom: 30px; }
-        .contador { background: rgba(0,0,0,0.5); padding: 6px 16px; border-radius: 20px; color: #fff; font-weight: 900; margin-left: 8px; border: 1px solid rgba(255,255,255,0.2); }
+        .mrs-titulo { margin: 0 0 10px 0; font-size: 1.8rem; font-weight: 900; letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .fase-badge { background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%); padding: 8px 16px; border-radius: 8px; font-weight: 900; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 20px; display: inline-block; box-shadow: 0 0 15px rgba(59, 130, 246, 0.6); letter-spacing: 1px; border: 1px solid #60a5fa;}
+        .progresso { font-weight: 600; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 30px; letter-spacing: 1px; text-transform: uppercase;}
+        
+        /* Contador HUD */
+        .contador { 
+            background: rgba(0,0,0,0.8); 
+            padding: 6px 16px; 
+            border-radius: 8px; 
+            color: var(--neon-blue); 
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: 900; 
+            font-size: 1.2rem;
+            margin-left: 8px; 
+            border: 1px solid var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue);
+            box-shadow: inset 0 0 10px rgba(0, 210, 255, 0.2);
+        }
+
         .controles { display: flex; gap: 10px; width: 100%; }
-        .btn-aux { background: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid var(--glass-border); padding: 14px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; flex: 1; transition: all 0.2s; }
-        .btn-aux:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .btn-aux { background: rgba(0, 210, 255, 0.05); color: var(--neon-blue); border: 1px solid var(--glass-border); padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; flex: 1; transition: all 0.2s; letter-spacing: 1px;}
+        .btn-aux:hover { background: rgba(0, 210, 255, 0.15); color: #fff; box-shadow: 0 0 15px rgba(0, 210, 255, 0.3); }
 
         /* --- COLUNA CENTRAL: GRID --- */
-        .center-panel { align-items: center; }
-        .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; width: 100%; max-width: 400px; }
-        .cell { aspect-ratio: 1; background: rgba(255, 255, 255, 0.9); color: #020617; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: 900; font-size: 1.2rem; cursor: pointer; user-select: none; transition: all 0.2s; box-shadow: inset 0 -2px 5px rgba(0,0,0,0.2); }
-        .cell:active { transform: scale(0.9); }
-        .selected { background: var(--selected) !important; color: #fff !important; }
-        .found-grave { background: var(--danger) !important; color: #fff !important; animation: pulse 0.5s; border: none; }
-        .found-medio { background: var(--warning) !important; color: #000 !important; animation: pulse 0.5s; border: none; }
-        .found-leve { background: var(--info) !important; color: #000 !important; animation: pulse 0.5s; border: none; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255,255,255,0.8); z-index: 10; } 100% { transform: scale(1); } }
+        .center-panel { align-items: center; border: 2px solid rgba(255,255,255,0.1); }
+        .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; width: 100%; max-width: 420px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 12px;}
+        
+        /* Células de Alta Legibilidade */
+        .cell { 
+            aspect-ratio: 1; 
+            background: #ffffff; 
+            color: #0b1120; 
+            display: flex; align-items: center; justify-content: center; 
+            border-radius: 6px; 
+            font-weight: 900; 
+            font-size: 1.4rem; /* Fonte maior */
+            cursor: pointer; user-select: none; transition: all 0.2s; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5); 
+        }
+        .cell:active { transform: scale(0.85); }
+        .selected { background: var(--selected) !important; color: #fff !important; box-shadow: 0 0 15px var(--selected); }
+        
+        /* Acertos com Brilho Neon */
+        .found-grave { background: var(--danger) !important; color: #fff !important; animation: pulseGrave 0.6s; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); box-shadow: 0 0 15px var(--danger); }
+        .found-medio { background: var(--warning) !important; color: #000 !important; animation: pulseMedio 0.6s; box-shadow: 0 0 15px var(--warning); }
+        .found-leve { background: var(--info) !important; color: #000 !important; animation: pulseLeve 0.6s; box-shadow: 0 0 15px var(--info); }
+        
+        @keyframes pulseGrave { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 30px var(--danger); z-index: 10; } 100% { transform: scale(1); } }
+        @keyframes pulseMedio { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 30px var(--warning); z-index: 10; } 100% { transform: scale(1); } }
+        @keyframes pulseLeve { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 30px var(--info); z-index: 10; } 100% { transform: scale(1); } }
 
         /* --- COLUNA DIREITA: INTELIGÊNCIA OPERACIONAL --- */
-        .intel-panel { justify-content: flex-start; text-align: left; }
-        .intel-panel h3 { margin: 0 0 15px 0; font-size: 1rem; color: #94a3b8; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; }
+        .intel-panel { 
+            justify-content: flex-start; text-align: left; 
+            border-left: 4px solid var(--neon-blue); /* Detalhe lateral digital */
+            background: linear-gradient(90deg, rgba(0, 210, 255, 0.05) 0%, rgba(10, 15, 30, 0.85) 100%);
+        }
+        .intel-panel h3 { margin: 0 0 15px 0; font-size: 0.9rem; color: var(--neon-blue); display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
         .intel-content { font-size: 0.95rem; line-height: 1.6; color: #e2e8f0; }
-        .intel-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
-        .txt-grave { color: #fb7185; }
-        .txt-medio { color: #fbd38d; }
-        .txt-leve { color: #6ee7b7; }
+        
+        /* Títulos Neon na Área de Inteligência */
+        .intel-title { font-size: 1.3rem; font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .txt-grave { color: var(--danger); text-shadow: 0 0 12px rgba(255, 42, 42, 0.6); }
+        .txt-medio { color: var(--warning); text-shadow: 0 0 12px rgba(255, 204, 0, 0.6); }
+        .txt-leve { color: var(--info); text-shadow: 0 0 12px rgba(0, 255, 170, 0.6); }
 
         /* --- RODAPÉ: RÁDIO TRECHO --- */
-        .footer-panel { width: 100%; max-width: 1200px; display: flex; gap: 20px; align-items: center; }
+        .footer-panel { width: 100%; max-width: 1200px; display: flex; gap: 20px; align-items: center; border-bottom: 3px solid var(--selected);}
         .radio-info { flex: 1; }
-        .radio-info h3 { margin: 0 0 5px 0; font-size: 1rem; color: var(--accent); }
+        .radio-info h3 { margin: 0 0 5px 0; font-size: 1rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px;}
         .radio-info p { margin: 0; font-size: 0.85rem; color: #94a3b8; }
         .radio-form { flex: 2; display: flex; gap: 15px; }
-        .radio-form input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 15px; border-radius: 12px; color: #fff; font-family: 'Inter', sans-serif; outline: none; }
-        .radio-form input:focus { border-color: var(--selected); }
-        .btn-action { background: var(--selected); color: #fff; border: none; padding: 0 25px; border-radius: 12px; font-weight: 800; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
-        .btn-action:hover { background: #2563eb; }
+        .radio-form input { flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); padding: 15px; border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; font-size: 0.9rem;}
+        .radio-form input:focus { border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 210, 255, 0.3); }
+        .btn-action { background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%); color: #fff; border: none; padding: 0 25px; border-radius: 8px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5); letter-spacing: 1px;}
+        .btn-action:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        .btn-action:active { transform: translateY(0); }
 
-        /* Responsividade (Para telas menores que 1024px) */
+        /* Responsividade Mobile */
         @media (max-width: 1024px) {
             .dashboard-container { grid-template-columns: 1fr; }
-            .footer-panel { flex-direction: column; }
+            .footer-panel { flex-direction: column; text-align: center; }
             .radio-form { width: 100%; flex-direction: column; }
             .btn-action { padding: 15px; }
+            .grid { max-width: 100%; padding: 5px;}
+            .cell { font-size: 1.2rem; border-radius: 4px;}
         }
     </style>
 </head>
@@ -131,7 +175,7 @@
             <h1 class="mrs-titulo">MRS LOGÍSTICA</h1>
             <div class="fase-badge">DDS: SEGURANÇA NO TRAJETO</div>
             <div class="progresso">
-                PALAVRAS ENCONTRADAS: <span class="contador" id="contador-txt">0 / 5</span>
+                PALAVRAS ENCONTRADAS <span class="contador" id="contador-txt">0/5</span>
             </div>
             <div class="controles">
                 <button class="btn-aux" id="btn-reset">Limpar Seleção</button>
@@ -144,9 +188,9 @@
         </div>
 
         <div class="panel intel-panel">
-            <h3>📍 ÁREA DE INTELIGÊNCIA OPERACIONAL</h3>
+            <h3>Terminal de Inteligência Operacional</h3>
             <div class="intel-content" id="intel-content">
-                <p>Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área.</p>
+                <p>Aguardando decodificação...<br><br>Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área restrita.</p>
             </div>
         </div>
 
@@ -154,12 +198,12 @@
 
     <div class="panel footer-panel">
         <div class="radio-info">
-            <h3>📡 RÁDIO TRECHO</h3>
-            <p>Deixe uma sugestão ou relate uma experiência.</p>
+            <h3>📡 Rádio Trecho: Sua voz na operação</h3>
+            <p>A segurança é feita por quem vive a via. Relate uma experiência ou dê uma sugestão.</p>
         </div>
         <div class="radio-form">
             <input type="text" id="input-comentario" placeholder="Ex: Na chave do pátio X, percebi que...">
-            <button class="btn-action" onclick="abrirForms()">ENVIAR AO FORMS</button>
+            <button class="btn-action" onclick="abrirForms()">Transmitir Dados</button>
         </div>
     </div>
 
@@ -169,11 +213,11 @@
         
         const fasesPalavras = {
             1: [
-                {txt: "PRESSA", nome: "PRESSA", nivel: "grave", dica: "A pressa é a maior inimiga da segurança. O tempo ganho correndo nunca compensa o risco.<br><br><strong>FATO:</strong> Segundo a FRA, a pressa nas manobras é a causa raiz de 46% das amputações no pátio."},
-                {txt: "CELULAR", nome: "CELULAR", nivel: "grave", dica: "O uso do celular destrói a atenção periférica. Pare de caminhar ou estacione para usar.<br><br><strong>FATO:</strong> O desastre de Chatsworth forçou a adoção do Freio Automático após envio de SMS."},
-                {txt: "FADIGA", nome: "FADIGA", nivel: "medio", dica: "O cansaço afeta os reflexos. Fadiga é fisiologia, não falta de vontade.<br><br><strong>FATO:</strong> Exaustão causou micro-sonos em Hinton (Canadá), tornando obrigatórios os vigilantes."},
-                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "medio", dica: "O cérebro relaxa na rotina. Force a atenção e redobre o cuidado.<br><br><strong>FATO:</strong> O método 'Apontar e Falar' do Japão reduziu falhas em 85% contra a cegueira da rotina."},
-                {txt: "TEMPO", nome: "TEMPO", nivel: "leve", dica: "Programe seu relógio e saia com antecedência. O planejamento elimina a urgência.<br><br><strong>FATO:</strong> O medo de punição por atraso de 90s gerou descarrilamento em Amagasaki (Japão)."}
+                {txt: "PRESSA", nome: "PRESSA", nivel: "grave", dica: "A pressa é a maior inimiga da segurança. O tempo ganho correndo nunca compensa o risco.<br><br><strong style='color:#cbd5e1'>FATO:</strong> Segundo a FRA, a pressa nas manobras é a causa raiz de 46% das amputações no pátio."},
+                {txt: "CELULAR", nome: "CELULAR", nivel: "grave", dica: "O uso do celular destrói a atenção periférica. Pare de caminhar ou estacione para usar.<br><br><strong style='color:#cbd5e1'>FATO:</strong> O desastre de Chatsworth forçou a adoção do Freio Automático após envio de SMS."},
+                {txt: "FADIGA", nome: "FADIGA", nivel: "medio", dica: "O cansaço afeta os reflexos. Fadiga é fisiologia, não falta de vontade.<br><br><strong style='color:#cbd5e1'>FATO:</strong> Exaustão causou micro-sonos em Hinton (Canadá), tornando obrigatórios os vigilantes."},
+                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "medio", dica: "O cérebro relaxa na rotina. Force a atenção e redobre o cuidado.<br><br><strong style='color:#cbd5e1'>FATO:</strong> O método 'Apontar e Falar' do Japão reduziu falhas em 85% contra a cegueira da rotina."},
+                {txt: "TEMPO", nome: "TEMPO", nivel: "leve", dica: "Programe seu relógio e saia com antecedência. O planejamento elimina a urgência.<br><br><strong style='color:#cbd5e1'>FATO:</strong> O medo de punição por atraso de 90s gerou descarrilamento em Amagasaki (Japão)."}
             ]
         };
 
@@ -181,7 +225,7 @@
             let pronto = false;
             while (!pronto) { gridData = Array(SIZE).fill(null).map(() => Array(SIZE).fill('')); pronto = distribuirPalavras(); }
             preencherLixo(); desenhar(); atualizarUI();
-            document.getElementById("intel-content").innerHTML = "<p>Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área.</p>";
+            document.getElementById("intel-content").innerHTML = "<p>Aguardando decodificação...<br><br>Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área restrita.</p>";
         }
 
         function distribuirPalavras() {
@@ -234,15 +278,14 @@
                 return; 
             }
             
-            // Trava de Direção e Adjacência
             if (selecionadas.length > 0) {
                 const last = selecionadas[selecionadas.length - 1];
                 const dr = Math.abs(r - last.r), dc = Math.abs(c - last.c);
-                if ((dr > 1 || dc > 1) || (dr === 1 && dc === 1)) return; // Bloqueia saltos e diagonais
+                if ((dr > 1 || dc > 1) || (dr === 1 && dc === 1)) return; 
                 if (selecionadas.length >= 2) {
                     const first = selecionadas[0], second = selecionadas[1];
-                    if (first.r === second.r && r !== last.r) return; // Trava Horizontal
-                    if (first.r !== second.r && c !== last.c) return; // Trava Vertical
+                    if (first.r === second.r && r !== last.r) return; 
+                    if (first.r !== second.r && c !== last.c) return; 
                 }
             }
 
@@ -264,11 +307,10 @@
                 encontradas.push(alvo.txt); 
                 atualizarUI(); 
                 
-                // Exibe no painel direito ao invés do pop-up
                 atualizarPainelInteligencia(alvo);
 
                 if (encontradas.length === fasesPalavras[faseAtual].length) {
-                    setTimeout(() => alert("🎯 Treinamento Concluído! Você dominou o painel de operações."), 800);
+                    setTimeout(() => alert("🎯 Treinamento Concluído! Todos os dados operacionais foram decodificados."), 800);
                 }
             }
         }
@@ -277,11 +319,10 @@
             const painel = document.getElementById("intel-content");
             const corClass = alvo.nivel === 'grave' ? 'txt-grave' : alvo.nivel === 'medio' ? 'txt-medio' : 'txt-leve';
             
-            // Animação suave para trocar o texto
             painel.style.opacity = 0;
             setTimeout(() => {
                 painel.innerHTML = `
-                    <div class="intel-title ${corClass}">► ALERTA: ${alvo.nome}</div>
+                    <div class="intel-title ${corClass}">[ ! ] ALERTA: ${alvo.nome}</div>
                     ${alvo.dica}
                 `;
                 painel.style.opacity = 1;
@@ -290,18 +331,15 @@
         }
 
         function atualizarUI() {
-            document.getElementById("contador-txt").innerText = `${encontradas.length} / ${fasesPalavras[faseAtual].length}`;
+            document.getElementById("contador-txt").innerText = `${encontradas.length}/${fasesPalavras[faseAtual].length}`;
         }
 
         function abrirForms() { 
-            const coment = document.getElementById("input-comentario").value;
-            // Aqui você pode concatenar o comentário na URL do forms se desejar:
-            // window.open("https://docs.google.com/forms/d/e/.../viewform?usp=pp_url&entry.XXXXX=" + encodeURIComponent(coment), '_blank');
             window.open("https://forms.gle/ut3jDiKRPWSGVXw37", '_blank'); 
         }
 
         document.getElementById("btn-reset").onclick = function() { document.querySelectorAll(".cell.selected").forEach(el => el.classList.remove("selected")); selecionadas = []; };
-        document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar a trilha?")) { encontradas = []; selecionadas = []; init(); } };
+        document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar varredura do sistema?")) { encontradas = []; selecionadas = []; init(); } };
 
         init();
     </script>
