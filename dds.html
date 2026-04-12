@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -27,62 +27,38 @@
         
         body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%); color: #f8fafc; text-align: center; padding: 15px 15px 0 15px; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
         
-        /* CABEÇALHO COMPACTO E CLEAN */
+        /* CABEÇALHO */
         .header-simple { 
-            background: rgba(0,0,0,0.3);
-            padding: 20px 15px; 
-            border-radius: 20px; 
-            margin: 0 auto 20px auto; 
-            border: 1px solid var(--glass-border); 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 440px;
-            box-sizing: border-box;
+            background: rgba(0,0,0,0.3); padding: 20px 15px; border-radius: 20px; margin: 0 auto 20px auto; 
+            border: 1px solid var(--glass-border); display: flex; flex-direction: column; align-items: center;
+            width: 100%; max-width: 440px; box-sizing: border-box; transition: all 0.3s;
         }
         
-        .mrs-titulo { margin: 0; font-size: 1.3rem; font-weight: 900; color: var(--accent); letter-spacing: 1.2px; text-transform: uppercase; }
+        .mrs-titulo { margin: 0; font-size: 1.3rem; font-weight: 900; color: var(--accent); letter-spacing: 1.2px; text-transform: uppercase; transition: all 0.3s; }
         .fase-badge { background: var(--mrs-blue); color: var(--accent); display: inline-block; padding: 6px 16px; border-radius: 30px; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); margin: 10px 0;}
         
         .progresso-container { font-weight: 600; font-size: 0.8rem; display: flex; gap: 8px; color: #cbd5e1; align-items: center; }
         .contador-bolinha { background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; color: var(--accent); font-weight: 800; }
         
         /* Controles */
-        .controles { display: flex; justify-content: center; gap: 12px; margin: 0 auto 20px auto; width: 100%; max-width: 440px; }
+        .controles { display: flex; justify-content: center; gap: 12px; margin: 0 auto 20px auto; width: 100%; max-width: 440px; transition: all 0.3s; }
         .btn-aux { background: var(--glass-bg); color: #cbd5e1; border: 1px solid var(--glass-border); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; flex: 1; transition: all 0.2s; }
         .btn-aux:active { transform: scale(0.95); background: rgba(255,255,255,0.15); color: #fff; }
         
-        /* GRID 10x10 ENORME (Adaptado para Touch) */
+        /* GRID 10x10 */
         .grid { 
-            display: grid; 
-            grid-template-columns: repeat(10, 1fr); 
-            gap: 5px; 
-            width: 100%; 
-            max-width: 440px; 
-            margin: 0 auto 30px auto; 
-            background: var(--glass-bg); 
-            padding: 15px; 
-            border-radius: 24px; 
-            border: 1px solid var(--glass-border); 
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
-            box-sizing: border-box;
+            display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; 
+            width: 100%; max-width: 440px; margin: 0 auto 30px auto; 
+            background: var(--glass-bg); padding: 15px; border-radius: 24px; 
+            border: 1px solid var(--glass-border); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
+            box-sizing: border-box; transition: all 0.3s;
         }
         
         .cell { 
-            aspect-ratio: 1; 
-            background: rgba(255, 255, 255, 0.9); 
-            color: var(--bg-darker); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border-radius: 6px; 
-            font-weight: 900; 
-            font-size: 1.1rem; /* Letras super legíveis no celular */
-            cursor: pointer; 
-            transition: all 0.2s; 
-            user-select: none; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            aspect-ratio: 1; background: rgba(255, 255, 255, 0.9); color: var(--bg-darker); 
+            display: flex; align-items: center; justify-content: center; border-radius: 6px; 
+            font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: all 0.2s; 
+            user-select: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
         }
         .cell:active { transform: scale(0.85); }
         
@@ -94,7 +70,7 @@
 
         @keyframes successPulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); box-shadow: 0 0 25px rgba(255,255,255,0.8); z-index: 10; } 100% { transform: scale(1); } }
         
-        /* ===== A MÁGICA: JANELA FLUTUANTE (MODAL) ===== */
+        /* ===== POP-UP (MODAL) ===== */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -113,11 +89,10 @@
         }
         .modal-overlay.active .modal-card { transform: scale(1) translateY(0); }
 
-        .modal-titulo { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 15px; font-weight: 900; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        .modal-texto { font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; }
+        .modal-titulo { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 15px; font-weight: 900; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; transition: all 0.3s;}
+        .modal-texto { font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; transition: all 0.3s;}
         .modal-texto strong { color: #ffffff; }
 
-        /* Cores dinâmicas do título no Pop-up */
         .titulo-grave { color: var(--danger-text); border-bottom-color: var(--danger-btn) !important;}
         .titulo-medio { color: var(--warning-text); border-bottom-color: var(--warning-btn) !important;}
         .titulo-leve { color: var(--info-text); border-bottom-color: var(--info-btn) !important;}
@@ -126,7 +101,7 @@
         .btn-modal:active { transform: scale(0.97); }
 
         /* Área do Rádio Trecho */
-        .analise-section { width: 100%; max-width: 440px; margin: 0 auto 40px auto; background: var(--glass-bg); padding: 30px 20px; border-radius: 24px; text-align: left; box-sizing: border-box; border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .analise-section { width: 100%; max-width: 440px; margin: 0 auto 40px auto; background: var(--glass-bg); padding: 30px 20px; border-radius: 24px; text-align: left; box-sizing: border-box; border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); transition: all 0.3s;}
         .analise-section h3 { margin: 0 0 10px 0; font-size: 0.95rem; color: var(--accent); text-transform: uppercase; font-weight: 800; }
         .analise-section p { font-size: 0.8rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 15px; }
         textarea { width: 100%; height: 90px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); padding: 15px; box-sizing: border-box; font-family: 'Inter', sans-serif; margin-bottom: 15px; font-size: 0.9rem; background: rgba(0,0,0,0.2); color: #fff; transition: all 0.3s; resize: none; }
@@ -136,28 +111,29 @@
         .btn-acao { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
         .btn-forms { background: var(--selected); color: #fff; }
         
-        /* RODAPÉ ÉPICO SEM VAZIOS */
+        /* RODAPÉ ÉPICO */
         .footer-logo-section {
-            width: 100vw; 
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw; 
-            margin-right: -50vw;
-            margin-top: 20px;
-            margin-bottom: 0;
-            line-height: 0; 
+            width: 100vw; position: relative; left: 50%; right: 50%;
+            margin-left: -50vw; margin-right: -50vw; margin-top: 20px; margin-bottom: 0; line-height: 0; 
         }
         .footer-logo-section img {
-            width: 100%;
-            max-width: 600px;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            border-top-left-radius: 24px;
-            border-top-right-radius: 24px;
-            border-top: 2px solid var(--glass-border);
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.8); 
+            width: 100%; max-width: 600px; height: auto; display: block; margin: 0 auto;
+            border-top-left-radius: 24px; border-top-right-radius: 24px;
+            border-top: 2px solid var(--glass-border); box-shadow: 0 -10px 40px rgba(0,0,0,0.8); 
+            transition: all 0.3s;
+        }
+
+        /* ===== MÁGICA: RESPONSIVIDADE PARA DESKTOP E TABLET ===== */
+        @media (min-width: 768px) {
+            .header-simple, .controles, .analise-section { max-width: 800px; padding: 30px; }
+            .mrs-titulo { font-size: 1.8rem; letter-spacing: 2px; }
+            .grid { max-width: 650px; padding: 25px; gap: 8px; }
+            .cell { font-size: 1.6rem; border-radius: 10px; }
+            .modal-card { max-width: 600px; padding: 40px; }
+            .modal-titulo { font-size: 1.5rem; margin-bottom: 20px; }
+            .modal-texto { font-size: 1.1rem; line-height: 1.8; }
+            .btn-modal { font-size: 1rem; padding: 20px; }
+            .footer-logo-section img { max-width: 1000px; border-top-left-radius: 40px; border-top-right-radius: 40px; }
         }
     </style>
 </head>
@@ -204,7 +180,7 @@
     <script>
         const SIZE = 10;
         let selecionadas = [], encontradas = [], gridData = [], faseAtual = 1;
-        let esperandoFechamentoFinal = false; // Controle de finalização
+        let esperandoFechamentoFinal = false; 
         
         const fasesPalavras = {
             1: [
@@ -287,13 +263,12 @@
 
                 selecionadas.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(alvo.nivel === 'grave' ? 'found-grave' : alvo.nivel === 'medio' ? 'found-medio' : 'found-leve'); });
                 encontradas.push(alvo.txt); 
-                abrirModalInsight(alvo); // Chama o Pop-up
+                abrirModalInsight(alvo); 
                 selecionadas = []; 
                 atualizarUI(); 
             }
         }
 
-        // FUNÇÃO QUE CONTROLA O POP-UP NA TELA
         function abrirModalInsight(p) {
             const titulo = document.getElementById("modal-titulo");
             titulo.innerText = `ALERTA: ${p.nome}`;
@@ -306,7 +281,6 @@
             }
         }
 
-        // FUNÇÃO QUE FECHA O POP-UP E CONTINUA O JOGO
         function fecharModal() {
             document.getElementById("modal-overlay").classList.remove("active");
             
