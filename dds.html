@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -25,54 +25,42 @@
             --glass-border: rgba(255, 255, 255, 0.2);
         }
         
-        body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%); color: #f8fafc; text-align: center; padding: 20px 15px 0 15px; min-height: 100vh; overflow-x: hidden; }
+        body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%); color: #f8fafc; text-align: center; padding: 15px 15px 0 15px; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
         
-        /* CABEÇALHO CLEAN */
+        /* CABEÇALHO COMPACTO E CLEAN */
         .header-simple { 
             background: rgba(0,0,0,0.3);
-            padding: 25px 15px; 
+            padding: 20px 15px; 
             border-radius: 20px; 
-            margin: 0 auto 30px auto; 
+            margin: 0 auto 20px auto; 
             border: 1px solid var(--glass-border); 
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 1100px; /* Largura máxima para Desktop */
+            max-width: 440px;
             box-sizing: border-box;
         }
         
-        .mrs-titulo { margin: 0; font-size: 1.5rem; font-weight: 900; color: var(--accent); letter-spacing: 1.5px; text-transform: uppercase; }
-        .fase-badge { background: var(--mrs-blue); color: var(--accent); display: inline-block; padding: 6px 16px; border-radius: 30px; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); margin: 12px 0;}
+        .mrs-titulo { margin: 0; font-size: 1.3rem; font-weight: 900; color: var(--accent); letter-spacing: 1.2px; text-transform: uppercase; }
+        .fase-badge { background: var(--mrs-blue); color: var(--accent); display: inline-block; padding: 6px 16px; border-radius: 30px; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); margin: 10px 0;}
         
-        .progresso-container { font-weight: 600; font-size: 0.85rem; display: flex; gap: 8px; color: #cbd5e1; align-items: center; }
+        .progresso-container { font-weight: 600; font-size: 0.8rem; display: flex; gap: 8px; color: #cbd5e1; align-items: center; }
         .contador-bolinha { background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; color: var(--accent); font-weight: 800; }
         
-        /* ESTRUTURA RESPONSIVA (Lado a Lado no PC) */
-        .desktop-layout {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 100%;
-            max-width: 1100px;
-            margin: 0 auto 30px auto;
-        }
-        
-        .coluna-jogo { width: 100%; display: flex; flex-direction: column; align-items: center; }
-        .coluna-insights { width: 100%; display: flex; flex-direction: column; gap: 15px; }
-
         /* Controles */
-        .controles { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; width: 100%; max-width: 400px; }
+        .controles { display: flex; justify-content: center; gap: 12px; margin: 0 auto 20px auto; width: 100%; max-width: 440px; }
         .btn-aux { background: var(--glass-bg); color: #cbd5e1; border: 1px solid var(--glass-border); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; flex: 1; transition: all 0.2s; }
         .btn-aux:active { transform: scale(0.95); background: rgba(255,255,255,0.15); color: #fff; }
         
-        /* GRID 10x10 */
+        /* GRID 10x10 ENORME (Adaptado para Touch) */
         .grid { 
             display: grid; 
             grid-template-columns: repeat(10, 1fr); 
             gap: 5px; 
             width: 100%; 
-            max-width: 400px; 
+            max-width: 440px; 
+            margin: 0 auto 30px auto; 
             background: var(--glass-bg); 
             padding: 15px; 
             border-radius: 24px; 
@@ -90,7 +78,7 @@
             justify-content: center; 
             border-radius: 6px; 
             font-weight: 900; 
-            font-size: 1rem; 
+            font-size: 1.1rem; /* Letras super legíveis no celular */
             cursor: pointer; 
             transition: all 0.2s; 
             user-select: none; 
@@ -106,81 +94,70 @@
 
         @keyframes successPulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); box-shadow: 0 0 25px rgba(255,255,255,0.8); z-index: 10; } 100% { transform: scale(1); } }
         
-        /* Insights e Placeholder Inicial */
-        .mensagem-inicial { background: rgba(0,0,0,0.2); padding: 25px; border-radius: 16px; color: #cbd5e1; font-size: 0.9rem; border: 2px dashed rgba(255,255,255,0.1); line-height: 1.6; font-weight: 600; }
+        /* ===== A MÁGICA: JANELA FLUTUANTE (MODAL) ===== */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            padding: 20px; box-sizing: border-box;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
         
-        .insight { background: var(--bg-darker); padding: 20px; border-radius: 16px; text-align: left; font-size: 0.85rem; font-weight: 400; line-height: 1.6; color: #cbd5e1; border-left: 5px solid transparent; box-shadow: 0 10px 25px rgba(0,0,0,0.5); animation: slideUp 0.4s ease; }
-        .alerta-titulo { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 10px; font-weight: 900; }
-        .insight strong { color: #ffffff; } 
-        
-        .insight.grave { border-left-color: var(--danger-btn); }
-        .insight.grave .alerta-titulo { color: var(--danger-text); }
-        .insight.medio { border-left-color: var(--warning-btn); }
-        .insight.medio .alerta-titulo { color: var(--warning-text); }
-        .insight.leve { border-left-color: var(--info-btn); }
-        .insight.leve .alerta-titulo { color: var(--info-text); }
+        .modal-card {
+            background: var(--bg-darker); width: 100%; max-width: 400px;
+            padding: 25px; border-radius: 24px; border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: left;
+        }
+        .modal-overlay.active .modal-card { transform: scale(1) translateY(0); }
 
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-titulo { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 15px; font-weight: 900; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .modal-texto { font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; }
+        .modal-texto strong { color: #ffffff; }
+
+        /* Cores dinâmicas do título no Pop-up */
+        .titulo-grave { color: var(--danger-text); border-bottom-color: var(--danger-btn) !important;}
+        .titulo-medio { color: var(--warning-text); border-bottom-color: var(--warning-btn) !important;}
+        .titulo-leve { color: var(--info-text); border-bottom-color: var(--info-btn) !important;}
+
+        .btn-modal { width: 100%; padding: 16px; background: var(--selected); color: #fff; border: none; border-radius: 12px; font-weight: 800; font-size: 0.9rem; margin-top: 20px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+        .btn-modal:active { transform: scale(0.97); }
 
         /* Área do Rádio Trecho */
-        .analise-section { width: 100%; max-width: 1100px; margin: 0 auto 40px auto; background: var(--glass-bg); padding: 30px; border-radius: 24px; text-align: left; box-sizing: border-box; border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        .analise-section h3 { margin: 0 0 10px 0; font-size: 1rem; color: var(--accent); text-transform: uppercase; font-weight: 800; }
-        .analise-section p { font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 15px; }
-        textarea { width: 100%; height: 100px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); padding: 15px; box-sizing: border-box; font-family: 'Inter', sans-serif; margin-bottom: 15px; font-size: 0.9rem; background: rgba(0,0,0,0.2); color: #fff; transition: all 0.3s; resize: none; }
+        .analise-section { width: 100%; max-width: 440px; margin: 0 auto 40px auto; background: var(--glass-bg); padding: 30px 20px; border-radius: 24px; text-align: left; box-sizing: border-box; border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .analise-section h3 { margin: 0 0 10px 0; font-size: 0.95rem; color: var(--accent); text-transform: uppercase; font-weight: 800; }
+        .analise-section p { font-size: 0.8rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 15px; }
+        textarea { width: 100%; height: 90px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); padding: 15px; box-sizing: border-box; font-family: 'Inter', sans-serif; margin-bottom: 15px; font-size: 0.9rem; background: rgba(0,0,0,0.2); color: #fff; transition: all 0.3s; resize: none; }
         textarea:focus { outline: none; border-color: var(--selected); }
-        .btn-box { display: flex; gap: 15px; max-width: 500px; }
-        .btn-acao, .btn-forms { border: none; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 0.8rem; flex: 1; text-transform: uppercase; }
+        .btn-box { display: flex; gap: 12px; }
+        .btn-acao, .btn-forms { border: none; padding: 14px; border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 0.75rem; flex: 1; text-transform: uppercase; }
         .btn-acao { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
         .btn-forms { background: var(--selected); color: #fff; }
         
-        /* RODAPÉ LIMITADO PARA DESKTOP */
+        /* RODAPÉ ÉPICO SEM VAZIOS */
         .footer-logo-section {
-            width: 100%;
-            max-width: 1200px;
-            margin: 40px auto 0 auto;
+            width: 100vw; 
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw; 
+            margin-right: -50vw;
+            margin-top: 20px;
+            margin-bottom: 0;
             line-height: 0; 
         }
         .footer-logo-section img {
             width: 100%;
+            max-width: 600px;
             height: auto;
             display: block;
+            margin: 0 auto;
             border-top-left-radius: 24px;
             border-top-right-radius: 24px;
             border-top: 2px solid var(--glass-border);
             box-shadow: 0 -10px 40px rgba(0,0,0,0.8); 
-        }
-
-        /* MÁGICA: MEDIA QUERY PARA TELAS GRANDES (LADO A LADO) */
-        @media (min-width: 850px) {
-            .desktop-layout {
-                flex-direction: row;
-                align-items: flex-start;
-                justify-content: space-between;
-                gap: 40px;
-            }
-            .coluna-jogo {
-                flex: 1;
-                max-width: 500px;
-                position: sticky;
-                top: 20px; /* Mantém o grid visível ao rolar a página */
-            }
-            .grid {
-                max-width: 100%;
-                padding: 25px;
-                gap: 8px; /* Células mais espaçosas no PC */
-            }
-            .cell {
-                font-size: 1.3rem; /* Letras muito maiores no PC */
-                border-radius: 8px;
-            }
-            .coluna-insights {
-                flex: 1.2;
-                max-width: 600px;
-                padding-top: 65px; /* Alinha os cards com o topo do grid */
-            }
-            .insight {
-                font-size: 0.9rem; /* Texto melhor para ler de longe */
-            }
         }
     </style>
 </head>
@@ -194,25 +171,13 @@
         </div>
     </div>
     
-    <div class="desktop-layout">
-        
-        <div class="coluna-jogo">
-            <div class="controles">
-                <button class="btn-aux" id="btn-reset">Limpar Seleção</button>
-                <button class="btn-aux" id="btn-master">Reiniciar Trilha</button>
-            </div>
-            <div class="grid" id="grid-box"></div>
-        </div>
-
-        <div class="coluna-insights" id="resultado">
-            <div class="mensagem-inicial" id="msg-inicial">
-                📍 <strong>ÁREA DE INTELIGÊNCIA OPERACIONAL</strong><br><br>
-                Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área.
-            </div>
-        </div>
-        
+    <div class="controles">
+        <button class="btn-aux" id="btn-reset">Limpar Seleção</button>
+        <button class="btn-aux" id="btn-master">Reiniciar Trilha</button>
     </div>
-
+    
+    <div class="grid" id="grid-box"></div>
+    
     <div class="analise-section">
         <h3>📡 RÁDIO TRECHO: SUA VOZ NA OPERAÇÃO</h3>
         <p>A segurança é feita por quem vive a via. Deixe uma sugestão, relate uma experiência que sirva de lição ou dê seu feedback sobre o DDS.</p>
@@ -228,9 +193,18 @@
         <img src="1000121485.png" alt="MRS LOGÍSTICA">
     </div>
 
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-titulo" id="modal-titulo">ALERTA OPERACIONAL</div>
+            <div class="modal-texto" id="modal-texto">Conteúdo</div>
+            <button class="btn-modal" onclick="fecharModal()">Continuar Missão</button>
+        </div>
+    </div>
+
     <script>
         const SIZE = 10;
         let selecionadas = [], encontradas = [], gridData = [], faseAtual = 1;
+        let esperandoFechamentoFinal = false; // Controle de finalização
         
         const fasesPalavras = {
             1: [
@@ -310,34 +284,44 @@
             const alvo = fasesPalavras[faseAtual].find(p => p.txt === palavraFormada && !encontradas.includes(p.txt));
             if (alvo) {
                 if ('vibrate' in navigator) { navigator.vibrate([100, 50, 100]); }
-                
-                // Remove a mensagem inicial se for o primeiro acerto
-                const msgInicial = document.getElementById("msg-inicial");
-                if (msgInicial) { msgInicial.style.display = 'none'; }
 
                 selecionadas.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(alvo.nivel === 'grave' ? 'found-grave' : alvo.nivel === 'medio' ? 'found-medio' : 'found-leve'); });
-                encontradas.push(alvo.txt); exibirInsight(alvo); selecionadas = []; atualizarUI(); checarFimFase();
+                encontradas.push(alvo.txt); 
+                abrirModalInsight(alvo); // Chama o Pop-up
+                selecionadas = []; 
+                atualizarUI(); 
             }
         }
 
-        function exibirInsight(p) {
-            const res = document.getElementById("resultado");
-            const card = document.createElement("div"); card.className = `insight ${p.nivel}`;
-            card.innerHTML = `<span class="alerta-titulo">ALERTA OPERACIONAL: ${p.nome}</span>${p.dica}`; 
-            res.appendChild(card); 
+        // FUNÇÃO QUE CONTROLA O POP-UP NA TELA
+        function abrirModalInsight(p) {
+            const titulo = document.getElementById("modal-titulo");
+            titulo.innerText = `ALERTA: ${p.nome}`;
+            titulo.className = `modal-titulo titulo-${p.nivel}`;
+            document.getElementById("modal-texto").innerHTML = p.dica;
+            document.getElementById("modal-overlay").classList.add("active");
+            
+            if (encontradas.length === fasesPalavras[faseAtual].length) {
+                esperandoFechamentoFinal = true;
+            }
+        }
+
+        // FUNÇÃO QUE FECHA O POP-UP E CONTINUA O JOGO
+        function fecharModal() {
+            document.getElementById("modal-overlay").classList.remove("active");
+            
+            if (esperandoFechamentoFinal) {
+                setTimeout(() => {
+                    if ('vibrate' in navigator) { navigator.vibrate([200, 100, 200, 100, 400]); }
+                    alert("🎯 Treinamento Concluído! Você encontrou todas as palavras da MRS. Deixe sua voz no Rádio Trecho e envie para a coordenação!");
+                    esperandoFechamentoFinal = false;
+                }, 500);
+            }
         }
 
         function atualizarUI() {
             const total = fasesPalavras[faseAtual].length;
             document.getElementById("contador-txt").innerText = `${encontradas.length} / ${total}`;
-        }
-
-        function checarFimFase() { 
-            if (encontradas.length === fasesPalavras[faseAtual].length) { 
-                setTimeout(() => {
-                    alert("🎯 Treinamento Concluído! Você encontrou todas as palavras da MRS. Deixe sua voz no Rádio Trecho abaixo e envie para a coordenação!");
-                }, 600);
-            } 
         }
 
         function salvarComentario() {
@@ -349,7 +333,7 @@
         function abrirForms() { window.open("https://forms.gle/ut3jDiKRPWSGVXw37", '_blank'); }
 
         document.getElementById("btn-reset").onclick = function() { document.querySelectorAll(".cell.selected").forEach(el => el.classList.remove("selected")); selecionadas = []; };
-        document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar a trilha?")) { encontradas = []; selecionadas = []; document.getElementById("resultado").innerHTML = `<div class="mensagem-inicial" id="msg-inicial">📍 <strong>ÁREA DE INTELIGÊNCIA OPERACIONAL</strong><br><br>Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área.</div>`; init(); } };
+        document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar a trilha?")) { encontradas = []; selecionadas = []; init(); } };
 
         init();
     </script>
