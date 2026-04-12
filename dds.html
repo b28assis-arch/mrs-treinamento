@@ -13,13 +13,11 @@
             --accent: #ffffff;
             --selected: #3b82f6; 
             
-            /* Cores dos Botões (Fortes) */
             --danger-btn: #ef4444; 
             --warning-btn: #f59e0b;
             --info-btn: #10b981; 
             
-            /* Cores dos Textos (Mais Suaves e Elegantes) */
-            --danger-text: #fb7185; /* Coral suave */
+            --danger-text: #fb7185; 
             --warning-text: #fbbf24;
             --info-text: #34d399;
 
@@ -27,45 +25,60 @@
             --glass-border: rgba(255, 255, 255, 0.2);
         }
         
-        /* Ajuste: Removido o padding inferior para a imagem colar no fundo */
-        body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%); color: #f8fafc; text-align: center; padding: 15px 12px 0 12px; min-height: 100vh; overflow-x: hidden; }
+        body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%); color: #f8fafc; text-align: center; padding: 20px 15px 0 15px; min-height: 100vh; overflow-x: hidden; }
         
         /* CABEÇALHO CLEAN */
         .header-simple { 
             background: rgba(0,0,0,0.3);
             padding: 25px 15px; 
             border-radius: 20px; 
-            margin-bottom: 20px; 
+            margin: 0 auto 30px auto; 
             border: 1px solid var(--glass-border); 
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
+            max-width: 1100px; /* Largura máxima para Desktop */
+            box-sizing: border-box;
         }
         
-        .mrs-titulo { margin: 0; font-size: 1.3rem; font-weight: 900; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
-        .fase-badge { background: var(--mrs-blue); color: var(--accent); display: inline-block; padding: 6px 16px; border-radius: 30px; font-weight: 800; font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); margin: 10px 0;}
+        .mrs-titulo { margin: 0; font-size: 1.5rem; font-weight: 900; color: var(--accent); letter-spacing: 1.5px; text-transform: uppercase; }
+        .fase-badge { background: var(--mrs-blue); color: var(--accent); display: inline-block; padding: 6px 16px; border-radius: 30px; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); margin: 12px 0;}
         
-        .progresso-container { font-weight: 600; font-size: 0.8rem; display: flex; gap: 8px; color: #cbd5e1; }
-        .contador-bolinha { background: rgba(0,0,0,0.5); padding: 2px 10px; border-radius: 20px; color: var(--accent); font-weight: 800; }
+        .progresso-container { font-weight: 600; font-size: 0.85rem; display: flex; gap: 8px; color: #cbd5e1; align-items: center; }
+        .contador-bolinha { background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; color: var(--accent); font-weight: 800; }
         
-        /* Controles Modernos */
-        .controles { display: flex; justify-content: center; gap: 12px; margin: 20px 0; }
-        .btn-aux { background: var(--glass-bg); color: #cbd5e1; border: 1px solid var(--glass-border); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; flex: 1; max-width: 180px; transition: all 0.2s; }
+        /* ESTRUTURA RESPONSIVA (Lado a Lado no PC) */
+        .desktop-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto 30px auto;
+        }
+        
+        .coluna-jogo { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .coluna-insights { width: 100%; display: flex; flex-direction: column; gap: 15px; }
+
+        /* Controles */
+        .controles { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; width: 100%; max-width: 400px; }
+        .btn-aux { background: var(--glass-bg); color: #cbd5e1; border: 1px solid var(--glass-border); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; flex: 1; transition: all 0.2s; }
         .btn-aux:active { transform: scale(0.95); background: rgba(255,255,255,0.15); color: #fff; }
         
-        /* GRID 10x10 NEUMÓRFICO */
+        /* GRID 10x10 */
         .grid { 
             display: grid; 
             grid-template-columns: repeat(10, 1fr); 
-            gap: 4px; 
+            gap: 5px; 
             width: 100%; 
-            max-width: 360px; 
-            margin: 0 auto 20px auto; 
+            max-width: 400px; 
             background: var(--glass-bg); 
             padding: 15px; 
             border-radius: 24px; 
             border: 1px solid var(--glass-border); 
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
+            box-sizing: border-box;
         }
         
         .cell { 
@@ -77,74 +90,97 @@
             justify-content: center; 
             border-radius: 6px; 
             font-weight: 900; 
-            font-size: 0.9rem; 
+            font-size: 1rem; 
             cursor: pointer; 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            transition: all 0.2s; 
             user-select: none; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
         }
         .cell:active { transform: scale(0.85); }
         
-        /* Cores de Acerto e Pulso Visual (Vibração Falsa) */
+        /* Cores de Acerto */
         .selected { background: var(--selected) !important; color: #fff !important; }
-        .found-grave { background: var(--danger-btn) !important; color: #fff !important; animation: successPulse 0.6s cubic-bezier(0.16, 1, 0.3, 1); border: none; }
-        .found-medio { background: var(--warning-btn) !important; color: #000 !important; animation: successPulse 0.6s cubic-bezier(0.16, 1, 0.3, 1); border: none; }
-        .found-leve { background: var(--info-btn) !important; color: #000 !important; animation: successPulse 0.6s cubic-bezier(0.16, 1, 0.3, 1); border: none; }
+        .found-grave { background: var(--danger-btn) !important; color: #fff !important; animation: successPulse 0.6s; border: none; }
+        .found-medio { background: var(--warning-btn) !important; color: #000 !important; animation: successPulse 0.6s; border: none; }
+        .found-leve { background: var(--info-btn) !important; color: #000 !important; animation: successPulse 0.6s; border: none; }
 
-        @keyframes successPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); box-shadow: 0 0 25px rgba(255,255,255,0.8); z-index: 10; }
-            100% { transform: scale(1); }
-        }
+        @keyframes successPulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); box-shadow: 0 0 25px rgba(255,255,255,0.8); z-index: 10; } 100% { transform: scale(1); } }
         
-        /* Insights Estilo App (Agora com o vermelho suave) */
-        #resultado { width: 100%; max-width: 440px; margin: 0 auto 20px auto; display: flex; flex-direction: column; gap: 15px; }
-        .insight { background: var(--bg-darker); padding: 20px; border-radius: 16px; text-align: left; font-size: 0.8rem; font-weight: 400; line-height: 1.6; color: #cbd5e1; border-left: 4px solid transparent; box-shadow: 0 10px 25px rgba(0,0,0,0.5); animation: slideUp 0.4s ease; }
+        /* Insights e Placeholder Inicial */
+        .mensagem-inicial { background: rgba(0,0,0,0.2); padding: 25px; border-radius: 16px; color: #cbd5e1; font-size: 0.9rem; border: 2px dashed rgba(255,255,255,0.1); line-height: 1.6; font-weight: 600; }
         
-        /* O título recebe a cor, mas o restante do negrito fica branco! */
-        .alerta-titulo { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 10px; font-weight: 900; }
+        .insight { background: var(--bg-darker); padding: 20px; border-radius: 16px; text-align: left; font-size: 0.85rem; font-weight: 400; line-height: 1.6; color: #cbd5e1; border-left: 5px solid transparent; box-shadow: 0 10px 25px rgba(0,0,0,0.5); animation: slideUp 0.4s ease; }
+        .alerta-titulo { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 10px; font-weight: 900; }
         .insight strong { color: #ffffff; } 
         
         .insight.grave { border-left-color: var(--danger-btn); }
         .insight.grave .alerta-titulo { color: var(--danger-text); }
-        
         .insight.medio { border-left-color: var(--warning-btn); }
         .insight.medio .alerta-titulo { color: var(--warning-text); }
-        
         .insight.leve { border-left-color: var(--info-btn); }
         .insight.leve .alerta-titulo { color: var(--info-text); }
 
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         /* Área do Rádio Trecho */
-        .analise-section { width: 100%; max-width: 440px; margin: 0 auto 40px auto; background: var(--glass-bg); padding: 25px 20px; border-radius: 24px; text-align: left; box-sizing: border-box; border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        .analise-section h3 { margin: 0 0 8px 0; font-size: 0.9rem; color: var(--accent); text-transform: uppercase; font-weight: 800; }
-        .analise-section p { font-size: 0.75rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 15px; }
-        textarea { width: 100%; height: 90px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); padding: 15px; box-sizing: border-box; font-family: 'Inter', sans-serif; margin-bottom: 15px; font-size: 0.8rem; background: rgba(0,0,0,0.2); color: #fff; transition: all 0.3s; resize: none; }
+        .analise-section { width: 100%; max-width: 1100px; margin: 0 auto 40px auto; background: var(--glass-bg); padding: 30px; border-radius: 24px; text-align: left; box-sizing: border-box; border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .analise-section h3 { margin: 0 0 10px 0; font-size: 1rem; color: var(--accent); text-transform: uppercase; font-weight: 800; }
+        .analise-section p { font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 15px; }
+        textarea { width: 100%; height: 100px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); padding: 15px; box-sizing: border-box; font-family: 'Inter', sans-serif; margin-bottom: 15px; font-size: 0.9rem; background: rgba(0,0,0,0.2); color: #fff; transition: all 0.3s; resize: none; }
         textarea:focus { outline: none; border-color: var(--selected); }
-        .btn-box { display: flex; gap: 12px; }
-        .btn-acao, .btn-forms { border: none; padding: 14px; border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 0.75rem; flex: 1; text-transform: uppercase; }
+        .btn-box { display: flex; gap: 15px; max-width: 500px; }
+        .btn-acao, .btn-forms { border: none; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 0.8rem; flex: 1; text-transform: uppercase; }
         .btn-acao { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
         .btn-forms { background: var(--selected); color: #fff; }
         
-        /* NOVO RODAPÉ FULL-BLEED (Preenche o azul vazio) */
+        /* RODAPÉ LIMITADO PARA DESKTOP */
         .footer-logo-section {
-            width: 100vw; /* Força a pegar a largura total da tela */
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw; /* Truque CSS para ignorar as margens do body */
-            margin-right: -50vw;
-            margin-top: 40px;
-            margin-bottom: 0;
-            line-height: 0; /* Remove os espaços em branco debaixo da imagem */
+            width: 100%;
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            line-height: 0; 
         }
         .footer-logo-section img {
             width: 100%;
             height: auto;
             display: block;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
             border-top: 2px solid var(--glass-border);
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.8); /* Sombra invertida para cima */
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.8); 
+        }
+
+        /* MÁGICA: MEDIA QUERY PARA TELAS GRANDES (LADO A LADO) */
+        @media (min-width: 850px) {
+            .desktop-layout {
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 40px;
+            }
+            .coluna-jogo {
+                flex: 1;
+                max-width: 500px;
+                position: sticky;
+                top: 20px; /* Mantém o grid visível ao rolar a página */
+            }
+            .grid {
+                max-width: 100%;
+                padding: 25px;
+                gap: 8px; /* Células mais espaçosas no PC */
+            }
+            .cell {
+                font-size: 1.3rem; /* Letras muito maiores no PC */
+                border-radius: 8px;
+            }
+            .coluna-insights {
+                flex: 1.2;
+                max-width: 600px;
+                padding-top: 65px; /* Alinha os cards com o topo do grid */
+            }
+            .insight {
+                font-size: 0.9rem; /* Texto melhor para ler de longe */
+            }
         }
     </style>
 </head>
@@ -158,28 +194,38 @@
         </div>
     </div>
     
-    <div class="controles">
-        <button class="btn-aux" id="btn-reset">Limpar Seleção</button>
-        <button class="btn-aux" id="btn-master">Reiniciar Trilha</button>
+    <div class="desktop-layout">
+        
+        <div class="coluna-jogo">
+            <div class="controles">
+                <button class="btn-aux" id="btn-reset">Limpar Seleção</button>
+                <button class="btn-aux" id="btn-master">Reiniciar Trilha</button>
+            </div>
+            <div class="grid" id="grid-box"></div>
+        </div>
+
+        <div class="coluna-insights" id="resultado">
+            <div class="mensagem-inicial" id="msg-inicial">
+                📍 <strong>ÁREA DE INTELIGÊNCIA OPERACIONAL</strong><br><br>
+                Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área.
+            </div>
+        </div>
+        
     </div>
-    
-    <div class="grid" id="grid-box"></div>
-    
-    <div id="resultado"></div>
 
     <div class="analise-section">
         <h3>📡 RÁDIO TRECHO: SUA VOZ NA OPERAÇÃO</h3>
         <p>A segurança é feita por quem vive a via. Deixe uma sugestão, relate uma experiência que sirva de lição ou dê seu feedback sobre o DDS.</p>
-        <textarea id="input-comentario" placeholder="Ex: Uma vez a fadiga bateu no trecho Y e percebi que..."></textarea>
+        <textarea id="input-comentario" placeholder="Ex: Na chave do pátio X, percebi que..."></textarea>
         <div class="btn-box">
             <button class="btn-acao" onclick="salvarComentario()">Salvar Local</button>
             <button class="btn-forms" onclick="abrirForms()">Enviar ao Forms</button>
         </div>
-        <div id="lista-comentarios" style="margin-top:12px; font-size:0.75rem; font-weight: 600; color: var(--info-text); text-align: center;"></div>
+        <div id="lista-comentarios" style="margin-top:12px; font-size:0.8rem; font-weight: 600; color: var(--info-text);"></div>
     </div>
 
     <div class="footer-logo-section">
-        <img src="1000121485.png" alt="MRS LOGÍSTICA ÉPICA">
+        <img src="1000121485.png" alt="MRS LOGÍSTICA">
     </div>
 
     <script>
@@ -189,10 +235,10 @@
         const fasesPalavras = {
             1: [
                 {txt: "PRESSA", nome: "PRESSA", nivel: "grave", dica: "A pressa é a maior inimiga da segurança; o tempo ganho correndo nunca compensa o risco do acidente. <br><br><strong>FATO Ferroviário:</strong> Segundo a FRA (EUA), a pressa nas manobras é a causa raiz de 46% das amputações no pátio. <br><br><strong>PEGADINHA Reflexiva:</strong> Vale a pena arriscar um escorregão no lastro para ganhar 2 minutos na troca de turno?"},
-                {txt: "CELULAR", nome: "CELULAR", nivel: "grave", dica: "O uso do celular destrói a atenção periférica. Pare de caminhar ou estacione o veículo se precisar olhar a tela. <br><br><strong>FATO Ferroviário:</strong> O desastre de Chatsworth (EUA) forçou a adoção do Freio Automático após um maquinista passar o sinal vermelho enviando SMS. <br><br><strong>PEGADINHA Reflexiva:</strong> Você caminharia de olhos vendados entre dois vagões na pera de manobra?"},
-                {txt: "FADIGA", nome: "FADIGA", nivel: "medio", dica: "O cansaço afeta os reflexos; redobre o cuidado no trajeto de volta para casa após o término do turno. <br><br><strong>FATO Ferroviário:</strong> No desastre de Hinton (Canadá), a exaustão causou micro-sonos que ignoraram sinais de parada, tornando obrigatórios os vigilantes (pedal do homem-morto) no mundo. <br><br><strong>PEGADINHA Reflexiva:</strong> Acha que um café forte vence a biologia do micro-sono? Se o corpo apagar, acione o CCO. Fadiga é fisiologia, não falta de vontade."},
-                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "medio", dica: "O cérebro relaxa na rotina do trajeto diário. Force a atenção e redobre o cuidado em dias de chuva. <br><br><strong>FATO Ferroviário:</strong> Ferrovias do Japão reduziram falhas humanas em 85% com o método 'Apontar e Falar' (Shisa Kanko) para combater a 'cegueira da rotina'. <br><br><strong>PEGADINHA Reflexiva:</strong> Desafio de hoje: No próximo sinal ou AMV, aponte fisicamente com a mão e verbalize o aspecto em voz alta na cabine para focar no 'agora'."},
-                {txt: "TEMPO", nome: "TEMPO", nivel: "leve", dica: "Programe seu relógio e saia com antecedência. O planejamento elimina a urgência e garante uma viagem calma. <br><br><strong>FATO Ferroviário:</strong> Em Amagasaki (Japão), o medo de uma punição por atraso de apenas 90 segundos fez o maquinista perder o controle emocional e acelerar, causando um descarrilamento letal. <br><br><strong>PEGADINHA Reflexiva:</strong> Você gerencia seu tempo ou o estresse do relógio guia sua tração? A segurança das 10 mil toneladas começa no despertador em casa."}
+                {txt: "CELULAR", nome: "CELULAR", nivel: "grave", dica: "O uso do celular destrói a atenção periférica. Pare de caminhar ou estacione se precisar olhar a tela. <br><br><strong>FATO Ferroviário:</strong> O desastre de Chatsworth (EUA) forçou a adoção do Freio Automático após um maquinista passar o sinal vermelho enviando SMS. <br><br><strong>PEGADINHA Reflexiva:</strong> Você caminharia de olhos vendados entre dois vagões na pera de manobra?"},
+                {txt: "FADIGA", nome: "FADIGA", nivel: "medio", dica: "O cansaço afeta os reflexos; redobre o cuidado no trajeto de volta para casa após o turno. <br><br><strong>FATO Ferroviário:</strong> No desastre de Hinton (Canadá), a exaustão causou micro-sonos que ignoraram sinais, tornando obrigatórios os vigilantes no mundo. <br><br><strong>PEGADINHA Reflexiva:</strong> Acha que um café forte vence a biologia do micro-sono? Se o corpo apagar, acione o CCO. Fadiga é fisiologia, não falta de vontade."},
+                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "medio", dica: "O cérebro relaxa na rotina do trajeto diário. Force a atenção e redobre o cuidado em dias de chuva. <br><br><strong>FATO Ferroviário:</strong> Ferrovias do Japão reduziram falhas humanas em 85% com o método 'Apontar e Falar' (Shisa Kanko) para combater a 'cegueira da rotina'. <br><br><strong>PEGADINHA Reflexiva:</strong> Desafio de hoje: No próximo sinal, aponte fisicamente com a mão e verbalize o aspecto em voz alta na cabine para focar no 'agora'."},
+                {txt: "TEMPO", nome: "TEMPO", nivel: "leve", dica: "Programe seu relógio e saia com antecedência. O planejamento elimina a urgência e garante uma viagem calma. <br><br><strong>FATO Ferroviário:</strong> Em Amagasaki (Japão), o medo de uma punição por atraso de apenas 90 segundos fez o maquinista perder o controle emocional, causando um descarrilamento letal. <br><br><strong>PEGADINHA Reflexiva:</strong> Você gerencia seu tempo ou o estresse do relógio guia sua tração? A segurança começa no seu despertador em casa."}
             ]
         };
 
@@ -264,6 +310,10 @@
             const alvo = fasesPalavras[faseAtual].find(p => p.txt === palavraFormada && !encontradas.includes(p.txt));
             if (alvo) {
                 if ('vibrate' in navigator) { navigator.vibrate([100, 50, 100]); }
+                
+                // Remove a mensagem inicial se for o primeiro acerto
+                const msgInicial = document.getElementById("msg-inicial");
+                if (msgInicial) { msgInicial.style.display = 'none'; }
 
                 selecionadas.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(alvo.nivel === 'grave' ? 'found-grave' : alvo.nivel === 'medio' ? 'found-medio' : 'found-leve'); });
                 encontradas.push(alvo.txt); exibirInsight(alvo); selecionadas = []; atualizarUI(); checarFimFase();
@@ -299,7 +349,7 @@
         function abrirForms() { window.open("https://forms.gle/ut3jDiKRPWSGVXw37", '_blank'); }
 
         document.getElementById("btn-reset").onclick = function() { document.querySelectorAll(".cell.selected").forEach(el => el.classList.remove("selected")); selecionadas = []; };
-        document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar a trilha?")) { encontradas = []; selecionadas = []; document.getElementById("resultado").innerHTML = ""; init(); } };
+        document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar a trilha?")) { encontradas = []; selecionadas = []; document.getElementById("resultado").innerHTML = `<div class="mensagem-inicial" id="msg-inicial">📍 <strong>ÁREA DE INTELIGÊNCIA OPERACIONAL</strong><br><br>Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área.</div>`; init(); } };
 
         init();
     </script>
