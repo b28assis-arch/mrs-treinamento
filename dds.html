@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRS - Dashboard de Conhecimento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Cores Base */
+            --mrs-blue: #0b3a6f; 
+            --accent: #ffffff;
+            --selected: #3b82f6; 
+            
+            /* Cores Neon / Digitalizadas */
+            --danger: #ff2a2a;   
+            --warning: #ffcc00;  
+            --info: #00ffaa;     
+            --neon-blue: #00d2ff;
+
+            /* Vidro Tecnológico */
+            --glass-bg: rgba(10, 15, 30, 0.85); 
+            --glass-border: rgba(0, 210, 255, 0.2);
+        }
+        
+        body { 
+            margin: 0; 
+            font-family: 'Inter', system-ui, sans-serif; 
+            background: #020617 url('fundo-mrs.png') no-repeat center center fixed; 
+            background-size: cover; 
+            color: #f8fafc; 
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Banner Superior */
+        .banner-topo {
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 1px solid var(--glass-border);
+        }
+        .banner-topo img { width: 100%; display: block; }
+
+        /* CONTAINER PRINCIPAL DO DASHBOARD */
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr; 
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+        }
+
+        /* PAINÉIS ESTILO VIDRO DIGITAL */
+        .panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 20px rgba(0, 210, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- COLUNA ESQUERDA: STATUS --- */
+        .status-panel { text-align: center; justify-content: center; }
+        .mrs-titulo { margin: 0 0 10px 0; font-size: 1.8rem; font-weight: 900; letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .fase-badge { background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%); padding: 8px 16px; border-radius: 8px; font-weight: 900; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 20px; display: inline-block; box-shadow: 0 0 15px rgba(59, 130, 246, 0.6); letter-spacing: 1px; border: 1px solid #60a5fa;}
+        .progresso { font-weight: 600; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 30px; letter-spacing: 1px; text-transform: uppercase;}
+        
+        /* Contador HUD */
+        .contador { 
+            background: rgba(0,0,0,0.8); 
+            padding: 6px 16px; 
+            border-radius: 8px; 
+            color: var(--neon-blue); 
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: 900; 
+            font-size: 1.2rem;
+            margin-left: 8px; 
+            border: 1px solid var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue);
+            box-shadow: inset 0 0 10px rgba(0, 210, 255, 0.2);
+        }
+
+        .controles { display: flex; gap: 10px; width: 100%; }
+        .btn-aux { background: rgba(0, 210, 255, 0.05); color: var(--neon-blue); border: 1px solid var(--glass-border); padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; flex: 1; transition: all 0.2s; letter-spacing: 1px;}
+        .btn-aux:hover { background: rgba(0, 210, 255, 0.15); color: #fff; box-shadow: 0 0 15px rgba(0, 210, 255, 0.3); }
+
+        /* --- COLUNA CENTRAL: GRID --- */
+        .center-panel { align-items: center; border: 2px solid rgba(255,255,255,0.1); }
+        .grid { 
+            display: grid; grid-template-columns: repeat(10, 1fr); 
+            gap: 4px; /* Menos espaço entre as caixas */
+            width: 100%; 
+            max-width: 380px; /* Grid mais compacto */
+            margin: 0 auto;
+            padding: 10px; 
+            background: rgba(0,0,0,0.3); 
+            border-radius: 12px;
+        }
+        
+        /* Células de Alta Legibilidade */
+        .cell { 
+            aspect-ratio: 1; 
+            background: #ffffff; 
+            color: #0b1120; 
+            display: flex; align-items: center; justify-content: center; 
+            border-radius: 6px; 
+            font-weight: 900; 
+            font-size: 1.6rem; /* Fonte maior para preencher a caixa */
+            cursor: pointer; user-select: none; transition: all 0.2s; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5); 
+        }
+        .cell:active { transform: scale(0.85); }
+        .selected { background: var(--selected) !important; color: #fff !important; box-shadow: 0 0 15px var(--selected); }
+        
+        /* Acertos com Brilho Neon */
+        .found-grave { background: var(--danger) !important; color: #fff !important; animation: pulseGrave 0.6s; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); box-shadow: 0 0 15px var(--danger); }
+        .found-medio { background: var(--warning) !important; color: #000 !important; animation: pulseMedio 0.6s; box-shadow: 0 0 15px var(--warning); }
+        .found-leve { background: var(--info) !important; color: #000 !important; animation: pulseLeve 0.6s; box-shadow: 0 0 15px var(--info); }
+        
+        @keyframes pulseGrave { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 30px var(--danger); z-index: 10; } 100% { transform: scale(1); } }
+        @keyframes pulseMedio { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 30px var(--warning); z-index: 10; } 100% { transform: scale(1); } }
+        @keyframes pulseLeve { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 30px var(--info); z-index: 10; } 100% { transform: scale(1); } }
+
+        /* --- COLUNA DIREITA: INTELIGÊNCIA OPERACIONAL --- */
+        .intel-panel { 
+            justify-content: flex-start; text-align: left; 
+            border-left: 4px solid var(--neon-blue);
+            background: linear-gradient(90deg, rgba(0, 210, 255, 0.05) 0%, rgba(10, 15, 30, 0.85) 100%);
+            min-height: 180px; /* Garante que a caixa não fique espremida */
+        }
+        .intel-panel h3 { margin: 0 0 15px 0; font-size: 0.9rem; color: var(--neon-blue); display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
+        .intel-content { font-size: 1.05rem; line-height: 1.6; color: #e2e8f0; }
+        
+        /* Títulos Neon na Área de Inteligência */
+        .intel-title { font-size: 1.3rem; font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .txt-grave { color: var(--danger); text-shadow: 0 0 12px rgba(255, 42, 42, 0.6); }
+        .txt-medio { color: var(--warning); text-shadow: 0 0 12px rgba(255, 204, 0, 0.6); }
+        .txt-leve { color: var(--info); text-shadow: 0 0 12px rgba(0, 255, 170, 0.6); }
+
+        /* --- RODAPÉ: RÁDIO TRECHO --- */
+        .footer-panel { width: 100%; max-width: 1200px; display: flex; gap: 20px; align-items: center; border-bottom: 3px solid var(--selected);}
+        .radio-info { flex: 1; }
+        .radio-info h3 { margin: 0 0 5px 0; font-size: 1rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px;}
+        .radio-info p { margin: 0; font-size: 0.9rem; color: #94a3b8; }
+        .radio-form { flex: 2; display: flex; gap: 15px; }
+        .radio-form input { flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); padding: 18px; border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; font-size: 1rem;}
+        .radio-form input:focus { border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 210, 255, 0.3); }
+        .btn-action { background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%); color: #fff; border: none; padding: 18px 25px; border-radius: 8px; font-weight: 900; font-size: 1rem; text-transform: uppercase; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5); letter-spacing: 1px;}
+        .btn-action:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        .btn-action:active { transform: translateY(0); }
+
+        /* Responsividade Mobile - O SEGREDO DO AJUSTE ESTÁ AQUI */
+        @media (max-width: 1024px) {
+            .dashboard-container { grid-template-columns: 1fr; gap: 15px;}
+            .footer-panel { flex-direction: column; text-align: center; }
+            .radio-form { width: 100%; flex-direction: column; gap: 10px;}
+            .btn-action { padding: 16px; }
+            .radio-form input { padding: 16px; }
+            
+            /* Trava o tamanho do grid no celular para sobrar espaço */
+            .grid { max-width: 340px; padding: 8px; gap: 4px; margin: 0 auto;}
+            .cell { font-size: 1.4rem; border-radius: 4px;} /* Letra grande dentro de caixa menor */
+            
+            .intel-content { font-size: 1rem; }
+            .panel { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="banner-topo">
+        <img src="1000121485.png" alt="MRS LOGÍSTICA">
+    </div>
+
+    <div class="dashboard-container">
+        
+        <div class="panel status-panel">
+            <h1 class="mrs-titulo">MRS LOGÍSTICA</h1>
+            <div class="fase-badge">DDS: SEGURANÇA NO TRAJETO</div>
+            <div class="progresso">
+                PALAVRAS ENCONTRADAS <span class="contador" id="contador-txt">0/5</span>
+            </div>
+            <div class="controles">
+                <button class="btn-aux" id="btn-reset">Limpar Seleção</button>
+                <button class="btn-aux" id="btn-master">Reiniciar Trilha</button>
+            </div>
+        </div>
+
+        <div class="panel center-panel">
+            <div class="grid" id="grid-box"></div>
+        </div>
+
+        <div class="panel intel-panel">
+            <h3>Terminal de Inteligência Operacional</h3>
+            <div class="intel-content" id="intel-content">
+                <p>Aguardando decodificação...<br><br>Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área restrita.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="panel footer-panel">
+        <div class="radio-info">
+            <h3>📡 Rádio Trecho: Sua voz na operação</h3>
+            <p>A segurança é feita por quem vive a via. Relate uma experiência ou dê uma sugestão.</p>
+        </div>
+        <div class="radio-form">
+            <input type="text" id="input-comentario" placeholder="Ex: Na chave do pátio X, percebi que...">
+            <button class="btn-action" onclick="abrirForms()">Transmitir Dados</button>
+        </div>
+    </div>
+
+    <script>
+        const SIZE = 10;
+        let selecionadas = [], encontradas = [], gridData = [], faseAtual = 1;
+        
+        const fasesPalavras = {
+            1: [
+                {txt: "PRESSA", nome: "PRESSA", nivel: "grave", dica: "A pressa é a maior inimiga da segurança. O tempo ganho correndo nunca compensa o risco.<br><br><strong style='color:#cbd5e1'>FATO:</strong> Segundo a FRA, a pressa nas manobras é a causa raiz de 46% das amputações no pátio."},
+                {txt: "CELULAR", nome: "CELULAR", nivel: "grave", dica: "O uso do celular destrói a atenção periférica. Pare de caminhar ou estacione para usar.<br><br><strong style='color:#cbd5e1'>FATO:</strong> O desastre de Chatsworth forçou a adoção do Freio Automático após envio de SMS."},
+                {txt: "FADIGA", nome: "FADIGA", nivel: "medio", dica: "O cansaço afeta os reflexos. Fadiga é fisiologia, não falta de vontade.<br><br><strong style='color:#cbd5e1'>FATO:</strong> Exaustão causou micro-sonos em Hinton (Canadá), tornando obrigatórios os vigilantes."},
+                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "medio", dica: "O cérebro relaxa na rotina. Force a atenção e redobre o cuidado.<br><br><strong style='color:#cbd5e1'>FATO:</strong> O método 'Apontar e Falar' do Japão reduziu falhas em 85% contra a cegueira da rotina."},
+                {txt: "TEMPO", nome: "TEMPO", nivel: "leve", dica: "Programe seu relógio e saia com antecedência. O planejamento elimina a urgência.<br><br><strong style='color:#cbd5e1'>FATO:</strong> O medo de punição por atraso de 90s gerou descarrilamento em Amagasaki (Japão)."}
+            ]
+        };
+
+        function init() {
+            let pronto = false;
+            while (!pronto) { gridData = Array(SIZE).fill(null).map(() => Array(SIZE).fill('')); pronto = distribuirPalavras(); }
+            preencherLixo(); desenhar(); atualizarUI();
+            document.getElementById("intel-content").innerHTML = "<p>Aguardando decodificação...<br><br>Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área restrita.</p>";
+        }
+
+        function distribuirPalavras() {
+            const lista = [...fasesPalavras[faseAtual]].sort((a,b) => b.txt.length - a.txt.length);
+            for (let p of lista) {
+                let colocada = false, tentativas = 0;
+                while (!colocada && tentativas < 5000) {
+                    let h = Math.random() > 0.5, r = Math.floor(Math.random() * (h ? SIZE : SIZE - p.txt.length)), c = Math.floor(Math.random() * (h ? SIZE - p.txt.length : SIZE));
+                    if (podeColocar(p.txt, r, c, h)) {
+                        for (let i = 0; i < p.txt.length; i++) gridData[h ? r : r + i][h ? c + i : c] = p.txt[i];
+                        colocada = true;
+                    }
+                    tentativas++;
+                }
+                if (!colocada) return false;
+            }
+            return true;
+        }
+
+        function podeColocar(p, r, c, h) {
+            for (let i = -1; i <= p.length; i++) {
+                for (let j = -1; j <= 1; j++) {
+                    let currR = h ? r + j : r + i, currC = h ? c + i : c + j;
+                    if (currR >= 0 && currR < SIZE && currC >= 0 && currC < SIZE) {
+                        if (i >= 0 && i < p.length && j === 0) { if (gridData[currR][currC] !== '' && gridData[currR][currC] !== p[i]) return false; }
+                        else if (i >= 0 && i < p.length && gridData[currR][currC] !== '') return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        function preencherLixo() { const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; for (let r = 0; r < SIZE; r++) for (let c = 0; c < SIZE; c++) if (gridData[r][c] === '') gridData[r][c] = abc[Math.floor(Math.random() * abc.length)]; }
+
+        function desenhar() {
+            const container = document.getElementById("grid-box"); container.innerHTML = '';
+            gridData.forEach((row, r) => row.forEach((letra, c) => {
+                const div = document.createElement("div"); div.className = "cell"; div.innerText = letra;
+                div.onclick = () => clicarCelula(div, letra, r, c); container.appendChild(div);
+            }));
+        }
+
+        function clicarCelula(el, letra, r, c) {
+            if (el.classList.contains('found-grave') || el.classList.contains('found-medio') || el.classList.contains('found-leve')) return;
+            
+            if (el.classList.contains('selected')) { 
+                const index = selecionadas.findIndex(s => s.el === el);
+                if (index === selecionadas.length - 1) { el.classList.remove('selected'); selecionadas.pop(); } 
+                else { while (selecionadas.length - 1 > index) { selecionadas.pop().el.classList.remove('selected'); } }
+                return; 
+            }
+            
+            if (selecionadas.length > 0) {
+                const last = selecionadas[selecionadas.length - 1];
+                const dr = Math.abs(r - last.r), dc = Math.abs(c - last.c);
+                if ((dr > 1 || dc > 1) || (dr === 1 && dc === 1)) return; 
+                if (selecionadas.length >= 2) {
+                    const first = selecionadas[0], second = selecionadas[1];
+                    if (first.r === second.r && r !== last.r) return; 
+                    if (first.r !== second.r && c !== last.c) return; 
+                }
+            }
+
+            el.classList.add('selected'); selecionadas.push({el, letra, r, c}); verificarJogo();
+        }
+
+        function verificarJogo() {
+            const palavraFormada = selecionadas.map(s => s.letra).join('');
+            const palavraInvertida = [...palavraFormada].reverse().join('');
+            
+            const alvo = fasesPalavras[faseAtual].find(p => (p.txt === palavraFormada || p.txt === palavraInvertida) && !encontradas.includes(p.txt));
+            
+            if (alvo) {
+                const estiloAcerto = alvo.nivel === 'grave' ? 'found-grave' : alvo.nivel === 'medio' ? 'found-medio' : 'found-leve';
+                const copiaSelecao = [...selecionadas];
+                selecionadas = [];
+                
+                copiaSelecao.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(estiloAcerto); });
+                encontradas.push(alvo.txt); 
+                atualizarUI(); 
+                
+                atualizarPainelInteligencia(alvo);
+
+                if (encontradas.length === fasesPalavras[faseAtual].length) {
+                    setTimeout(() => alert("🎯 Treinamento Concluído! Todos os dados operacionais foram decodificados."), 800);
+                }
+            }
+        }
+
+        function atualizarPainelInteligencia(alvo) {
+            const painel = document.getElementById("intel-content");
+            const corClass = alvo.nivel === 'grave' ? 'txt-grave' : alvo.nivel === 'medio' ? 'txt-medio' : 'txt-leve';
+            
+            painel.style.opacity = 0;
+            setTimeout(() => {
+                painel.innerHTML = `
+                    <div class="intel-title ${corClass}">[ ! ] ALERTA: ${alvo.nome}</div>
+                    ${alvo.dica}
+                `;
+                painel.style.opacity = 1;
+                painel.style.transition = "opacity 0.4s ease";
+            }, 200);
+        }
+
+        function atualizarUI() {
+            document.getElementById("contador-txt").innerText = `${encontradas.length}/${fasesPalavras[faseAtual].length}`;
+        }
+
+        function abrirForms() { 
+            window.open("https://forms.gle/ut3jDiKRPWSGVXw37", '_blank'); 
+        }
+
+        document.getElementById("btn-reset").onclick = function() { document.querySelectorAll(".cell.selected").forEach(el => el.classList.remove("selected")); selecionadas = []; };
+        document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar varredura do sistema?")) { encontradas = []; selecionadas = []; init(); } };
+
+        init();
+    </script>
+</body>
+</html>
