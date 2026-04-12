@@ -27,18 +27,30 @@
         
         body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%); color: #f8fafc; text-align: center; padding: 15px 15px 0 15px; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
         
-        /* CABEÇALHO */
+        /* CABEÇALHO COM O CARD MRS DE FUNDO */
         .header-simple { 
-            background: rgba(0,0,0,0.3); padding: 20px 15px; border-radius: 20px; margin: 0 auto 20px auto; 
-            border: 1px solid var(--glass-border); display: flex; flex-direction: column; align-items: center;
-            width: 100%; max-width: 440px; box-sizing: border-box; transition: all 0.3s;
+            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.5), rgba(2, 6, 23, 0.95)), url('1000121485.png');
+            background-size: cover;
+            background-position: center;
+            padding: 30px 15px; 
+            border-radius: 20px; 
+            margin: 0 auto 20px auto; 
+            border: 1px solid var(--glass-border); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 440px;
+            box-sizing: border-box;
+            transition: all 0.3s;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
         }
         
-        .mrs-titulo { margin: 0; font-size: 1.3rem; font-weight: 900; color: var(--accent); letter-spacing: 1.2px; text-transform: uppercase; transition: all 0.3s; }
-        .fase-badge { background: var(--mrs-blue); color: var(--accent); display: inline-block; padding: 6px 16px; border-radius: 30px; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); margin: 10px 0;}
+        .mrs-titulo { margin: 0; font-size: 1.4rem; font-weight: 900; color: var(--accent); letter-spacing: 1.2px; text-transform: uppercase; transition: all 0.3s; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
+        .fase-badge { background: var(--mrs-blue); color: var(--accent); display: inline-block; padding: 6px 16px; border-radius: 30px; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); margin: 12px 0; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         
-        .progresso-container { font-weight: 600; font-size: 0.8rem; display: flex; gap: 8px; color: #cbd5e1; align-items: center; }
-        .contador-bolinha { background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; color: var(--accent); font-weight: 800; }
+        .progresso-container { font-weight: 600; font-size: 0.85rem; display: flex; gap: 8px; color: #cbd5e1; align-items: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .contador-bolinha { background: rgba(0,0,0,0.6); padding: 4px 14px; border-radius: 20px; color: var(--accent); font-weight: 800; border: 1px solid rgba(255,255,255,0.1); }
         
         /* Controles */
         .controles { display: flex; justify-content: center; gap: 12px; margin: 0 auto 20px auto; width: 100%; max-width: 440px; transition: all 0.3s; }
@@ -70,7 +82,7 @@
 
         @keyframes successPulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); box-shadow: 0 0 25px rgba(255,255,255,0.8); z-index: 10; } 100% { transform: scale(1); } }
         
-        /* ===== POP-UP (MODAL) ===== */
+        /* POP-UP (MODAL) */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -123,10 +135,11 @@
             transition: all 0.3s;
         }
 
-        /* ===== MÁGICA: RESPONSIVIDADE PARA DESKTOP E TABLET ===== */
+        /* RESPONSIVIDADE PARA DESKTOP */
         @media (min-width: 768px) {
-            .header-simple, .controles, .analise-section { max-width: 800px; padding: 30px; }
-            .mrs-titulo { font-size: 1.8rem; letter-spacing: 2px; }
+            .header-simple { max-width: 800px; padding: 40px 20px; border-radius: 30px; }
+            .controles, .analise-section { max-width: 800px; padding: 30px; }
+            .mrs-titulo { font-size: 2rem; letter-spacing: 2px; }
             .grid { max-width: 650px; padding: 25px; gap: 8px; }
             .cell { font-size: 1.6rem; border-radius: 10px; }
             .modal-card { max-width: 600px; padding: 40px; }
@@ -242,7 +255,24 @@
             if ('vibrate' in navigator) { navigator.vibrate(30); }
 
             if (el.classList.contains('found-grave') || el.classList.contains('found-medio') || el.classList.contains('found-leve')) return;
-            if (el.classList.contains('selected')) { if (selecionadas.length > 0 && selecionadas[selecionadas.length - 1].el === el) { el.classList.remove('selected'); selecionadas.pop(); } return; }
+            
+            // INTELIGÊNCIA DE SELEÇÃO: Efeito Rebobinar
+            if (el.classList.contains('selected')) { 
+                const index = selecionadas.findIndex(s => s.el === el);
+                
+                if (index === selecionadas.length - 1) {
+                    // Se clicou exatamente na última: desmarca apenas ela
+                    el.classList.remove('selected');
+                    selecionadas.pop();
+                } else if (index !== -1) {
+                    // Se clicou no meio para corrigir rota: desmarca tudo que veio DEPOIS dela
+                    while (selecionadas.length - 1 > index) {
+                        const removida = selecionadas.pop();
+                        removida.el.classList.remove('selected');
+                    }
+                }
+                return; 
+            }
             
             if (selecionadas.length > 0) {
                 const last = selecionadas[selecionadas.length - 1];
@@ -287,7 +317,7 @@
             if (esperandoFechamentoFinal) {
                 setTimeout(() => {
                     if ('vibrate' in navigator) { navigator.vibrate([200, 100, 200, 100, 400]); }
-                    alert("🎯 Treinamento Concluído! Você encontrou todas as palavras da MRS. Deixe sua voz no Rádio Trecho e envie para a coordenação!");
+                    alert("🎯 Treinamento Concluído! Você encontrou todas as palavras da MRS. Deixe sua voz e sugestões no Rádio Trecho abaixo!");
                     esperandoFechamentoFinal = false;
                 }, 500);
             }
