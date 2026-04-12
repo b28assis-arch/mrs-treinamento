@@ -2,200 +2,242 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MRS - Dashboard de Conhecimento</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MRS - Dashboard de Segurança Operacional 4.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* SISTEMA DE DESIGN OPERACIONAL MRS
+           Focado em: Ergonomia visual, Segurança Cognitiva e Resposta Rápida.
+           Contexto: Pátios, Estações e Via Permanente.
+        */
         :root {
-            /* Cores Base */
             --mrs-blue: #0b3a6f; 
-            --accent: #ffffff;
+            --accent: #ffffff; 
             --selected: #3b82f6; 
-            
-            /* Cores Neon / Digitalizadas */
-            --danger: #ff2a2a;   
-            --warning: #ffcc00;  
-            --info: #00ffaa;     
+            --danger: #ff2a2a; 
+            --warning: #ffcc00; 
+            --info: #00ffaa; 
             --neon-blue: #00d2ff;
-
-            /* Vidro Tecnológico */
-            --glass-bg: rgba(10, 15, 30, 0.85); 
-            --glass-border: rgba(0, 210, 255, 0.2);
+            --glass-bg: rgba(10, 15, 30, 0.98); 
+            --glass-border: rgba(0, 210, 255, 0.3);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         body { 
             margin: 0; 
-            font-family: 'Inter', system-ui, sans-serif; 
-            background: #020617 url('fundo-mrs.png') no-repeat center center fixed; 
-            background-size: cover; 
+            font-family: 'Inter', sans-serif; 
+            background: #020617; 
             color: #f8fafc; 
             min-height: 100vh; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 15px; 
+            box-sizing: border-box; 
+            overflow-x: hidden;
         }
 
-        /* Banner Superior */
-        .banner-topo {
-            width: 100%;
-            max-width: 1200px;
-            margin-bottom: 20px;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        /* --- ELEMENTOS DE IDENTIDADE --- */
+        .banner-topo { 
+            width: 100%; 
+            max-width: 1200px; 
+            margin-bottom: 25px; 
+            border-radius: 12px; 
+            overflow: hidden; 
             border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
         .banner-topo img { width: 100%; display: block; }
 
-        /* CONTAINER PRINCIPAL DO DASHBOARD */
-        .dashboard-container {
-            display: grid;
+        /* --- GRID PRINCIPAL DO DASHBOARD --- */
+        .dashboard-container { 
+            display: grid; 
             grid-template-columns: 1fr 1.5fr 1fr; 
-            gap: 20px;
-            width: 100%;
-            max-width: 1200px;
-            margin-bottom: 20px;
-        }
-
-        /* PAINÉIS ESTILO VIDRO DIGITAL */
-        .panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 20px rgba(0, 210, 255, 0.05);
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* --- COLUNA ESQUERDA: STATUS --- */
-        .status-panel { text-align: center; justify-content: center; }
-        .mrs-titulo { margin: 0 0 10px 0; font-size: 1.8rem; font-weight: 900; letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
-        .fase-badge { background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%); padding: 8px 16px; border-radius: 8px; font-weight: 900; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 20px; display: inline-block; box-shadow: 0 0 15px rgba(59, 130, 246, 0.6); letter-spacing: 1px; border: 1px solid #60a5fa;}
-        .progresso { font-weight: 600; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 30px; letter-spacing: 1px; text-transform: uppercase;}
-        
-        /* Contador HUD */
-        .contador { 
-            background: rgba(0,0,0,0.8); 
-            padding: 6px 16px; 
-            border-radius: 8px; 
-            color: var(--neon-blue); 
-            font-family: 'Courier New', Courier, monospace; 
-            font-weight: 900; 
-            font-size: 1.2rem;
-            margin-left: 8px; 
-            border: 1px solid var(--neon-blue);
-            text-shadow: 0 0 8px var(--neon-blue);
-            box-shadow: inset 0 0 10px rgba(0, 210, 255, 0.2);
-        }
-
-        .controles { display: flex; gap: 10px; width: 100%; }
-        .btn-aux { background: rgba(0, 210, 255, 0.05); color: var(--neon-blue); border: 1px solid var(--glass-border); padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.75rem; text-transform: uppercase; flex: 1; transition: all 0.2s; letter-spacing: 1px;}
-        .btn-aux:hover { background: rgba(0, 210, 255, 0.15); color: #fff; box-shadow: 0 0 15px rgba(0, 210, 255, 0.3); }
-
-        /* --- COLUNA CENTRAL: GRID --- */
-        .center-panel { align-items: center; border: 2px solid rgba(255,255,255,0.1); }
-        .grid { 
-            display: grid; grid-template-columns: repeat(10, 1fr); 
-            gap: 4px; 
+            gap: 20px; 
             width: 100%; 
-            max-width: 380px; 
-            margin: 0 auto;
-            padding: 10px; 
-            background: rgba(0,0,0,0.3); 
-            border-radius: 12px;
+            max-width: 1200px; 
+            margin-bottom: 25px; 
         }
-        
+
+        .panel { 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(30px); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 20px; 
+            padding: 25px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8); 
+            display: flex; 
+            flex-direction: column; 
+            position: relative;
+        }
+
+        /* --- PAINEL DE STATUS E CONTROLE --- */
+        .status-panel { text-align: center; justify-content: center; }
+        .mrs-titulo { 
+            margin: 0; 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            color: var(--accent); 
+            letter-spacing: 1.5px;
+        }
+        .operacao-badge {
+            font-size: 0.75rem;
+            color: var(--neon-blue);
+            font-weight: 700;
+            margin-top: 5px;
+            letter-spacing: 2px;
+        }
+        .contador-frame {
+            background: #000; 
+            padding: 15px; 
+            border-radius: 12px; 
+            color: var(--neon-blue); 
+            border: 1px solid var(--neon-blue); 
+            font-family: monospace; 
+            font-size: 2rem;
+            text-shadow: 0 0 15px var(--neon-blue); 
+            margin: 20px 0;
+            position: relative;
+        }
+
+        /* --- GRID DE INTERAÇÃO (CAÇA-PALAVRAS) --- */
+        .grid-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(10, 1fr); 
+            gap: 8px; 
+            width: 100%; 
+            max-width: 360px; 
+            padding: 15px; 
+            background: rgba(0,0,0,0.5); 
+            border-radius: 16px; 
+        }
         .cell { 
             aspect-ratio: 1; 
             background: #ffffff; 
             color: #0b1120; 
-            display: flex; align-items: center; justify-content: center; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
             border-radius: 6px; 
+            font-weight: 600; 
+            font-size: 1.4rem; 
+            cursor: pointer; 
+            transition: var(--transition-smooth); 
+            user-select: none;
+        }
+        .cell:hover { transform: scale(1.05); filter: brightness(1.1); }
+        .selected { background: var(--selected) !important; color: #fff !important; }
+        .found-word { 
+            background: var(--danger) !important; 
+            color: #fff !important; 
+            box-shadow: 0 0 20px var(--danger); 
+            animation: matchPulse 0.5s ease-out;
+        }
+
+        @keyframes matchPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- TERMINAL DE INTELIGÊNCIA (MAXIMIZADO) --- */
+        .intel-panel { border-left: 8px solid var(--neon-blue); min-height: 750px; }
+        .intel-title { 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            color: var(--neon-blue); 
+            text-transform: uppercase; 
+            border-bottom: 2px solid rgba(255,255,255,0.1); 
+            padding-bottom: 12px; 
+            margin-bottom: 25px; 
+        }
+        
+        .intel-box { 
+            margin-bottom: 25px; 
+            padding: 22px; 
+            border-radius: 14px; 
+            font-size: 1.05rem; 
+            line-height: 1.7; 
+            animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1); 
+            position: relative;
+        }
+        .box-neuro { background: rgba(255,255,255,0.05); border-left: 6px solid var(--info); }
+        .box-fatal { background: rgba(255,42,42,0.18); border-left: 6px solid var(--danger); color: #ffa0a0; }
+        .box-protocolo { background: rgba(0,210,255,0.18); border-left: 6px solid var(--neon-blue); }
+        
+        .label-intel {
+            display: block;
+            font-weight: 800;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        .role-tag { 
+            font-size: 0.7rem; 
             font-weight: 900; 
-            font-size: 1.6rem; 
-            cursor: pointer; user-select: none; transition: all 0.2s; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.5); 
+            background: var(--mrs-blue); 
+            color: #fff; 
+            padding: 3px 10px; 
+            border-radius: 5px; 
+            margin-right: 8px; 
+            text-transform: uppercase; 
+            vertical-align: middle;
+            border: 1px solid rgba(255,255,255,0.2);
         }
-        .cell:active { transform: scale(0.85); }
-        .selected { background: var(--selected) !important; color: #fff !important; box-shadow: 0 0 15px var(--selected); }
-        
-        .found-grave { background: var(--danger) !important; color: #fff !important; animation: pulseGrave 0.6s; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); box-shadow: 0 0 15px var(--danger); }
-        .found-medio { background: var(--warning) !important; color: #000 !important; animation: pulseMedio 0.6s; box-shadow: 0 0 15px var(--warning); }
-        .found-leve { background: var(--info) !important; color: #000 !important; animation: pulseLeve 0.6s; box-shadow: 0 0 15px var(--info); }
-        
-        @keyframes pulseGrave { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 30px var(--danger); z-index: 10; } 100% { transform: scale(1); } }
-        @keyframes pulseMedio { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 30px var(--warning); z-index: 10; } 100% { transform: scale(1); } }
-        @keyframes pulseLeve { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 30px var(--info); z-index: 10; } 100% { transform: scale(1); } }
 
-        /* --- COLUNA DIREITA: INTELIGÊNCIA OPERACIONAL --- */
-        .intel-panel { 
-            justify-content: flex-start; text-align: left; 
-            border-left: 4px solid var(--neon-blue);
-            background: linear-gradient(90deg, rgba(0, 210, 255, 0.05) 0%, rgba(10, 15, 30, 0.85) 100%);
-            min-height: 180px; 
+        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* --- RÁDIO OPERACIONAL (COMPACTO) --- */
+        .footer-panel { width: 100%; max-width: 1200px; border-bottom: 6px solid var(--selected); margin-top: 15px; }
+        .input-mrs { 
+            background: rgba(0,0,0,0.7); 
+            border: 2px solid var(--glass-border); 
+            padding: 18px; 
+            border-radius: 15px; 
+            color: #fff; 
+            width: 100%; 
+            box-sizing: border-box; 
+            font-family: inherit; 
+            font-size: 1.2rem; 
+            min-height: 130px; 
+            resize: none; 
+            margin-bottom: 15px;
+            transition: var(--transition-smooth);
         }
-        .intel-panel h3 { margin: 0 0 15px 0; font-size: 0.9rem; color: var(--neon-blue); display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
-        .intel-content { font-size: 1.05rem; line-height: 1.6; color: #e2e8f0; }
-        
-        .intel-title { font-size: 1.3rem; font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
-        .txt-grave { color: var(--danger); text-shadow: 0 0 12px rgba(255, 42, 42, 0.6); }
-        .txt-medio { color: var(--warning); text-shadow: 0 0 12px rgba(255, 204, 0, 0.6); }
-        .txt-leve { color: var(--info); text-shadow: 0 0 12px rgba(0, 255, 170, 0.6); }
+        .input-mrs:focus { border-color: var(--neon-blue); outline: none; background: rgba(0,0,0,0.9); }
 
-        /* --- RODAPÉ: RÁDIO TRECHO --- */
-        .footer-panel { width: 100%; max-width: 1200px; display: flex; gap: 20px; align-items: center; border-bottom: 3px solid var(--selected);}
-        .radio-info { flex: 1; }
-        .radio-info h3 { margin: 0 0 5px 0; font-size: 1rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px;}
-        .radio-info p { margin: 0; font-size: 0.9rem; color: #94a3b8; }
-        .radio-form { flex: 2; display: flex; gap: 15px; }
-        .radio-form input { flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); padding: 18px; border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; font-size: 1rem;}
-        .radio-form input:focus { border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 210, 255, 0.3); }
-        .btn-action { background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%); color: #fff; border: none; padding: 18px 25px; border-radius: 8px; font-weight: 900; font-size: 1rem; text-transform: uppercase; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5); letter-spacing: 1px;}
-        .btn-action:hover { filter: brightness(1.2); transform: translateY(-2px); }
-        .btn-action:active { transform: translateY(0); }
+        .btn-main { 
+            background: linear-gradient(90deg, #1e40af, #3b82f6); 
+            color: #fff; 
+            border: none; 
+            padding: 24px; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            width: 100%; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: var(--transition-smooth);
+        }
+        .btn-main:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        .btn-main:active { transform: translateY(1px); }
 
-        /* ==================================================== */
-        /* RESPONSIVIDADE MOBILE - CORTE DRÁSTICO DE TAMANHO */
-        /* ==================================================== */
-        @media (max-width: 1024px) {
-            body { padding: 10px; }
-            .dashboard-container { grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px;}
-            
-            /* Compacta os painéis para economizar espaço vertical */
-            .panel { padding: 15px; border-radius: 16px;}
-            
-            .mrs-titulo { font-size: 1.5rem; margin-bottom: 8px;}
-            .fase-badge { margin-bottom: 12px; font-size: 0.75rem;}
-            .progresso { margin-bottom: 15px; font-size: 0.75rem;}
-            .btn-aux { padding: 10px; font-size: 0.7rem;}
-            
-            /* REDUÇÃO FORTE DO CAÇA-PALAVRAS */
-            .grid { 
-                max-width: 280px; /* Era 340px. Isso diminui bem a altura também */
-                padding: 6px; 
-                gap: 3px; 
-                margin: 0 auto;
-            }
-            .cell { 
-                font-size: 1.15rem; /* Ajustado para caber no quadrado menor */
-                border-radius: 4px;
-            }
-            
-            /* Ajustes de Inteligência Operacional */
-            .intel-panel { min-height: auto; }
-            .intel-title { font-size: 1.15rem; margin-bottom: 8px;}
-            .intel-content { font-size: 0.95rem; line-height: 1.4; }
-            
-            /* Rodapé e Formulário */
-            .footer-panel { flex-direction: column; text-align: center; padding: 15px;}
-            .radio-form { width: 100%; flex-direction: column; gap: 10px;}
-            .btn-action { padding: 14px; font-size: 0.9rem;}
-            .radio-form input { padding: 14px; font-size: 0.9rem;}
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 1024px) { 
+            .dashboard-container { grid-template-columns: 1fr; gap: 15px; } 
+            .intel-panel { min-height: auto; } 
+            .panel { padding: 20px; }
+            .mrs-titulo { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -208,174 +250,169 @@
     <div class="dashboard-container">
         
         <div class="panel status-panel">
-            <h1 class="mrs-titulo">MRS LOGÍSTICA</h1>
-            <div class="fase-badge">DDS: SEGURANÇA NO TRAJETO</div>
-            <div class="progresso">
-                PALAVRAS ENCONTRADAS <span class="contador" id="contador-txt">0/5</span>
-            </div>
-            <div class="controles">
-                <button class="btn-aux" id="btn-reset">Limpar Seleção</button>
-                <button class="btn-aux" id="btn-master">Reiniciar Trilha</button>
-            </div>
+            <h1 class="mrs-titulo">SEGURANÇA OPERACIONAL</h1>
+            <div class="operacao-badge">ESTAÇÃO • PÁTIO • VIA</div>
+            <div class="contador-frame" id="contador-txt">0/5</div>
+            <button class="btn-main" style="padding:15px; font-size:0.8rem; background:#1e293b;" onclick="location.reload()">REPROGRAMAR SISTEMA</button>
         </div>
 
-        <div class="panel center-panel">
+        <div class="panel grid-wrapper">
             <div class="grid" id="grid-box"></div>
         </div>
 
         <div class="panel intel-panel">
-            <h3>Terminal de Inteligência Operacional</h3>
-            <div class="intel-content" id="intel-content">
-                <p>Aguardando decodificação...<br><br>Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área restrita.</p>
+            <div class="intel-title">Relatório de Inteligência</div>
+            <div id="intel-content">
+                <div style="font-style: italic; color: #94a3b8; text-align: center; margin-top: 50px;">
+                    "Terminal em prontidão operacional.<br>Localize os 5 fatores críticos de risco no grid para processar os dados neurocomportamentais."
+                </div>
             </div>
         </div>
 
     </div>
 
     <div class="panel footer-panel">
-        <div class="radio-info">
-            <h3>📡 Rádio Trecho: Sua voz na operação</h3>
-            <p>A segurança é feita por quem vive a via. Relate uma experiência ou dê uma sugestão.</p>
+        <div style="margin-bottom: 12px; text-align: center;">
+            <h3 style="margin:0; text-transform: uppercase; font-size:1.2rem; letter-spacing: 1px;">📡 Rádio Operacional: Registro de DDS</h3>
         </div>
-        <div class="radio-form">
-            <input type="text" id="input-comentario" placeholder="Ex: Na chave do pátio X, percebi que...">
-            <button class="btn-action" onclick="abrirForms()">Transmitir Dados</button>
-        </div>
+        <textarea class="input-mrs" id="feedback-caixa" placeholder="Registre a síntese técnica dos compromissos (Maquinista, Manobrador e Controlador de Pátio)..."></textarea>
+        <button class="btn-main" onclick="transmitir()">TRANSMITIR RELATÓRIO</button>
     </div>
 
     <script>
+        /* ARQUITETURA LÓGICA DO DASHBOARD MRS
+           Foco: Detecção Procedural, Validação Neurocomportamental e Segurança Global.
+        */
         const SIZE = 10;
-        let selecionadas = [], encontradas = [], gridData = [], faseAtual = 1;
+        let selecionadas = [], encontradas = [], gridData = [];
         
-        const fasesPalavras = {
-            1: [
-                {txt: "PRESSA", nome: "PRESSA", nivel: "grave", dica: "A pressa é a maior inimiga da segurança. O tempo ganho correndo nunca compensa o risco.<br><br><strong style='color:#cbd5e1'>FATO:</strong> Segundo a FRA, a pressa nas manobras é a causa raiz de 46% das amputações no pátio."},
-                {txt: "CELULAR", nome: "CELULAR", nivel: "grave", dica: "O uso do celular destrói a atenção periférica. Pare de caminhar ou estacione para usar.<br><br><strong style='color:#cbd5e1'>FATO:</strong> O desastre de Chatsworth forçou a adoção do Freio Automático após envio de SMS."},
-                {txt: "FADIGA", nome: "FADIGA", nivel: "medio", dica: "O cansaço afeta os reflexos. Fadiga é fisiologia, não falta de vontade.<br><br><strong style='color:#cbd5e1'>FATO:</strong> Exaustão causou micro-sonos em Hinton (Canadá), tornando obrigatórios os vigilantes."},
-                {txt: "ATENCAO", nome: "ATENÇÃO", nivel: "medio", dica: "O cérebro relaxa na rotina. Force a atenção e redobre o cuidado.<br><br><strong style='color:#cbd5e1'>FATO:</strong> O método 'Apontar e Falar' do Japão reduziu falhas em 85% contra a cegueira da rotina."},
-                {txt: "TEMPO", nome: "TEMPO", nivel: "leve", dica: "Programe seu relógio e saia com antecedência. O planejamento elimina a urgência.<br><br><strong style='color:#cbd5e1'>FATO:</strong> O medo de punição por atraso de 90s gerou descarrilamento em Amagasaki (Japão)."}
-            ]
-        };
+        // BANCO DE DADOS INTEGRADO: MAQUINISTA, MANOBRADOR E CONTROLADOR
+        const bancoDados = [
+            {
+                txt: "SONO", display: "DESSINCRONOSE CIRCADIANA (SONO)",
+                neuro: "O acúmulo de adenosina induz o microssono involuntário. O córtex pré-frontal 'desliga' por até 3s; o indivíduo mantém os olhos abertos em 'visão branca', mas o processamento de riscos e sinais é nulo.",
+                fatal: "OCORRÊNCIA: Hinton (Canadá, 1986). A tripulação em exaustão não registrou o sinal de parada na via. Resultado: colisão frontal com trem de passageiros, 23 fatalidades e fogo descontrolado.",
+                simu: "<span class='role-tag'>Maquinista</span> Desorientação entre estações. <span class='role-tag'>Controlador</span> Lentidão na liberação de agulhas. <span class='role-tag'>Manobrador</span> Reflexo motor retardado no engate. AÇÃO: Parada segura imediata."
+            },
+            {
+                txt: "CELULAR", display: "CEGUEIRA INATENCIONAL (CELULAR)",
+                neuro: "O 'Gargalo de Atenção' impede o cérebro de monitorar a zona de manobra ao processar dados eletrônicos. O sequestro da 'Rede de Saliência' torna o colaborador cego a obstáculos físicos à frente.",
+                fatal: "OCORRÊNCIA: Chatsworth (EUA, 2008). 25 mortos. O maquinista enviou um SMS 22s antes de ignorar o sinal vermelho e colidir frontalmente. O foco estava na rede social, não na vida operacional.",
+                simu: "<span class='role-tag'>Manobrador</span> Notificação durante formação no pátio. <span class='role-tag'>Controlador</span> Distração no console da estação. <span class='role-tag'>Maquinista</span> Dispositivo sobre o painel. AÇÃO: Aparelho desligado."
+            },
+            {
+                txt: "ATENCAO", display: "HABITUAÇÃO E HIPNOSE FERROVIÁRIA (ATENÇÃO)",
+                neuro: "O cérebro economiza energia em tarefas repetitivas em pátios conhecidos. O processamento real é substituído pela projeção de memórias (expectativa de via livre habitual), anulando a percepção de mudanças.",
+                fatal: "OCORRÊNCIA: Santiago de Compostela (Espanha, 2013). 79 mortos. Por excesso de familiaridade, o condutor relaxou a vigilância e entrou em uma curva de 80km/h a mais de 179km/h.",
+                simu: "<span class='role-tag'>Controlador</span> Operar painel por rotina. <span class='role-tag'>Maquinista</span> Trecho repetitivo. <span class='role-tag'>Manobrador</span> Cruzar PN familiar sem checagem. AÇÃO: Use o 'Anotar e Cantar' sempre."
+            },
+            {
+                txt: "SINAL", display: "VIÉS DE EXPECTATIVA (SINALIZAÇÃO)",
+                neuro: "Processamento 'Top-Down': O cérebro projeta o que espera ver. Se o sinal em pátio ou estação é habitualmente verde, o sistema visual camufla o vermelho ou apagado por frações de segundo fatais.",
+                fatal: "OCORRÊNCIA: Bad Aibling (Alemanha, 2016). 12 mortos. O controlador forçou um sinal verde em via singela por estar convencido de que o sistema automático estava em erro, ignorando o perigo físico real.",
+                simu: "<span class='role-tag'>Controlador</span> Forçar comando manual no pátio. <span class='role-tag'>Maquinista</span> Avançar aspecto duvidoso. <span class='role-tag'>Manobrador</span> Avançar zona sem rádio. AÇÃO: Na dúvida, é PARADA."
+            },
+            {
+                txt: "PRESSA", display: "SEQUESTRO DA AMÍGDALA (URGÊNCIA)",
+                neuro: "O estresse temporal dispara cortisol e adrenalina, causando 'Visão de Túnel'. O sistema límbico assume o comando neural, priorizando a meta (horário) e desligando o raciocínio crítico de segurança.",
+                fatal: "OCORRÊNCIA: Amagasaki (Japão, 2005). 107 mortos. O condutor acelerou em curva perigosa para compensar um atraso de apenas 90 segundos. A pressa química bloqueou o senso de perigo da velocidade física.",
+                simu: "<span class='role-tag'>Manobrador</span> Correr entre vagões para liberar pátio. <span class='role-tag'>Controlador</span> Pressionar equipes por tempo. <span class='role-tag'>Maquinista</span> Recuperar atraso. AÇÃO: Segurança antes do relógio."
+            }
+        ];
 
+        // INICIALIZAÇÃO DO MOTOR PROCEDURAL
         function init() {
             let pronto = false;
-            while (!pronto) { gridData = Array(SIZE).fill(null).map(() => Array(SIZE).fill('')); pronto = distribuirPalavras(); }
-            preencherLixo(); desenhar(); atualizarUI();
-            document.getElementById("intel-content").innerHTML = "<p>Aguardando decodificação...<br><br>Encontre as palavras ocultas no painel ao lado. À medida que você decifra o grid, os Fatos Históricos e Protocolos de Segurança serão desbloqueados nesta área restrita.</p>";
+            while (!pronto) { 
+                gridData = Array(SIZE).fill(null).map(() => Array(SIZE).fill('')); 
+                pronto = distribuirPalavras(); 
+            }
+            preencherLixo(); 
+            renderizarGrid();
         }
 
         function distribuirPalavras() {
-            const lista = [...fasesPalavras[faseAtual]].sort((a,b) => b.txt.length - a.txt.length);
+            const lista = [...bancoDados].sort((a,b) => b.txt.length - a.txt.length);
             for (let p of lista) {
                 let colocada = false, tentativas = 0;
-                while (!colocada && tentativas < 5000) {
-                    let h = Math.random() > 0.5, r = Math.floor(Math.random() * (h ? SIZE : SIZE - p.txt.length)), c = Math.floor(Math.random() * (h ? SIZE - p.txt.length : SIZE));
-                    if (podeColocar(p.txt, r, c, h)) {
-                        for (let i = 0; i < p.txt.length; i++) gridData[h ? r : r + i][h ? c + i : c] = p.txt[i];
-                        colocada = true;
-                    }
+                while (!colocada && tentativas < 6000) {
+                    let h = Math.random() > 0.5, 
+                        r = Math.floor(Math.random() * (h ? SIZE : SIZE - p.txt.length)), 
+                        c = Math.floor(Math.random() * (h ? SIZE - p.txt.length : SIZE));
+                    let ok = true;
+                    for (let i = 0; i < p.txt.length; i++) if (gridData[h?r:r+i][h?c+i:c] !== '') ok = false;
+                    if (ok) { for (let i = 0; i < p.txt.length; i++) gridData[h?r:r+i][h?c+i:c] = p.txt[i]; colocada = true; }
                     tentativas++;
                 }
                 if (!colocada) return false;
-            }
-            return true;
+            } return true;
         }
 
-        function podeColocar(p, r, c, h) {
-            for (let i = -1; i <= p.length; i++) {
-                for (let j = -1; j <= 1; j++) {
-                    let currR = h ? r + j : r + i, currC = h ? c + i : c + j;
-                    if (currR >= 0 && currR < SIZE && currC >= 0 && currC < SIZE) {
-                        if (i >= 0 && i < p.length && j === 0) { if (gridData[currR][currC] !== '' && gridData[currR][currC] !== p[i]) return false; }
-                        else if (i >= 0 && i < p.length && gridData[currR][currC] !== '') return false;
-                    }
-                }
-            }
-            return true;
+        function preencherLixo() {
+            const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            for (let r = 0; r < SIZE; r++) for (let c = 0; c < SIZE; c++) 
+                if (gridData[r][c] === '') gridData[r][c] = abc[Math.floor(Math.random() * abc.length)];
         }
 
-        function preencherLixo() { const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; for (let r = 0; r < SIZE; r++) for (let c = 0; c < SIZE; c++) if (gridData[r][c] === '') gridData[r][c] = abc[Math.floor(Math.random() * abc.length)]; }
-
-        function desenhar() {
+        function renderizarGrid() {
             const container = document.getElementById("grid-box"); container.innerHTML = '';
             gridData.forEach((row, r) => row.forEach((letra, c) => {
                 const div = document.createElement("div"); div.className = "cell"; div.innerText = letra;
-                div.onclick = () => clicarCelula(div, letra, r, c); container.appendChild(div);
+                div.onclick = () => gerenciarClique(div, letra, r, c); container.appendChild(div);
             }));
         }
 
-        function clicarCelula(el, letra, r, c) {
-            if (el.classList.contains('found-grave') || el.classList.contains('found-medio') || el.classList.contains('found-leve')) return;
-            
-            if (el.classList.contains('selected')) { 
+        // LÓGICA DE INTERAÇÃO E REBOBINAR (UNDO)
+        function gerenciarClique(el, letra, r, c) {
+            if (el.classList.contains('found-word')) return;
+            if (el.classList.contains('selected')) {
                 const index = selecionadas.findIndex(s => s.el === el);
-                if (index === selecionadas.length - 1) { el.classList.remove('selected'); selecionadas.pop(); } 
-                else { while (selecionadas.length - 1 > index) { selecionadas.pop().el.classList.remove('selected'); } }
-                return; 
+                if (index === selecionadas.length - 1) { el.classList.remove('selected'); selecionadas.pop(); }
+                return;
             }
-            
             if (selecionadas.length > 0) {
                 const last = selecionadas[selecionadas.length - 1];
-                const dr = Math.abs(r - last.r), dc = Math.abs(c - last.c);
-                if ((dr > 1 || dc > 1) || (dr === 1 && dc === 1)) return; 
+                if (Math.abs(r - last.r) > 1 || Math.abs(c - last.c) > 1 || (r !== last.r && c !== last.c)) return;
                 if (selecionadas.length >= 2) {
                     const first = selecionadas[0], second = selecionadas[1];
-                    if (first.r === second.r && r !== last.r) return; 
-                    if (first.r !== second.r && c !== last.c) return; 
+                    if (first.r === second.r && r !== last.r) return;
+                    if (first.c === second.c && c !== last.c) return;
                 }
             }
-
-            el.classList.add('selected'); selecionadas.push({el, letra, r, c}); verificarJogo();
+            el.classList.add('selected'); selecionadas.push({el, letra, r, c}); verificarMatch();
         }
 
-        function verificarJogo() {
-            const palavraFormada = selecionadas.map(s => s.letra).join('');
-            const palavraInvertida = [...palavraFormada].reverse().join('');
-            
-            const alvo = fasesPalavras[faseAtual].find(p => (p.txt === palavraFormada || p.txt === palavraInvertida) && !encontradas.includes(p.txt));
-            
+        // VALIDAÇÃO DE MATCH (SUPORTE PARA PALAVRAS INVERTIDAS)
+        function verificarMatch() {
+            const formada = selecionadas.map(s => s.letra).join('');
+            const invertida = [...formada].reverse().join('');
+            const alvo = bancoDados.find(p => (p.txt === formada || p.txt === invertida) && !encontradas.includes(p.txt));
             if (alvo) {
-                const estiloAcerto = alvo.nivel === 'grave' ? 'found-grave' : alvo.nivel === 'medio' ? 'found-medio' : 'found-leve';
-                const copiaSelecao = [...selecionadas];
-                selecionadas = [];
-                
-                copiaSelecao.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(estiloAcerto); });
-                encontradas.push(alvo.txt); 
-                atualizarUI(); 
-                
-                atualizarPainelInteligencia(alvo);
-
-                if (encontradas.length === fasesPalavras[faseAtual].length) {
-                    setTimeout(() => alert("🎯 Treinamento Concluído! Todos os dados operacionais foram decodificados."), 800);
-                }
+                selecionadas.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add('found-word'); });
+                encontradas.push(alvo.txt); selecionadas = [];
+                document.getElementById("contador-txt").innerText = `${encontradas.length}/5`;
+                apresentarImpacto(alvo);
             }
         }
 
-        function atualizarPainelInteligencia(alvo) {
+        // CARREGAMENTO DE DADOS NO TERMINAL
+        function apresentarImpacto(alvo) {
             const painel = document.getElementById("intel-content");
-            const corClass = alvo.nivel === 'grave' ? 'txt-grave' : alvo.nivel === 'medio' ? 'txt-medio' : 'txt-leve';
-            
-            painel.style.opacity = 0;
-            setTimeout(() => {
-                painel.innerHTML = `
-                    <div class="intel-title ${corClass}">[ ! ] ALERTA: ${alvo.nome}</div>
-                    ${alvo.dica}
-                `;
-                painel.style.opacity = 1;
-                painel.style.transition = "opacity 0.4s ease";
-            }, 200);
+            painel.innerHTML = `
+                <div style="color:var(--danger); font-weight:800; margin-bottom:15px; font-size:1.15rem; border-bottom: 2px solid var(--danger); padding-bottom:10px; text-shadow: 0 0 10px rgba(255,42,42,0.4);">
+                   [ ! ] DETECTADO: ${alvo.display}
+                </div>
+                <div class="intel-box box-neuro"><span class="label-intel">Análise Neuro-Operacional</span>${alvo.neuro}</div>
+                <div class="intel-box box-fatal"><span class="label-intel">Impacto Mundial (Histórico)</span>${alvo.fatal}</div>
+                <div class="intel-box box-protocolo"><span class="label-intel">Protocolo de Segurança MRS</span>${alvo.simu}</div>
+            `;
         }
 
-        function atualizarUI() {
-            document.getElementById("contador-txt").innerText = `${encontradas.length}/${fasesPalavras[faseAtual].length}`;
+        function transmitir() {
+            const feedback = document.getElementById("feedback-caixa").value;
+            if(!feedback) { alert("Atenção: Registre o relatório do DDS antes de transmitir ao sistema."); return; }
+            window.open('https://forms.gle/ut3jDiKRPWSGVXw37');
         }
-
-        function abrirForms() { 
-            window.open("https://forms.gle/ut3jDiKRPWSGVXw37", '_blank'); 
-        }
-
-        document.getElementById("btn-reset").onclick = function() { document.querySelectorAll(".cell.selected").forEach(el => el.classList.remove("selected")); selecionadas = []; };
-        document.getElementById("btn-master").onclick = function() { if(confirm("Reiniciar varredura do sistema?")) { encontradas = []; selecionadas = []; init(); } };
 
         init();
     </script>
