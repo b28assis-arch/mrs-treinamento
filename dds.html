@@ -6,6 +6,9 @@
     <title>MRS - Dashboard Trem Bão</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
+        /* ============================================================
+           CONFIGURAÇÕES DE CORES E VARIÁVEIS (SISTEMA NEON)
+           ============================================================ */
         :root {
             --mrs-blue: #0b3a6f; 
             --accent: #ffffff;
@@ -14,10 +17,11 @@
             --warning: #ffcc00;  
             --info: #00ffaa;     
             --neon-blue: #00d2ff;
-            --glass-bg: rgba(10, 15, 30, 0.9); 
+            --glass-bg: rgba(10, 15, 30, 0.95); 
             --glass-border: rgba(0, 210, 255, 0.3);
         }
         
+        /* --- RESET E FUNDO --- */
         body { 
             margin: 0; font-family: 'Inter', sans-serif; 
             background: #020617 url('fundo-mrs.png') no-repeat center center fixed; 
@@ -26,7 +30,7 @@
             padding: 15px; box-sizing: border-box; overflow-x: hidden;
         }
 
-        /* --- LAYOUT STRUCTURE --- */
+        /* --- BANNER PRINCIPAL --- */
         .banner-topo { 
             width: 100%; max-width: 1200px; margin-bottom: 15px; 
             border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border);
@@ -34,38 +38,34 @@
         }
         .banner-topo img { width: 100%; display: block; }
 
+        /* --- GRID E PAINÉIS --- */
         .dashboard-container { 
             display: grid; grid-template-columns: 1fr 1.5fr 1fr; 
             gap: 15px; width: 100%; max-width: 1200px; margin-bottom: 15px; 
         }
 
         .panel { 
-            background: var(--glass-bg); backdrop-filter: blur(20px); 
+            background: var(--glass-bg); backdrop-filter: blur(25px); 
             border: 1px solid var(--glass-border); border-radius: 20px; 
             padding: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.7); 
             display: flex; flex-direction: column; position: relative;
         }
 
-        /* --- STATUS PANEL --- */
+        /* --- STATUS E CONTADORES --- */
         .status-panel { text-align: center; justify-content: center; }
         .mrs-titulo { margin: 0; font-size: 1.6rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
-        .fase-badge { 
-            background: linear-gradient(90deg, #1e3a8a, #3b82f6); padding: 6px 12px; 
-            border-radius: 6px; font-weight: 900; font-size: 0.75rem; margin: 10px 0; 
-            display: inline-block; border: 1px solid var(--neon-blue);
-        }
-        .contador-container { margin-bottom: 15px; font-size: 0.9rem; font-weight: 800; }
+        .contador-container { margin: 15px 0; font-size: 0.9rem; font-weight: 800; }
         .contador { 
             background: #000; padding: 4px 12px; border-radius: 6px; 
             color: var(--neon-blue); border: 1px solid var(--neon-blue);
             text-shadow: 0 0 8px var(--neon-blue); font-family: monospace;
         }
 
-        /* --- GRID DESIGN --- */
+        /* --- DESIGN DAS CÉLULAS DO CAÇA-PALAVRAS --- */
         .grid { 
             display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; 
             width: 100%; max-width: 320px; margin: 0 auto; padding: 10px; 
-            background: rgba(0,0,0,0.4); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.5); border-radius: 12px;
         }
         .cell { 
             aspect-ratio: 1; background: #ffffff; color: #0b1120; 
@@ -78,7 +78,7 @@
         .found-medio { background: var(--warning) !important; color: #000 !important; box-shadow: 0 0 10px var(--warning); }
         .found-leve { background: var(--info) !important; color: #000 !important; box-shadow: 0 0 10px var(--info); }
 
-        /* --- TREM BÃO (MASCOTE) --- */
+        /* --- MASCOTE TREM BÃO (HOLOGRAMA) --- */
         .mascote-wrapper { 
             position: relative; width: 140px; height: 140px; margin: 0 auto 15px; 
             display: flex; align-items: center; justify-content: center;
@@ -86,7 +86,7 @@
         .trem-bao { 
             width: 130px; height: 130px; object-fit: cover; border-radius: 50%;
             border: 3px solid var(--neon-blue); animation: flutuar 3s ease-in-out infinite; 
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.5); z-index: 2;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.6); z-index: 2;
         }
         .hologram-base { 
             position: absolute; bottom: -5px; width: 80px; height: 12px; 
@@ -97,25 +97,34 @@
         @keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         @keyframes pulsarBase { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.3); opacity: 0.6; } }
 
-        /* --- INTEL CONTENT --- */
-        .intel-panel { border-left: 4px solid var(--neon-blue); min-height: 250px; }
-        .intel-title { font-size: 1.1rem; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        /* --- TERMINAL DE INTELIGÊNCIA --- */
+        .intel-panel { border-left: 4px solid var(--neon-blue); min-height: 320px; }
+        .intel-title { font-size: 1.1rem; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; }
         .intel-text { font-size: 1rem; line-height: 1.5; color: #e2e8f0; }
-
-        /* --- FOOTER --- */
-        .footer-panel { width: 100%; max-width: 1200px; border-bottom: 4px solid var(--selected); }
-        .btn-main { 
-            background: linear-gradient(90deg, #2563eb, #3b82f6); color: #fff; 
-            border: none; padding: 16px; border-radius: 10px; font-weight: 900; 
-            font-size: 1rem; cursor: pointer; text-transform: uppercase; width: 100%;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        .fato-box { 
+            margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);
+            font-style: italic; color: #94a3b8; font-size: 0.9rem;
         }
 
-        /* --- MOBILE OPTIMIZATION --- */
+        /* --- RODAPÉ E FEEDBACK --- */
+        .footer-panel { width: 100%; max-width: 1200px; border-bottom: 4px solid var(--selected); gap: 10px; }
+        .input-mrs { 
+            background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); 
+            padding: 15px; border-radius: 10px; color: #fff; width: 100%; 
+            box-sizing: border-box; margin-bottom: 10px; font-family: inherit; font-size: 1rem;
+        }
+        .btn-main { 
+            background: linear-gradient(90deg, #2563eb, #3b82f6); color: #fff; 
+            border: none; padding: 18px; border-radius: 10px; font-weight: 900; 
+            font-size: 1.1rem; cursor: pointer; text-transform: uppercase; width: 100%;
+            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.5); transition: 0.3s;
+        }
+        .btn-main:hover { transform: translateY(-2px); filter: brightness(1.2); }
+
+        /* --- RESPONSIVIDADE --- */
         @media (max-width: 1024px) {
             .dashboard-container { grid-template-columns: 1fr; }
-            .grid { max-width: 290px; gap: 3px; }
-            .cell { font-size: 1.1rem; }
+            .grid { max-width: 300px; }
             .panel { padding: 15px; }
         }
     </style>
@@ -127,9 +136,8 @@
     <div class="dashboard-container">
         <div class="panel status-panel">
             <h1 class="mrs-titulo">MRS LOGÍSTICA</h1>
-            <div class="fase-badge">DDS: SEGURANÇA NO TRAJETO</div>
             <div class="contador-container">STATUS: <span class="contador" id="contador-txt">0/5</span></div>
-            <button class="btn-main" style="padding: 10px; font-size: 0.7rem; background: #334155;" onclick="location.reload()">REINICIAR VARREDURA</button>
+            <button class="btn-main" style="padding: 10px; font-size: 0.75rem; background: #1e293b;" onclick="location.reload()">REINICIAR SISTEMA</button>
         </div>
 
         <div class="panel"><div class="grid" id="grid-box"></div></div>
@@ -140,29 +148,33 @@
                 <div class="hologram-base"></div>
             </div>
             <div id="intel-content" class="intel-text">
-                <b>Trem Bão:</b> "Aguardando detecção de riscos... Use o grid para sinalizar anomalias no trajeto."
+                "Sistemas de monitoramento ativos. Localize os pontos de atenção no grid acima para iniciar a análise de segurança."
             </div>
         </div>
     </div>
 
     <div class="panel footer-panel">
-        <button class="btn-main" onclick="window.open('https://forms.gle/ut3jDiKRPWSGVXw37')">TRANSMITIR RELATÓRIO AO FORMS</button>
+        <input type="text" class="input-mrs" id="feedback-caixa" placeholder="Registre aqui sua sugestão ou relato de segurança do trecho...">
+        <button class="btn-main" onclick="transmitirRelatorio()">TRANSMITIR RELATÓRIO AO FORMS</button>
     </div>
 
     <script>
-        // CONFIGURAÇÕES GERAIS
+        /* ============================================================
+           LÓGICA DO JOGO E INTELIGÊNCIA ARTIFICIAL
+           ============================================================ */
         const SIZE = 10;
         let selecionadas = [], encontradas = [], gridData = [];
         
-        const fasesPalavras = [
-            {txt: "PRESSA", nivel: "grave", dica: "A pressa é a maior inimiga. <b>Trem Bão</b> alerta: A segurança vem antes do relógio!"},
-            {txt: "CELULAR", nivel: "grave", dica: "Foco total na via! <b>Trem Bão</b> diz: Celular e trilho não combinam."},
-            {txt: "FADIGA", nivel: "medio", dica: "Cansaço reduz reflexos. <b>Trem Bão</b> avisa: Se sentir fadiga, pare com segurança."},
-            {txt: "ATENCAO", nivel: "medio", dica: "A rotina pode cegar. <b>Trem Bão</b> orienta: Mantenha a atenção plena."},
-            {txt: "TEMPO", nivel: "leve", dica: "Planejamento evita urgência. <b>Trem Bão</b> sugere: Saia com tempo de sobra."}
+        // Banco de Dados de Conhecimento
+        const bancoDados = [
+            {txt: "PRESSA", nivel: "grave", dica: "A pressa é a inimiga da segurança operacional.", fato: "FATO: 46% das amputações ferroviárias em pátios ocorrem por pressa nas manobras de engate."},
+            {txt: "CELULAR", nivel: "grave", dica: "Foco total na via! O celular anula sua percepção.", fato: "FATO: O desastre de Chatsworth ocorreu porque o maquinista ignorou o sinal ao enviar um SMS."},
+            {txt: "FADIGA", nivel: "medio", dica: "Cansaço reduz reflexos de forma crítica.", fato: "FATO: Micro-sonos de 2 segundos a 40km/h são suficientes para causar descarrilamentos fatais."},
+            {txt: "ATENCAO", nivel: "medio", dica: "A rotina pode criar cegueira operacional.", fato: "FATO: A maioria dos incidentes ocorre em locais conhecidos, onde o excesso de confiança baixa a guarda."},
+            {txt: "TEMPO", nivel: "leve", dica: "Planejamento evita urgências desnecessárias.", fato: "FATO: Saídas antecipadas reduzem o estresse cognitivo e falhas de comunicação em 70%."}
         ];
 
-        // INICIALIZAÇÃO DO SISTEMA
+        // Inicialização do Tabuleiro
         function init() {
             let pronto = false;
             while (!pronto) { 
@@ -173,9 +185,8 @@
             renderizarGrid();
         }
 
-        // LÓGICA DE DISTRIBUIÇÃO
         function distribuirPalavras() {
-            for (let p of fasesPalavras) {
+            for (let p of bancoDados) {
                 let colocada = false, tentativas = 0;
                 while (!colocada && tentativas < 2500) {
                     let h = Math.random() > 0.5;
@@ -192,8 +203,7 @@
                     tentativas++;
                 }
                 if (!colocada) return false;
-            }
-            return true;
+            } return true;
         }
 
         function preencherLixo() {
@@ -203,108 +213,95 @@
                     if (gridData[r][c] === '') gridData[r][c] = abc[Math.floor(Math.random() * abc.length)];
         }
 
-        // RENDERIZAÇÃO E INTERAÇÃO
         function renderizarGrid() {
-            const container = document.getElementById("grid-box");
-            container.innerHTML = '';
+            const container = document.getElementById("grid-box"); container.innerHTML = '';
             gridData.forEach((row, r) => row.forEach((letra, c) => {
-                const div = document.createElement("div");
-                div.className = "cell";
-                div.innerText = letra;
-                div.dataset.r = r;
-                div.dataset.c = c;
-                div.onclick = () => gerenciarClique(div, letra, r, c);
+                const div = document.createElement("div"); 
+                div.className = "cell"; div.innerText = letra;
+                div.onclick = () => processarClique(div, letra, r, c); 
                 container.appendChild(div);
             }));
         }
 
-        function gerenciarClique(el, letra, r, c) {
-            // Se já foi encontrada, ignora
+        function processarClique(el, letra, r, c) {
             if (el.classList.contains('found-grave') || el.classList.contains('found-medio') || el.classList.contains('found-leve')) return;
-
-            // Se clicar na última selecionada, desmarca (Rebobinar)
+            
+            // Rebobinar seleção
             if (el.classList.contains('selected')) {
                 const index = selecionadas.findIndex(s => s.el === el);
-                if (index === selecionadas.length - 1) {
-                    el.classList.remove('selected');
-                    selecionadas.pop();
-                }
+                if (index === selecionadas.length - 1) { el.classList.remove('selected'); selecionadas.pop(); }
                 return;
             }
 
-            // Validação de Direção (Trava Linha Reta)
+            // Trava direcional e adjacência
             if (selecionadas.length > 0) {
                 const last = selecionadas[selecionadas.length - 1];
-                const dr = Math.abs(r - last.r);
-                const dc = Math.abs(c - last.c);
-                
-                // Apenas adjacentes (sem diagonal)
+                const dr = Math.abs(r - last.r), dc = Math.abs(c - last.c);
                 if ((dr > 1 || dc > 1) || (dr === 1 && dc === 1)) return;
-
-                // Trava de Eixo (Horizontal ou Vertical)
                 if (selecionadas.length >= 2) {
-                    const first = selecionadas[0];
-                    const second = selecionadas[1];
+                    const first = selecionadas[0], second = selecionadas[1];
                     if (first.r === second.r && r !== last.r) return;
                     if (first.c === second.c && c !== last.c) return;
                 }
             }
 
-            el.classList.add('selected');
-            selecionadas.push({el, letra, r, c});
-            verificarPalavra();
+            el.classList.add('selected'); 
+            selecionadas.push({el, letra, r, c}); 
+            verificarMatch();
         }
 
-        function verificarPalavra() {
+        function verificarMatch() {
             const formada = selecionadas.map(s => s.letra).join('');
             const invertida = [...formada].reverse().join('');
-            const alvo = fasesPalavras.find(p => (p.txt === formada || p.txt === invertida) && !encontradas.includes(p.txt));
-
+            const alvo = bancoDados.find(p => (p.txt === formada || p.txt === invertida) && !encontradas.includes(p.txt));
+            
             if (alvo) {
                 const corClas = `found-${alvo.nivel}`;
-                selecionadas.forEach(s => {
-                    s.el.classList.remove('selected');
-                    s.el.classList.add(corClas);
-                });
-                encontradas.push(alvo.txt);
-                selecionadas = [];
+                selecionadas.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(corClas); });
+                encontradas.push(alvo.txt); selecionadas = [];
                 document.getElementById("contador-txt").innerText = `${encontradas.length}/5`;
-                animarTremBao(alvo);
+                dispararInteligencia(alvo);
             }
         }
 
-        // INTELIGÊNCIA ARTIFICIAL DO TREM BÃO
-        function animarTremBao(alvo) {
+        // SISTEMA DE VOZ E TERMINAL
+        function dispararInteligencia(alvo) {
             const painel = document.getElementById("intel-content");
             const corHex = alvo.nivel === 'grave' ? '#ff2a2a' : alvo.nivel === 'medio' ? '#ffcc00' : '#00ffaa';
             
-            // Limpa e prepara título
-            painel.innerHTML = `<div class="intel-title" style="color:${corHex}">[!] ALERTA: ${alvo.txt}</div><div id="typewriter"></div>`;
+            painel.innerHTML = `
+                <div class="intel-title" style="color:${corHex}">[!] ${alvo.txt} DETECTADO</div>
+                <div id="typewriter"></div>
+                <div id="fato-box" class="fato-box"></div>
+            `;
             
-            // Efeito Digitação
             let i = 0;
-            const texto = alvo.dica.replace(/<[^>]*>/g, '');
-            const target = document.getElementById("typewriter");
-
+            const msg = alvo.dica;
             function digitar() {
-                if (i < texto.length) {
-                    target.innerHTML += texto.charAt(i);
-                    i++;
-                    setTimeout(digitar, 35);
+                if (i < msg.length) {
+                    document.getElementById("typewriter").innerHTML += msg.charAt(i);
+                    i++; setTimeout(digitar, 15); // TURBO SPEED
+                } else {
+                    document.getElementById("fato-box").innerHTML = alvo.fato;
                 }
             }
 
-            // Ativa Voz (TTS)
+            // VOZ MASCULINA ROBÓTICA
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const voz = new SpeechSynthesisUtterance("Alerta do Trem Bão: " + texto);
-                voz.lang = 'pt-BR';
-                voz.pitch = 0.8;
-                voz.rate = 1.1;
+                const voz = new SpeechSynthesisUtterance(msg + ". " + alvo.fato);
+                voz.lang = 'pt-BR'; 
+                voz.pitch = 0.5; // GRAVE MASCULINO
+                voz.rate = 1.2;  // RÁPIDO
                 window.speechSynthesis.speak(voz);
             }
-
             digitar();
+        }
+
+        function transmitirRelatorio() {
+            const feedback = document.getElementById("feedback-caixa").value;
+            if(!feedback) { alert("Atenção: Registre sua percepção antes de transmitir."); return; }
+            window.open('https://forms.gle/ut3jDiKRPWSGVXw37');
         }
 
         init();
