@@ -90,7 +90,7 @@
             grid-template-columns: repeat(10, 1fr); 
             gap: 5px; 
             width: 100%; 
-            max-width: 350px; 
+            max-width: 320px; /* Reduzido para dar mais espaço na página */
             margin: 0 auto; 
             padding: 12px; 
             background: rgba(0,0,0,0.5); 
@@ -104,7 +104,7 @@
             align-items: center; 
             justify-content: center; 
             border-radius: 5px; 
-            font-weight: 700; /* Reduzido de 900 para 700 para evitar o borrão */
+            font-weight: 700; /* Negrito moderado para nitidez */
             font-size: 1.4rem; 
             cursor: pointer; 
             transition: 0.2s; 
@@ -115,10 +115,10 @@
         .found-medio { background: var(--warning) !important; color: #000 !important; box-shadow: 0 0 10px var(--warning); }
         .found-leve { background: var(--info) !important; color: #000 !important; box-shadow: 0 0 10px var(--info); }
 
-        /* --- PAINEL DE INTELIGÊNCIA OPERACIONAL (CAIXA AUMENTADA) --- */
+        /* --- PAINEL DE INTELIGÊNCIA OPERACIONAL --- */
         .intel-panel { 
             border-left: 5px solid var(--neon-blue); 
-            min-height: 350px; /* Aumentado para comportar os textos e o "Fato" */
+            min-height: 380px; 
         }
         .intel-title { 
             font-size: 1.2rem; 
@@ -129,7 +129,7 @@
             border-bottom: 1px solid var(--glass-border);
             padding-bottom: 10px;
         }
-        .intel-text { font-size: 1.1rem; line-height: 1.6; color: #f1f5f9; }
+        .intel-text { font-size: 1.1rem; line-height: 1.5; color: #f1f5f9; }
         .fato-box { 
             margin-top: 20px; 
             padding: 15px; 
@@ -141,18 +141,27 @@
             border-left: 3px solid var(--warning);
         }
 
-        /* --- RODAPÉ E CAIXA DE FEEDBACK (FORMS/TEAMS) --- */
+        /* --- RODAPÉ E RÁDIO TRECHO --- */
         .footer-panel { 
             width: 100%; 
             max-width: 1200px; 
             border-bottom: 5px solid var(--selected); 
-            gap: 15px; 
+            gap: 10px; 
             margin-top: 20px; 
         }
+        .radio-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .radio-header h3 { margin: 0; font-size: 1.2rem; color: var(--accent); text-transform: uppercase; }
+        .radio-header p { margin: 0; font-size: 0.9rem; color: #94a3b8; }
+
         .input-mrs { 
             background: rgba(0,0,0,0.7); 
             border: 2px solid var(--glass-border); 
-            padding: 20px; /* Aumentado para melhor toque no celular */
+            padding: 20px; 
             border-radius: 12px; 
             color: #fff; 
             width: 100%; 
@@ -160,10 +169,7 @@
             margin-bottom: 15px; 
             font-family: inherit; 
             font-size: 1.1rem; 
-            transition: 0.3s;
         }
-        .input-mrs:focus { border-color: var(--neon-blue); outline: none; background: rgba(0,0,0,0.9); }
-        
         .btn-main { 
             background: linear-gradient(90deg, #2563eb, #3b82f6); 
             color: #fff; 
@@ -176,17 +182,13 @@
             text-transform: uppercase; 
             width: 100%; 
             box-shadow: 0 5px 25px rgba(59, 130, 246, 0.6); 
-            transition: 0.3s; 
         }
-        .btn-main:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
-        /* --- RESPONSIVIDADE PARA CELULAR --- */
+        /* --- RESPONSIVIDADE --- */
         @media (max-width: 1024px) {
             .dashboard-container { grid-template-columns: 1fr; gap: 15px; }
-            .grid { max-width: 320px; }
-            .cell { font-size: 1.2rem; }
+            .grid { max-width: 290px; }
             .panel { padding: 20px; }
-            .input-mrs { font-size: 1rem; padding: 15px; }
         }
     </style>
 </head>
@@ -197,7 +199,7 @@
     <div class="dashboard-container">
         <div class="panel status-panel">
             <h1 class="mrs-titulo">MRS LOGÍSTICA</h1>
-            <div class="contador-container">PROGRESSO DA VARREDURA: <span class="contador" id="contador-txt">0/5</span></div>
+            <div class="contador-container">VARREDURA: <span class="contador" id="contador-txt">0/5</span></div>
             <button class="btn-main" style="padding: 12px; font-size: 0.8rem; background: #1e293b;" onclick="location.reload()">REINICIAR SISTEMA</button>
         </div>
 
@@ -208,30 +210,30 @@
         <div class="panel intel-panel">
             <div id="intel-content" class="intel-text">
                 <div class="intel-title">INTELIGÊNCIA OPERACIONAL</div>
-                "Terminal aguardando análise. Identifique os comportamentos de risco no grid central para processar os dados de segurança."
+                "Terminal em prontidão. Identifique os pontos de atenção no grid central para processar os fatos e dados de segurança."
             </div>
         </div>
     </div>
 
     <div class="panel footer-panel">
-        <input type="text" class="input-mrs" id="feedback-caixa" placeholder="Digite aqui sua percepção de risco, pegadinha ou sugestão para o trecho...">
+        <div class="radio-header">
+            <h3>📡 Rádio Trecho</h3>
+            <p>Sua voz na operação: relate riscos ou dê sugestões.</p>
+        </div>
+        <input type="text" class="input-mrs" id="feedback-caixa" placeholder="Descreva aqui sua percepção de risco, pegadinha ou sugestão...">
         <button class="btn-main" onclick="transmitirRelatorio()">TRANSMITIR RELATÓRIO AO FORMS</button>
     </div>
 
     <script>
-        /* ============================================================
-           LÓGICA DO MOTOR DE BUSCA E VOZ
-           ============================================================
-        */
         const SIZE = 10;
         let selecionadas = [], encontradas = [], gridData = [];
         
         const bancoDados = [
-            {txt: "PRESSA", nivel: "grave", dica: "A pressa é a principal causa de incidentes em manobras.", fato: "FATO REAL: 46% das amputações ferroviárias registradas em pátios no Brasil ocorrem devido à pressa durante o engate de vagões."},
-            {txt: "CELULAR", nivel: "grave", dica: "O uso do celular durante a jornada anula sua percepção de risco.", fato: "PEGADINHA: O desastre ferroviário de Chatsworth ocorreu porque o maquinista estava enviando SMS e ignorou um sinal vermelho de parada."},
-            {txt: "FADIGA", nivel: "medio", dica: "O cansaço físico e mental reduz reflexos de forma crítica.", fato: "FATO TÉCNICO: Micro-sonos de apenas 2 segundos a 40km/h são suficientes para que um trem percorra 22 metros sem comando."},
-            {txt: "ATENCAO", nivel: "medio", dica: "A rotina gera excesso de confiança e cegueira operacional.", fato: "PEGADINHA: Estatísticas provam que a maioria dos acidentes ocorre em trechos conhecidos, onde o colaborador 'baixa a guarda'."},
-            {txt: "TEMPO", nivel: "leve", dica: "O planejamento do tempo de jornada é uma ferramenta de segurança.", fato: "FATO: Maquinistas que iniciam a jornada com planejamento de tempo reduzem em 70% o estresse cognitivo em manobras complexas."}
+            {txt: "PRESSA", nivel: "grave", dica: "A pressa é a principal causa de incidentes em manobras.", fato: "FATO REAL: 46% das amputações ferroviárias registradas em pátios ocorrem devido à pressa durante o engate de vagões."},
+            {txt: "CELULAR", nivel: "grave", dica: "O uso do celular durante a jornada anula sua percepção de risco.", fato: "PEGADINHA: O desastre ferroviário de Chatsworth ocorreu porque o maquinista estava enviando SMS e ignorou um sinal vermelho."},
+            {txt: "FADIGA", nivel: "medio", dica: "O cansaço físico e mental reduz reflexos de forma crítica.", fato: "FATO TÉCNICO: Micro-sonos de apenas 2 segundos a 40km/h fazem o trem percorrer 22 metros sem comando."},
+            {txt: "ATENCAO", nivel: "medio", dica: "A rotina gera excesso de confiança e cegueira operacional.", fato: "PEGADINHA: A maioria dos acidentes ocorre em trechos conhecidos, onde o colaborador 'baixa a guarda'."},
+            {txt: "TEMPO", nivel: "leve", dica: "O planejamento do tempo de jornada é uma ferramenta de segurança.", fato: "FATO: Maquinistas que planejam seu tempo reduzem em 70% o estresse cognitivo em manobras complexas."}
         ];
 
         function init() {
@@ -276,9 +278,7 @@
         function renderizarGrid() {
             const container = document.getElementById("grid-box"); container.innerHTML = '';
             gridData.forEach((row, r) => row.forEach((letra, c) => {
-                const div = document.createElement("div"); 
-                div.className = "cell"; 
-                div.innerText = letra;
+                const div = document.createElement("div"); div.className = "cell"; div.innerText = letra;
                 div.onclick = () => gerenciarClique(div, letra, r, c); 
                 container.appendChild(div);
             }));
@@ -286,15 +286,11 @@
 
         function gerenciarClique(el, letra, r, c) {
             if (el.classList.contains('found-grave') || el.classList.contains('found-medio') || el.classList.contains('found-leve')) return;
-            
-            // Rebobinar seleção se clicar na última letra
             if (el.classList.contains('selected')) {
                 const index = selecionadas.findIndex(s => s.el === el);
                 if (index === selecionadas.length - 1) { el.classList.remove('selected'); selecionadas.pop(); }
                 return;
             }
-
-            // Validação de adjacência e linha reta
             if (selecionadas.length > 0) {
                 const last = selecionadas[selecionadas.length - 1];
                 const dr = Math.abs(r - last.r), dc = Math.abs(c - last.c);
@@ -305,22 +301,17 @@
                     if (first.c === second.c && c !== last.c) return;
                 }
             }
-
-            el.classList.add('selected'); 
-            selecionadas.push({el, letra, r, c}); 
-            verificarMatch();
+            el.classList.add('selected'); selecionadas.push({el, letra, r, c}); verificarMatch();
         }
 
         function verificarMatch() {
             const formada = selecionadas.map(s => s.letra).join('');
             const invertida = [...formada].reverse().join('');
             const alvo = bancoDados.find(p => (p.txt === formada || p.txt === invertida) && !encontradas.includes(p.txt));
-            
             if (alvo) {
                 const corClas = `found-${alvo.nivel}`;
                 selecionadas.forEach(s => { s.el.classList.remove('selected'); s.el.classList.add(corClas); });
-                encontradas.push(alvo.txt); 
-                selecionadas = [];
+                encontradas.push(alvo.txt); selecionadas = [];
                 document.getElementById("contador-txt").innerText = `${encontradas.length}/5`;
                 processarAudioVisual(alvo);
             }
@@ -329,24 +320,16 @@
         function processarAudioVisual(alvo) {
             const painel = document.getElementById("intel-content");
             const corHex = alvo.nivel === 'grave' ? '#ff2a2a' : alvo.nivel === 'medio' ? '#ffcc00' : '#00ffaa';
-            
-            painel.innerHTML = `
-                <div class="intel-title" style="color:${corHex}">[!] ALERTA: ${alvo.txt}</div>
-                <div id="typing" style="margin-bottom:15px"></div>
-                <div class="fato-box" id="fato"></div>
-            `;
+            painel.innerHTML = `<div class="intel-title" style="color:${corHex}">ALERTA: ${alvo.txt}</div><div id="typing"></div><div class="fato-box" id="fato"></div>`;
             
             let i = 0;
             function digitar() {
                 if (i < alvo.dica.length) {
                     document.getElementById("typing").innerHTML += alvo.dica.charAt(i);
                     i++; setTimeout(digitar, 15);
-                } else {
-                    document.getElementById("fato").innerHTML = alvo.fato;
-                }
+                } else { document.getElementById("fato").innerHTML = alvo.fato; }
             }
 
-            // VOZ MASCULINA RÁPIDA
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 const voz = new SpeechSynthesisUtterance(alvo.dica + ". " + alvo.fato);
@@ -357,8 +340,7 @@
         }
 
         function transmitirRelatorio() {
-            const feedback = document.getElementById("feedback-caixa").value;
-            if(!feedback) { alert("Atenção: Registre sua percepção de segurança antes de transmitir."); return; }
+            if(!document.getElementById("feedback-caixa").value) { alert("Registre sua percepção antes de transmitir."); return; }
             window.open('https://forms.gle/ut3jDiKRPWSGVXw37');
         }
 
