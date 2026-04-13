@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MRS - Protocolo Sentinela: Cuidado Mútuo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mrs-blue: #0b3a6f; --mrs-green: #00ffaa; --danger: #ff2a2a;
+            --warning: #ffcc00; --bg-dark: #020617;
+            --panel-bg: rgba(10, 15, 30, 0.98); --border-ui: rgba(0, 255, 170, 0.3);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif; background-color: var(--bg-dark);
+            color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; padding: 10px; overflow-x: hidden; position: relative;
+        }
+        body::before {
+            content: ""; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 85%; height: 85%; background: url('1000121485.png') no-repeat center center;
+            background-size: contain; opacity: 0.04; z-index: -1; pointer-events: none;
+        }
+        .header-game { width: 100%; max-width: 800px; text-align: center; margin-bottom: 15px; }
+        .mrs-logo-top { width: 100%; max-width: 800px; border-radius: 8px; border: 1px solid var(--border-ui); margin-bottom: 5px; }
+        .sim-container {
+            width: 100%; max-width: 800px; background: var(--panel-bg);
+            border: 2px solid var(--mrs-green); border-radius: 15px; padding: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 170, 0.15); min-height: 580px; display: flex; flex-direction: column;
+        }
+        .stage-title {
+            color: var(--mrs-green); font-weight: 800; text-transform: uppercase; font-size: 1.1rem;
+            margin-bottom: 15px; border-bottom: 1px solid var(--border-ui); padding-bottom: 10px;
+            display: flex; justify-content: space-between;
+        }
+        .scenario-box {
+            font-size: 1rem; line-height: 1.5; margin-bottom: 20px;
+            background: rgba(0, 255, 170, 0.05); padding: 15px; border-radius: 8px; border-left: 5px solid var(--mrs-green);
+        }
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .option-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border-ui); color: #fff;
+            padding: 14px; border-radius: 8px; cursor: pointer; text-align: left;
+            font-size: 0.95rem; transition: 0.2s; line-height: 1.3;
+        }
+        .option-btn:hover { background: var(--mrs-blue); border-color: var(--mrs-green); }
+        .feedback-panel { display: none; animation: fadeIn 0.4s ease-out; }
+        .fact-box { background: rgba(255,42,42,0.15); border-left: 4px solid var(--danger); padding: 15px; margin: 15px 0; border-radius: 8px; }
+        .success-box { background: rgba(0,255,170,0.15); border-left: 4px solid var(--mrs-green); padding: 15px; margin: 15px 0; border-radius: 8px; }
+        .card-label { display: block; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 5px; color: var(--mrs-green); letter-spacing: 1px; }
+        .btn-action {
+            background: var(--mrs-green); color: #000; border: none; padding: 12px 25px;
+            border-radius: 6px; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top: 10px; width: 100%;
+        }
+        .textarea-mrs {
+            width: 100%; background: #000; border: 1px solid var(--border-ui); color: #fff;
+            padding: 12px; border-radius: 8px; height: 75px; resize: none; margin-top: 10px; font-family: inherit;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="header-game">
+        <img src="1000121485.png" class="mrs-logo-top">
+        <div style="color: var(--mrs-green); font-weight: 800; font-size: 1rem; letter-spacing: 1px;">PROTOCOLO SENTINELA: CUIDADO MÚTUO</div>
+    </div>
+    <div class="sim-container" id="game-core"></div>
+    <div style="width: 100%; max-width: 800px; margin-top: 15px; text-align: center;">
+        <div style="font-size: 0.75rem; font-weight: 800; color: var(--neon-blue);">📡 RELATÓRIO DE SENTINELA</div>
+        <textarea class="textarea-mrs" id="user-input" placeholder="Registre seu compromisso com o Cuidado Mútuo após este treinamento..."></textarea>
+        <button class="btn-action" style="padding: 8px; font-size: 0.7rem; width: auto;" onclick="transmitir()">Transmitir ao Forms</button>
+    </div>    <script>
+        const levels = [
+            {
+                id: 1, title: "Nível 1: Intervenção em Fadiga",
+                scenario: "Meio da madrugada. Você percebe que seu colega de equipe está bocejando excessivamente e com o olhar fixo. Ele insiste que 'está bem'.",
+                options: [
+                    { type: 'correct', text: "Intervir imediatamente e reportar a condição de fadiga à supervisão para substituição segura.", fato: "CLARION, IOWA (2011): Um maquinista ignorou o próprio cansaço e colidiu frontalmente com uma composição parada. O Cuidado Mútuo exige que você seja a voz da razão." },
+                    { type: 'trap', text: "Assumir a maior parte das tarefas para deixá-lo descansando um pouco na cabine enquanto você opera.", fato: "SOBRECARGA: Tentar 'cobrir' o colega fadigado dobra o risco. Se você falhar, ele não estará alerta para te corrigir em uma emergência." },
+                    { type: 'more-less', text: "Sugestionar que ele lave o rosto e tome café, monitorando-o de perto.", fato: "FALSA SEGURANÇA: Estimulantes não recuperam reflexos. No acidente de Chattanooga (1990), o café não impediu o sono profundo segundos antes da colisão." },
+                    { type: 'nothing', text: "Respeitar a decisão do colega, confiando na sua vasta experiência ferroviária.", fato: "OMISSÃO CRÍTICA: Os 10 acidentes do 1º trimestre provam que a experiência não é proteção total. O silêncio diante do risco é fatal." }
+                ]
+            },
+            {
+                id: 2, title: "Nível 2: Vigilância em Manobra",
+                scenario: "Um Manobrador entra em zona de sombra rádio. Você precisa recuar, e ele acredita que 'dá para ir no visual' por alguns metros.",
+                options: [
+                    { type: 'correct', text: "Interromper o movimento imediatamente até restabelecer contato rádio pleno ou visual direto.", fato: "ZERO TOLERÂNCIA: Sem rádio, o movimento é zero. Esta regra protege o Manobrador de atropelamentos e prensagens em pátios." },
+                    { type: 'trap', text: "Recuar em velocidade mínima confiando na experiência de posicionamento do Manobrador.", fato: "HABITUAÇÃO: Muitos acidentes em 2026 envolveram manobras 'lentas'. A velocidade reduzida não compensa a falta de comunicação ativa." },
+                    { type: 'more-less', text: "Utilizar buzinas longas para avisar que o trem está recuando enquanto aguarda o rádio.", fato: "COMUNICAÇÃO FALHA: Buzinas não substituem a confirmação verbal. Em Praga (2024), sinais improvisados causaram colisões severas." },
+                    { type: 'nothing', text: "Continuar a manobra normalmente, pois o Manobrador sabe se proteger.", fato: "LAC-MÉGANTIC (2013): Presunções sobre segurança levaram a um desastre com 47 fatalidades. No Cuidado Mútuo, nunca presuma; confirme sempre." }
+                ]
+            },
+            {
+                id: 3, title: "Nível 3: Rigor vs. Pressão",
+                scenario: "O CCO solicita agilidade. Seu colega sugere acelerar levemente acima da Velocidade Restrita para ganhar embalo para a rampa.",
+                options: [
+                    { type: 'correct', text: "Manter o rigor da Velocidade Restrita e alertar o colega sobre o risco de descarrilamento.", fato: "MÁXIMO RIGOR: No acidente de Amagasaki (2005), a tentativa de recuperar 90 segundos de atraso matou 107 pessoas. O cronograma não vale uma vida." },
+                    { type: 'trap', text: "Concordar com o colega apenas nos trechos de reta, reduzindo antes das curvas.", fato: "SANTIAGO (2013): Pequenos excessos 'apenas na reta' criam o vício do desvio. O maquinista entrou na curva a 179km/h, resultando em 79 mortes." },
+                    { type: 'more-less', text: "Deixar o colega operar como quiser para não criar conflito na cabine.", fato: "CONIVÊNCIA: O Cuidado Mútuo exige coragem para discordar. Se você vê o excesso e se cala, você aceita o risco de morrer junto com ele." },
+                    { type: 'nothing', text: "Pedir ao CCO autorização para exceder o limite, alegando necessidade de horário.", fato: "QUEBRA DE REGRA: O CCO não autoriza desvios de segurança. Solicitar isso demonstra falta de compromisso com o Rigor." }
+                ]
+            },
+            {
+                id: 4, title: "Nível 4: Proteção em AMV",
+                scenario: "Você vê um colega de outra equipe tentando destravar uma agulha (AMV) usando o pé para forçar o mecanismo.",
+                options: [
+                    { type: 'correct', text: "Abordar o colega imediatamente, interromper o ato e orientar sobre a postura técnica correta.", fato: "ACIDENTES PESSOAIS: Lesões em pés e mãos são recorrentes neste trimestre. O 'atalho' com o pé é o caminho para uma invalidez permanente." },
+                    { type: 'trap', text: "Apenas observar e, se ele se machucar, prestar os primeiros socorros conforme o treinamento.", fato: "REATIVIDADE: Segurança não é socorrer o ferido, é impedir o ferimento. O Cuidado Mútuo é proativo; intervenha antes que a dor aconteça." },
+                    { type: 'more-less', text: "Passar e comentar 'cuidado com o pé', sem parar para garantir que ele mude a atitude.", fato: "EFICÁCIA NULA: Orientações de passagem não mudam comportamentos. O Protocolo Sentinela exige que a tarefa insegura seja interrompida." },
+                    { type: 'nothing', text: "Ignorar, pois intervir no trabalho de outra equipe pode gerar desconforto.", fato: "CULTURA FATAL: O medo de 'parecer chato' matou mais ferroviários do que falhas mecânicas. Quebre o silêncio diante do erro do outro." }
+                ]
+            },
+            {
+                id: 5, title: "Nível 5: O Sentinela Digital",
+                scenario: "Seu colega de cabine saca o celular para ver uma mensagem rápida. Ele diz que 'não vai distrair'.",
+                options: [
+                    { type: 'correct', text: "Exigir que ele guarde o aparelho imediatamente, reforçando o foco total na via.", fato: "CEGUEIRA INATENCIONAL: 2 segundos no celular a 40km/h são 22 metros de cegueira total. Em Chatsworth (2008), um SMS causou 25 mortes." },
+                    { type: 'trap', text: "Deixar ele ver a mensagem enquanto você assume a vigilância total por ele.", fato: "DIVISÃO DE RISCO: Quando um se distrai, a dupla checagem morre. Se você falhar enquanto ele olha o celular, ninguém poderá te corrigir." },
+                    { type: 'more-less', text: "Pedir para ele ler a mensagem em voz alta para você também saber o que houve.", fato: "DISTRAÇÃO COGNITIVA: Falar sobre assuntos externos tira seu cérebro da operação. O Protocolo exige isolamento total de distrações." },
+                    { type: 'nothing', text: "Ficar em silêncio para não ser o 'fiscal' do colega e evitar atritos.", fato: "OMISSÃO DE CULPA: Se ocorrer um acidente enquanto ele estava no celular e você se calou, a responsabilidade será dividida. Proteja a dupla." }
+                ]
+            }
+        ];
+
+        let currentLevel = 0;
+        function renderLevel() {
+            const level = levels[currentLevel];
+            const container = document.getElementById("game-core");
+            const shuffledOptions = [...level.options].sort(() => Math.random() - 0.5);
+            container.innerHTML = `<div class="stage-title"><span>${level.title}</span><span>${currentLevel+1}/5</span></div>
+                <div class="scenario-box"><strong>DILEMA OPERACIONAL:</strong><br>${level.scenario}</div>
+                <div class="options-grid" id="options">${shuffledOptions.map(opt => `<button class="option-btn" onclick="checkAnswer('${opt.type}', '${opt.fato}')">${opt.text}</button>`).join('')}</div>
+                <div id="feedback" class="feedback-panel"></div>`;
+        }
+
+        function checkAnswer(type, fato) {
+            const feedback = document.getElementById("feedback");
+            document.getElementById("options").style.display = "none";
+            feedback.style.display = "block";
+            if (type === 'correct') {
+                feedback.innerHTML = `<div class="success-box"><span class="card-label">Sucesso:</span><strong>✅ SENTINELA ATIVO!</strong><br>Você praticou o Cuidado Mútuo e protegeu sua equipe.</div>
+                    <div style="font-size:0.85rem; color:#94a3b8; padding:10px; background:rgba(0,0,0,0.3); border-radius:5px;"><strong>POR QUE ISSO SALVA:</strong> ${fato}</div>
+                    <button class="btn-action" onclick="nextLevel()">Próximo Desafio</button>`;
+            } else {
+                feedback.innerHTML = `<div class="fact-box"><span class="card-label">Risco:</span><strong>❌ FALHA NO PROTOCOLO</strong><br>Essa omissão é o caminho para a próxima ocorrência.</div>
+                    <div style="font-size:0.85rem; color:#fca5a5; margin-bottom:15px;"><strong>A LIÇÃO DOS FATOS:</strong><br>${fato}</div>
+                    <button class="btn-action" style="background:var(--danger); color:#fff;" onclick="renderLevel()">Tentar Novamente</button>`;
+            }
+        }
+
+        function nextLevel() { currentLevel++; if (currentLevel < levels.length) renderLevel(); else showFinal(); }
+        function showFinal() {
+            document.getElementById("game-core").innerHTML = `<div class="stage-title">✅ PROTOCOLO CONCLUÍDO</div>
+                <div class="scenario-box" style="text-align: center;"><h2 style="color:var(--mrs-green); margin-bottom:15px;">SENTINELA MRS: MISSÃO CUMPRIDA</h2>
+                <p>Neste Abril Verde, diante dos acidentes do 1º trimestre, você escolheu o Rigor e o Cuidado.</p>
+                <br>
+                <p style="text-align:left;"><strong>REFLEXÃO FINAL:</strong> Segurança é um pacto entre colegas. Se você cuida de mim e eu cuido de você, todos voltamos para casa. <strong>Sentinela agora é sua rotina.</strong></p></div>
+                <button class="btn-action" onclick="location.reload()">REINICIAR</button>`;
+        }
+        function transmitir() { if(!document.getElementById("user-input").value) { alert("Registre seu compromisso!"); return; } window.open('https://forms.gle/ut3jDiKRPWSGVXw37'); }
+        renderLevel();
+    </script>
+</body>
+</html>    <script>
+        const levels = [
+            {
+                id: 1, title: "Nível 1: Intervenção em Fadiga",
+                scenario: "Meio da madrugada. Você percebe que seu colega de equipe está bocejando excessivamente e com o olhar fixo. Ele insiste que 'está bem'.",
+                options: [
+                    { type: 'correct', text: "Intervir imediatamente e reportar a condição de fadiga à supervisão para substituição segura.", fato: "CLARION, IOWA (2011): Um maquinista ignorou o próprio cansaço e colidiu frontalmente com uma composição parada. O Cuidado Mútuo exige que você seja a voz da razão." },
+                    { type: 'trap', text: "Assumir a maior parte das tarefas para deixá-lo descansando um pouco na cabine enquanto você opera.", fato: "SOBRECARGA: Tentar 'cobrir' o colega fadigado dobra o risco. Se você falhar, ele não estará alerta para te corrigir em uma emergência." },
+                    { type: 'more-less', text: "Sugestionar que ele lave o rosto e tome café, monitorando-o de perto.", fato: "FALSA SEGURANÇA: Estimulantes não recuperam reflexos. No acidente de Chattanooga (1990), o café não impediu o sono profundo segundos antes da colisão." },
+                    { type: 'nothing', text: "Respeitar a decisão do colega, confiando na sua vasta experiência ferroviária.", fato: "OMISSÃO CRÍTICA: Os 10 acidentes do 1º trimestre provam que a experiência não é proteção total. O silêncio diante do risco é fatal." }
+                ]
+            },
+            {
+                id: 2, title: "Nível 2: Vigilância em Manobra",
+                scenario: "Um Manobrador entra em zona de sombra rádio. Você precisa recuar, e ele acredita que 'dá para ir no visual' por alguns metros.",
+                options: [
+                    { type: 'correct', text: "Interromper o movimento imediatamente até restabelecer contato rádio pleno ou visual direto.", fato: "ZERO TOLERÂNCIA: Sem rádio, o movimento é zero. Esta regra protege o Manobrador de atropelamentos e prensagens em pátios." },
+                    { type: 'trap', text: "Recuar em velocidade mínima confiando na experiência de posicionamento do Manobrador.", fato: "HABITUAÇÃO: Muitos acidentes em 2026 envolveram manobras 'lentas'. A velocidade reduzida não compensa a falta de comunicação ativa." },
+                    { type: 'more-less', text: "Utilizar buzinas longas para avisar que o trem está recuando enquanto aguarda o rádio.", fato: "COMUNICAÇÃO FALHA: Buzinas não substituem a confirmação verbal. Em Praga (2024), sinais improvisados causaram colisões severas." },
+                    { type: 'nothing', text: "Continuar a manobra normalmente, pois o Manobrador sabe se proteger.", fato: "LAC-MÉGANTIC (2013): Presunções sobre segurança levaram a um desastre com 47 fatalidades. No Cuidado Mútuo, nunca presuma; confirme sempre." }
+                ]
+            },
+            {
+                id: 3, title: "Nível 3: Rigor vs. Pressão",
+                scenario: "O CCO solicita agilidade. Seu colega sugere acelerar levemente acima da Velocidade Restrita para ganhar embalo para a rampa.",
+                options: [
+                    { type: 'correct', text: "Manter o rigor da Velocidade Restrita e alertar o colega sobre o risco de descarrilamento.", fato: "MÁXIMO RIGOR: No acidente de Amagasaki (2005), a tentativa de recuperar 90 segundos de atraso matou 107 pessoas. O cronograma não vale uma vida." },
+                    { type: 'trap', text: "Concordar com o colega apenas nos trechos de reta, reduzindo antes das curvas.", fato: "SANTIAGO (2013): Pequenos excessos 'apenas na reta' criam o vício do desvio. O maquinista entrou na curva a 179km/h, resultando em 79 mortes." },
+                    { type: 'more-less', text: "Deixar o colega operar como quiser para não criar conflito na cabine.", fato: "CONIVÊNCIA: O Cuidado Mútuo exige coragem para discordar. Se você vê o excesso e se cala, você aceita o risco de morrer junto com ele." },
+                    { type: 'nothing', text: "Pedir ao CCO autorização para exceder o limite, alegando necessidade de horário.", fato: "QUEBRA DE REGRA: O CCO não autoriza desvios de segurança. Solicitar isso demonstra falta de compromisso com o Rigor." }
+                ]
+            },
+            {
+                id: 4, title: "Nível 4: Proteção em AMV",
+                scenario: "Você vê um colega de outra equipe tentando destravar uma agulha (AMV) usando o pé para forçar o mecanismo.",
+                options: [
+                    { type: 'correct', text: "Abordar o colega imediatamente, interromper o ato e orientar sobre a postura técnica correta.", fato: "ACIDENTES PESSOAIS: Lesões em pés e mãos são recorrentes neste trimestre. O 'atalho' com o pé é o caminho para uma invalidez permanente." },
+                    { type: 'trap', text: "Apenas observar e, se ele se machucar, prestar os primeiros socorros conforme o treinamento.", fato: "REATIVIDADE: Segurança não é socorrer o ferido, é impedir o ferimento. O Cuidado Mútuo é proativo; intervenha antes que a dor aconteça." },
+                    { type: 'more-less', text: "Passar e comentar 'cuidado com o pé', sem parar para garantir que ele mude a atitude.", fato: "EFICÁCIA NULA: Orientações de passagem não mudam comportamentos. O Protocolo Sentinela exige que a tarefa insegura seja interrompida." },
+                    { type: 'nothing', text: "Ignorar, pois intervir no trabalho de outra equipe pode gerar desconforto.", fato: "CULTURA FATAL: O medo de 'parecer chato' matou mais ferroviários do que falhas mecânicas. Quebre o silêncio diante do erro do outro." }
+                ]
+            },
+            {
+                id: 5, title: "Nível 5: O Sentinela Digital",
+                scenario: "Seu colega de cabine saca o celular para ver uma mensagem rápida. Ele diz que 'não vai distrair'.",
+                options: [
+                    { type: 'correct', text: "Exigir que ele guarde o aparelho imediatamente, reforçando o foco total na via.", fato: "CEGUEIRA INATENCIONAL: 2 segundos no celular a 40km/h são 22 metros de cegueira total. Em Chatsworth (2008), um SMS causou 25 mortes." },
+                    { type: 'trap', text: "Deixar ele ver a mensagem enquanto você assume a vigilância total por ele.", fato: "DIVISÃO DE RISCO: Quando um se distrai, a dupla checagem morre. Se você falhar enquanto ele olha o celular, ninguém poderá te corrigir." },
+                    { type: 'more-less', text: "Pedir para ele ler a mensagem em voz alta para você também saber o que houve.", fato: "DISTRAÇÃO COGNITIVA: Falar sobre assuntos externos tira seu cérebro da operação. O Protocolo exige isolamento total de distrações." },
+                    { type: 'nothing', text: "Ficar em silêncio para não ser o 'fiscal' do colega e evitar atritos.", fato: "OMISSÃO DE CULPA: Se ocorrer um acidente enquanto ele estava no celular e você se calou, a responsabilidade será dividida. Proteja a dupla." }
+                ]
+            }
+        ];
+
+        let currentLevel = 0;
+        function renderLevel() {
+            const level = levels[currentLevel];
+            const container = document.getElementById("game-core");
+            const shuffledOptions = [...level.options].sort(() => Math.random() - 0.5);
+            container.innerHTML = `<div class="stage-title"><span>${level.title}</span><span>${currentLevel+1}/5</span></div>
+                <div class="scenario-box"><strong>DILEMA OPERACIONAL:</strong><br>${level.scenario}</div>
+                <div class="options-grid" id="options">${shuffledOptions.map(opt => `<button class="option-btn" onclick="checkAnswer('${opt.type}', '${opt.fato}')">${opt.text}</button>`).join('')}</div>
+                <div id="feedback" class="feedback-panel"></div>`;
+        }
+
+        function checkAnswer(type, fato) {
+            const feedback = document.getElementById("feedback");
+            document.getElementById("options").style.display = "none";
+            feedback.style.display = "block";
+            if (type === 'correct') {
+                feedback.innerHTML = `<div class="success-box"><span class="card-label">Sucesso:</span><strong>✅ SENTINELA ATIVO!</strong><br>Você praticou o Cuidado Mútuo e protegeu sua equipe.</div>
+                    <div style="font-size:0.85rem; color:#94a3b8; padding:10px; background:rgba(0,0,0,0.3); border-radius:5px;"><strong>POR QUE ISSO SALVA:</strong> ${fato}</div>
+                    <button class="btn-action" onclick="nextLevel()">Próximo Desafio</button>`;
+            } else {
+                feedback.innerHTML = `<div class="fact-box"><span class="card-label">Risco:</span><strong>❌ FALHA NO PROTOCOLO</strong><br>Essa omissão é o caminho para a próxima ocorrência.</div>
+                    <div style="font-size:0.85rem; color:#fca5a5; margin-bottom:15px;"><strong>A LIÇÃO DOS FATOS:</strong><br>${fato}</div>
+                    <button class="btn-action" style="background:var(--danger); color:#fff;" onclick="renderLevel()">Tentar Novamente</button>`;
+            }
+        }
+
+        function nextLevel() { currentLevel++; if (currentLevel < levels.length) renderLevel(); else showFinal(); }
+        function showFinal() {
+            document.getElementById("game-core").innerHTML = `<div class="stage-title">✅ PROTOCOLO CONCLUÍDO</div>
+                <div class="scenario-box" style="text-align: center;"><h2 style="color:var(--mrs-green); margin-bottom:15px;">SENTINELA MRS: MISSÃO CUMPRIDA</h2>
+                <p>Neste Abril Verde, diante dos acidentes do 1º trimestre, você escolheu o Rigor e o Cuidado.</p>
+                <br>
+                <p style="text-align:left;"><strong>REFLEXÃO FINAL:</strong> Segurança é um pacto entre colegas. Se você cuida de mim e eu cuido de você, todos voltamos para casa. <strong>Sentinela agora é sua rotina.</strong></p></div>
+                <button class="btn-action" onclick="location.reload()">REINICIAR</button>`;
+        }
+        function transmitir() { if(!document.getElementById("user-input").value) { alert("Registre seu compromisso!"); return; } window.open('https://forms.gle/ut3jDiKRPWSGVXw37'); }
+        renderLevel();
+    </script>
+</body>
+</html>
