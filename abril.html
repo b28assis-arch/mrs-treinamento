@@ -6,6 +6,9 @@
     <title>MRS - Operação Crítica: Abril Verde</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* DESIGN SYSTEM MRS - ABRIL VERDE 2026 
+           Foco: Storytelling de Segurança e Rigor Técnico.
+        */
         :root {
             --mrs-blue: #0b3a6f;
             --mrs-green: #00ffaa;
@@ -17,6 +20,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-dark);
@@ -30,10 +34,11 @@
             position: relative;
         }
 
+        /* LOGO MRS MARCA D'ÁGUA */
         body::before {
             content: ""; position: fixed;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 80%; height: 80%;
+            width: 85%; height: 85%;
             background: url('1000121485.png') no-repeat center center;
             background-size: contain; opacity: 0.04;
             z-index: -1; pointer-events: none;
@@ -49,7 +54,7 @@
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 15px 50px rgba(0,0,0,0.9);
-            min-height: 500px;
+            min-height: 550px;
             display: flex;
             flex-direction: column;
         }
@@ -86,38 +91,34 @@
             border-radius: 8px;
             cursor: pointer;
             text-align: left;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             transition: 0.2s;
             line-height: 1.3;
         }
 
         .option-btn:hover { background: var(--mrs-blue); border-color: var(--mrs-green); }
 
+        /* PAINÉIS DE FEEDBACK */
         .feedback-panel { display: none; animation: fadeIn 0.4s ease-out; }
         .fact-box { background: rgba(255,42,42,0.12); border-left: 4px solid var(--danger); padding: 15px; margin: 15px 0; border-radius: 8px; }
-        .warning-box { background: rgba(255, 204, 0, 0.1); border-left: 4px solid var(--warning); padding: 15px; margin: 15px 0; border-radius: 8px; }
         .success-box { background: rgba(0,255,170,0.1); border-left: 4px solid var(--mrs-green); padding: 15px; margin: 15px 0; border-radius: 8px; }
+
+        .card-label { display: block; font-weight: 800; font-size: 0.65rem; text-transform: uppercase; margin-bottom: 5px; opacity: 0.7; color: var(--mrs-green); }
 
         .btn-action {
             background: var(--mrs-green);
-            color: #000;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 6px;
-            font-weight: 800;
-            text-transform: uppercase;
-            cursor: pointer;
-            margin-top: 10px;
-            width: 100%;
+            color: #000; border: none;
+            padding: 12px 25px; border-radius: 6px;
+            font-weight: 800; text-transform: uppercase;
+            cursor: pointer; margin-top: 10px; width: 100%;
         }
 
         .textarea-mrs {
             width: 100%; background: #000; border: 1px solid var(--border-ui);
-            color: #fff; padding: 12px; border-radius: 8px; height: 70px; resize: none; margin-top: 10px; font-family: inherit;
+            color: #fff; padding: 12px; border-radius: 8px; height: 75px; resize: none; margin-top: 10px; font-family: inherit;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @media (max-width: 600px) { .sim-container { padding: 15px; min-height: 450px; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -131,91 +132,149 @@
 
     <div style="width: 100%; max-width: 800px; margin-top: 15px; text-align: center;">
         <div style="font-size: 0.75rem; font-weight: 800; color: var(--neon-blue);">📡 RÁDIO TRECHO: SUA VOZ NA OPERAÇÃO</div>
-        <textarea class="textarea-mrs" id="user-input" placeholder="Relate um compromisso de segurança para este Abril Verde..."></textarea>
+        <textarea class="textarea-mrs" id="user-input" placeholder="Relate um compromisso de segurança ou experiência técnica para este Abril Verde..."></textarea>
         <button class="btn-action" style="padding: 8px; font-size: 0.7rem; width: auto;" onclick="transmitir()">Transmitir ao Forms</button>
     </div>
 
     <script>
+        /* MOTOR DO SIMULADOR v15.0 
+           Fatos Históricos Exclusivos por Alternativa Errada.
+        */
         const levels = [
             {
                 id: 1,
-                title: "Nível 1: Fadiga Acumulada",
-                scenario: "Final de turno. O trecho é monótono, o clima está abafado e você sente que 'pescou' por um segundo. A consciência volta, mas a sonolência persiste.",
+                title: "Nível 1: Gestão da Fadiga",
+                scenario: "Meio da madrugada. Você sente que os seus reflexos estão lentos. O computador de bordo não indica falhas, mas você percebe que está lutando contra as pálpebras.",
                 options: [
-                    { type: 'correct', text: "Realizar parada segura imediata em local autorizado e reportar ao CCO/Supervisão." },
-                    { type: 'trap', text: "Aumentar o volume do rádio e mascar chiclete de menta para estimular os sentidos até o próximo pátio." },
-                    { type: 'more-less', text: "Lavar o rosto com água gelada e abrir a janela para manter o foco apenas até a troca de turno." },
-                    { type: 'nothing', text: "Começar a cantar em voz alta para espantar o sono e evitar o atraso do trem." }
-                ],
-                fato: "HINTON (1986): A tripulação tentou 'estimular os sentidos' para não parar o trem. O resultado foi o choque frontal que matou 23 pessoas. O microssono é involuntário.",
-                feedback: {
-                    trap: "A pegadinha te pegou! Mascar chiclete ou rádio alto dão uma falsa sensação de alerta, mas o cérebro continua 'desligando' por milissegundos fatais.",
-                    moreLess: "Isso ajuda por poucos minutos, mas não elimina o risco biológico. O Máximo Rigor exige a parada imediata."
-                }
+                    { 
+                        type: 'correct', 
+                        text: "Realizar parada imediata em local seguro e comunicar a Supervisão sobre a condição de fadiga.",
+                        fato: "CLARION, IOWA (2011): Uma colisão catastrófica ocorreu porque o maquinista ignorou o cansaço. O Máximo Rigor exige que o colaborador reconheça que o sono é uma falha mecânica humana intransponível."
+                    },
+                    { 
+                        type: 'trap', 
+                        text: "Consumir bebidas energéticas ou café extra forte para garantir o alerta até o pátio de troca.",
+                        fato: "RISCO QUÍMICO: A cafeína mascara a exaustão mental, mas não recupera a velocidade de resposta motora. O cérebro continua sofrendo 'microssonos', onde você 'apaga' por 3 segundos sem notar."
+                    },
+                    { 
+                        type: 'more-less', 
+                        text: "Molhar o rosto e manter o rádio em volume alto para estimular o sistema sensorial temporariamente.",
+                        fato: "GLEN ROCK, NJ (2011): Um acidente ocorreu mesmo com o rádio ligado. Estímulos externos não anulam a 'Inércia do Sono'. Quando o corpo pede descanso, a única decisão segura é parar."
+                    },
+                    { 
+                        type: 'nothing', 
+                        text: "Tentar se exercitar dentro da cabine enquanto o trem está em movimento para circular o sangue.",
+                        fato: "DISTRAÇÃO MOTORA: Movimentar-se na cabine com o trem em tração divide sua atenção crítica. No acidente de Red Oak (2011), a tripulação tentou se manter ativa, mas falhou em ver o sinal de parada."
+                    }
+                ]
             },
             {
                 id: 2,
-                title: "Nível 2: O Silêncio do Rádio",
-                scenario: "Durante uma manobra complexa em pátio, você entra em uma zona de sombra onde o rádio fica mudo. Você conhece esse pátio há 10 anos e nunca houve problema nesse horário.",
+                title: "Nível 2: Comunicação em Manobra",
+                scenario: "Durante um recuo, o rádio entra em zona de silêncio. O Manobrador estava visível há 20 segundos, mas agora entrou atrás de uma composição. Você precisa concluir o movimento.",
                 options: [
-                    { type: 'trap', text: "Utilizar buzinas intermitentes para sinalizar sua posição enquanto conclui a manobra em baixa velocidade." },
-                    { type: 'nothing', text: "Perguntar ao ajudante se ele viu alguém na linha antes de entrarem na zona de sombra." },
-                    { type: 'correct', text: "Interromper a manobra imediatamente e aguardar o restabelecimento da comunicação técnica." },
-                    { type: 'more-less', text: "Prosseguir a manobra em 'velocidade de passo de homem' apenas para desimpedir a via principal." }
-                ],
-                fato: "SANTIAGO (2013): O condutor confiou no hábito e na familiaridade do trecho. 79 mortos. O Máximo Rigor diz: sem comunicação, não há movimento.",
-                feedback: {
-                    trap: "Buzinar não substitui a comunicação direta e autorizada. O hábito é o pai da negligência em pátios ferroviários.",
-                    moreLess: "Mesmo devagar, sem rádio você está operando às cegas sobre o que pode estar ocorrendo na outra ponta da manobra."
-                }
+                    { 
+                        type: 'correct', 
+                        text: "Interromper o movimento imediatamente até restabelecer o contato rádio ou visual com o Manobrador.",
+                        fato: "REGRA DE OURO: Na falta de comunicação ou sinal visual do Manobrador, o movimento deve ser interrompido instantaneamente. A segurança do colega no pátio depende desse rigor."
+                    },
+                    { 
+                        type: 'trap', 
+                        text: "Estabelecer uma contagem mental de distância baseada na última posição vista do Manobrador.",
+                        fato: "LAC-MÉGANTIC (2013): Presunções em operações ferroviárias levam a desastres. Uma contagem mental pode falhar se o Manobrador tropeçar ou precisar mudar de posição subitamente."
+                    },
+                    { 
+                        type: 'more-less', 
+                        text: "Manter a velocidade restrita confiando que o Manobrador avisará caso haja algum impedimento.",
+                        fato: "ANDRIA, ITÁLIA (2016): A confiança mútua sem a confirmação técnica do rádio causou um choque frontal. Velocidade restrita não protege o Manobrador se ele estiver em um ponto cego."
+                    },
+                    { 
+                        type: 'nothing', 
+                        text: "Ligar o farol auxiliar e buzinar para avisar que o recuo continuará por mais alguns metros.",
+                        fato: "FALHA DE PROTOCOLO: Buzinas não são sistemas de autorização de movimento em recuo. A comunicação deve ser clara e bilateral; sem o 'recebido', o trem não se move."
+                    }
+                ]
             },
             {
                 id: 3,
                 title: "Nível 3: Pressão por Resultados",
-                scenario: "O trem está atrasado e o CCO informa que há uma janela apertada para cruzamento à frente. Qualquer minuto ganho é essencial para não 'trancar' a via.",
+                scenario: "Há um atraso acumulado e você está chegando em uma restrição de velocidade. O trem está pesado e segurar a velocidade fará você perder o embalo para a rampa seguinte.",
                 options: [
-                    { type: 'nothing', text: "Ignorar o velocímetro e focar apenas na paisagem para diminuir o estresse do atraso." },
-                    { type: 'correct', text: "Manter rigorosamente a velocidade da via, aceitando o atraso como custo da segurança." },
-                    { type: 'trap', text: "Ajustar a curva de frenagem para o limite mínimo permitido, ganhando tempo nas aproximações de pátio." },
-                    { type: 'more-less', text: "Acelerar levemente apenas nos trechos de reta plana para compensar parte do tempo perdido." }
-                ],
-                fato: "AMAGASAKI (2005): O maquinista tentou 'ganhar tempo' na frenagem e na curva para compensar 90 segundos de atraso. 107 mortos.",
-                feedback: {
-                    trap: "Essa técnica de 'ganhar tempo na frenagem' é perigosíssima. Ela reduz sua margem de erro a zero. Um erro de cálculo e o descarrilamento é certo.",
-                    moreLess: "A pressa é um sequestro emocional. Na MRS, o rigor com a velocidade é absoluto, independente do atraso."
-                }
+                    { 
+                        type: 'correct', 
+                        text: "Priorizar o limite de velocidade restrita, aceitando uma possível parada na rampa por falta de potência.",
+                        fato: "MÁXIMO RIGOR: A integridade da via e do equipamento precede qualquer cronograma. Parar na rampa é um problema operacional; descarrilar por excesso de velocidade é uma tragédia."
+                    },
+                    { 
+                        type: 'trap', 
+                        text: "Solicitar ao CCO uma autorização verbal para exceder levemente o limite apenas para vencer a subida.",
+                        fato: "SPUYTEN DUYVIL (2013): A tentativa de manter o horário acima do limite técnico causou um descarrilamento fatal. Autorizações verbais não anulam as leis da física em uma curva ou restrição."
+                    },
+                    { 
+                        type: 'more-less', 
+                        text: "Reduzir o freio dinâmico para ganhar tempo na aproximação, confiando na sua habilidade de frenagem de última hora.",
+                        fato: "AMAGASAKI (2005): O maquinista confiou na sua 'habilidade' para frenar no último segundo e recuperar 90s de atraso. O resultado foi o pior acidente ferroviário do Japão moderno."
+                    },
+                    { 
+                        type: 'nothing', 
+                        text: "Deixar o trem ganhar velocidade na descida para aproveitar a inércia, ignorando o limite por apenas 3 km/h.",
+                        fato: "SANTIAGO DE COMPOSTELA (2013): 'Só um pouco acima' foi o início do desastre que matou 79 pessoas. Limites de velocidade em ferrovias são calculados com margens de engenharia que não podem ser desafiadas."
+                    }
+                ]
             },
             {
                 id: 4,
-                title: "Nível 4: Sinalização Duvidosa",
-                scenario: "Você avista um sinal com a lâmpada física apagada, mas o seu painel eletrônico (computador de bordo) indica que a via está livre e autorizada.",
+                title: "Nível 4: Validação de AMV",
+                scenario: "Você avista uma agulha que parece não estar totalmente ajustada, mas o painel indica que a rota está travada eletronicamente.",
                 options: [
-                    { type: 'more-less', text: "Reduzir para marcha à vista e tentar contato com o CCO para confirmar a autorização visual." },
-                    { type: 'trap', text: "Prosseguir na velocidade normal, confiando no sistema eletrônico que é mais moderno que a lâmpada física." },
-                    { type: 'nothing', text: "Jogar uma pedra no sinal ao passar para ver se o contato da lâmpada volta a funcionar." },
-                    { type: 'correct', text: "Considerar o sinal como PARADA ABSOLUTA e reportar a falha de sinalização imediatamente." }
-                ],
-                fato: "BAD AIBLING (2016): O controlador confiou no computador e ignorou o protocolo físico de segurança. 12 mortos em choque frontal.",
-                feedback: {
-                    trap: "Tecnologia falha. O regulamento é claro: sinal apagado ou duvidoso é sinal de PARADA. Conviar cegamente na tela é um risco inaceitável.",
-                    moreLess: "Tentar contato sem parar primeiro é perigoso. O protocolo exige a imobilização do trem diante da dúvida do sinal."
-                }
+                    { 
+                        type: 'correct', 
+                        text: "Parar antes da AMV e solicitar a conferência física do posicionamento da agulha no local.",
+                        fato: "VALIDAÇÃO FÍSICA: Sensores eletrônicos podem sofrer interferência ou falha de leitura. O olho do ferroviário no local é a última e mais importante barreira de segurança."
+                    },
+                    { 
+                        type: 'trap', 
+                        text: "Confiar no travamento eletrônico do sistema, pois sensores modernos são mais precisos que a percepção visual sob chuva.",
+                        fato: "GRANITEVILLE, EUA (2005): A falha em validar fisicamente uma agulha levou a um vazamento de cloro que vitimou toda uma região. O painel nem sempre reflete a posição mecânica real."
+                    },
+                    { 
+                        type: 'more-less', 
+                        text: "Passar pela AMV em velocidade mínima para sentir se há algum solavanco ou desalinhamento físico.",
+                        fato: "POTTERS BAR (2002): 'Sentir' o desalinhamento ao passar já é tarde demais. O esforço lateral de um rodeiro em uma agulha semi-aberta causa descarrilamento instantâneo."
+                    },
+                    { 
+                        type: 'nothing', 
+                        text: "Pedir ao Manobrador para pular do trem em movimento para checar a agulha enquanto você se aproxima.",
+                        fato: "RISCO DE ATROPELAMENTO: Pedir que o Manobrador desembarque com o trem em movimento viola os princípios básicos de preservação da vida. O tempo ganho não compensa o risco de queda."
+                    }
+                ]
             },
             {
                 id: 5,
-                title: "Nível 5: O Toque do Celular",
-                scenario: "Uma chamada de vídeo da sua família começa a tocar no seu celular dentro da cabine. Você sabe que eles estão preocupados com uma situação pessoal sua.",
+                title: "Nível 5: O Filtro de Atenção",
+                scenario: "Você nota um objeto estranho próximo à via. Simultaneamente, surge um alerta de baixa pressão no sistema de freios no seu monitor.",
                 options: [
-                    { type: 'trap', text: "Atender no viva-voz rapidamente sem tirar as mãos dos comandos, apenas para dizer que está bem." },
-                    { type: 'nothing', text: "Tirar uma foto da cabine e enviar para o grupo da família para mostrar que está tudo sob controle." },
-                    { type: 'more-less', text: "Colocar o celular no modo silencioso mas mantê-lo visível para checar se há mensagens de emergência." },
-                    { type: 'correct', text: "Ignorar totalmente a chamada. O celular deve estar desligado e guardado durante toda a operação." }
-                ],
-                fato: "CHATSWORTH (2008): Uma mensagem de texto de poucos segundos causou a colisão que matou 25 pessoas. A distração cognitiva não perdoa.",
-                feedback: {
-                    trap: "Atender no viva-voz ainda é uma distração cognitiva imensa. Seu cérebro 'sai' da via e entra na conversa. Isso causa a Cegueira Inatencional.",
-                    moreLess: "Manter o celular visível cria a tentação de olhar. O Máximo Rigor exige zero contato com dispositivos móveis."
-                }
+                    { 
+                        type: 'correct', 
+                        text: "Dividir a atenção de forma protocolar: Priorizar o comando de segurança (freio) sem perder a vigilância da via à frente.",
+                        fato: "PROFISSIONAL DE ELITE: O cérebro humano pode alternar entre tarefas rapidamente, mas nunca deve abandonar a vigilância externa. O monitoramento eletrônico complementa a visão, não a substitui."
+                    },
+                    { 
+                        type: 'trap', 
+                        text: "Focar toda a sua atenção no monitor de freios para diagnosticar a falha técnica enquanto o trem segue o trajeto.",
+                        fato: "CEGUEIRA INATENCIONAL: Em 1972 (Voo 401), uma tripulação inteira focou em uma lâmpada queimada e esqueceu de pilotar, causando a queda. Focar só na tela faz você ignorar a via."
+                    },
+                    { 
+                        type: 'more-less', 
+                        text: "Aplicar freio de emergência imediatamente sem olhar para os monitores, apenas pelo susto do objeto na via.",
+                        fato: "REAÇÃO DE PÂNICO: Reações impulsivas sem análise podem causar danos ao trem ou descarrilamentos por choque de tração. O Máximo Rigor exige calma para agir conforme o manual."
+                    },
+                    { 
+                        type: 'nothing', 
+                        text: "Ignorar o alerta de freio momentaneamente para tentar identificar quem ou o que está na margem da via.",
+                        fato: "PERDA DE CONTROLE: Ignorar um alerta de freio, mesmo por segundos, pode significar a perda da capacidade de parada. Na ferrovia, o sistema de freio é o coração da segurança."
+                    }
+                ]
             }
         ];
 
@@ -224,7 +283,6 @@
         function renderLevel() {
             const level = levels[currentLevel];
             const container = document.getElementById("game-core");
-            // Embaralha as opções para não ficar sempre na mesma posição
             const shuffledOptions = [...level.options].sort(() => Math.random() - 0.5);
 
             container.innerHTML = `
@@ -233,46 +291,49 @@
                     <span>${currentLevel + 1}/${levels.length}</span>
                 </div>
                 <div class="scenario-box">
-                    <strong>SITUAÇÃO CRÍTICA:</strong><br>${level.scenario}
+                    <strong>SITUAÇÃO OPERACIONAL:</strong><br>${level.scenario}
                 </div>
                 <div class="options-grid" id="options">
-                    ${shuffledOptions.map(opt => `
-                        <button class="option-btn" onclick="checkAnswer('${opt.type}')">${opt.text}</button>
+                    ${shuffledOptions.map((opt, index) => `
+                        <button class="option-btn" onclick="checkAnswer(${currentLevel}, '${opt.type}', ${index}, this)">${opt.text}</button>
                     `).join('')}
                 </div>
                 <div id="feedback" class="feedback-panel"></div>
             `;
         }
 
-        function checkAnswer(type) {
-            const level = levels[currentLevel];
+        function checkAnswer(levelIdx, type, optIdx, btnEl) {
+            const level = levels[levelIdx];
+            // Encontrar o objeto da opção clicada baseado no texto do botão
+            const option = level.options.find(o => o.text === btnEl.innerText);
+            
             const feedback = document.getElementById("feedback");
-            const optionsDiv = document.getElementById("options");
-
-            optionsDiv.style.display = "none";
+            document.getElementById("options").style.display = "none";
             feedback.style.display = "block";
 
             if (type === 'correct') {
                 feedback.innerHTML = `
                     <div class="success-box">
+                        <span class="card-label">Resultado:</span>
                         <strong>✅ MÁXIMO RIGOR ATINGIDO!</strong><br>
-                        Decisão impecável. Você escolheu a preservação da vida sobre qualquer atalho.
+                        Sua decisão reflete o compromisso com a vida e com os protocolos MRS.
                     </div>
-                    <div style="font-size:0.85rem; color:#94a3b8; margin-bottom: 15px;"><em>"${level.fato}"</em></div>
-                    <button class="btn-action" onclick="nextLevel()">Avançar para Próximo Desafio</button>
+                    <div style="font-size:0.85rem; color:#94a3b8; padding: 10px; background:rgba(0,0,0,0.3); border-radius:5px;">
+                        <strong>FATO / LIÇÃO:</strong> ${option.fato}
+                    </div>
+                    <button class="btn-action" onclick="nextLevel()">Avançar para Próxima Etapa</button>
                 `;
             } else {
-                let msg = type === 'trap' ? level.feedback.trap : 
-                          type === 'more-less' ? level.feedback.moreLess : 
-                          "Decisão incorreta. Essa atitude coloca a operação em risco extremo.";
-
                 feedback.innerHTML = `
                     <div class="fact-box">
-                        <strong>❌ FALHA NA PERCEPÇÃO DE RISCO</strong><br>
-                        ${msg}
-                        <p style="margin-top:10px; font-size:0.85rem; opacity: 0.8;">Lembre-se do fato real: ${level.fato}</p>
+                        <span class="card-label">Alerta de Risco:</span>
+                        <strong>❌ FALHA NA PERCEPÇÃO</strong><br>
+                        Essa escolha compromete a segurança da operação.
                     </div>
-                    <button class="btn-action" style="background:var(--danger); color:#fff;" onclick="renderLevel()">Reavaliar Decisão</button>
+                    <div style="font-size:0.85rem; color:#fca5a5; margin-bottom: 15px;">
+                        <strong>CONSEQUÊNCIA HISTÓRICA:</strong><br>${option.fato}
+                    </div>
+                    <button class="btn-action" style="background:var(--danger); color:#fff;" onclick="renderLevel()">Reavaliar Situação</button>
                 `;
             }
         }
@@ -286,19 +347,19 @@
         function showFinal() {
             const container = document.getElementById("game-core");
             container.innerHTML = `
-                <div class="stage-title">✅ OPERAÇÃO CONCLUÍDA</div>
+                <div class="stage-title">✅ MISSÃO CUMPRIDA</div>
                 <div class="scenario-box" style="text-align: center;">
                     <h2 style="color:var(--mrs-green); margin-bottom:15px;">ABRIL VERDE: VOCÊ É EXEMPLO</h2>
-                    <p>Ao longo deste simulador, você enfrentou as armadilhas do cansaço, do hábito, da pressa e da distração.</p>
+                    <p>Você enfrentou os dilemas mais críticos da ferrovia e escolheu o Rigor sobre o Atalho.</p>
                     <br>
-                    <p>O Máximo Rigor não é sobre não ter problemas, é sobre <strong>como decidimos agir</strong> quando eles aparecem. Leve essa clareza para o seu próximo turno.</p>
+                    <p style="text-align:left;"><strong>REFLEXÃO FINAL:</strong> As histórias que você leu aqui não são apenas fatos do passado, são lembretes de que a segurança é construída a cada segundo. Neste Abril Verde, renove seu compromisso: <strong>Cuidar de você e de quem está ao seu lado.</strong></p>
                 </div>
-                <button class="btn-action" onclick="location.reload()">REINICIAR TREINAMENTO</button>
+                <button class="btn-action" onclick="location.reload()">REINICIAR SIMULADOR</button>
             `;
         }
 
         function transmitir() {
-            if(!document.getElementById("user-input").value) { alert("Registre seu compromisso antes de transmitir!"); return; }
+            if(!document.getElementById("user-input").value) { alert("Registre seu relatório antes de transmitir!"); return; }
             window.open('https://forms.gle/ut3jDiKRPWSGVXw37');
         }
 
