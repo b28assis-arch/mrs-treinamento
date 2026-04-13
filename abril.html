@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MRS - Operação Crítica: Abril Verde</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* DESIGN CORPORATIVO MRS v15.0 - ABRIL VERDE
+           ------------------------------------------------
+           SIMULADOR DE DECISÃO TÉCNICA E PERCEPÇÃO DE RISCO.
+        */
+        :root {
+            --mrs-blue: #0b3a6f;
+            --mrs-green: #00ffaa; /* Cor da Campanha Abril Verde */
+            --danger: #ff2a2a;
+            --bg-dark: #020617;
+            --panel-bg: rgba(10, 15, 30, 0.98);
+            --border-ui: rgba(0, 255, 170, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* LOGO MRS SOMBRA (MARCA D'ÁGUA) */
+        body::before {
+            content: ""; position: fixed;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 80%; height: 80%;
+            background: url('1000121485.png') no-repeat center center;
+            background-size: contain; opacity: 0.04;
+            z-index: -1; pointer-events: none;
+            filter: drop-shadow(0 0 30px rgba(0,0,0,1));
+        }
+
+        .header-game {
+            width: 100%; max-width: 800px;
+            text-align: center; margin-bottom: 15px;
+        }
+
+        .mrs-logo-top { width: 100%; max-width: 800px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border-ui); }
+
+        /* CONTAINER DO SIMULADOR */
+        .sim-container {
+            width: 100%; max-width: 800px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-ui);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.9);
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stage-title {
+            color: var(--mrs-green);
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-ui);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .scenario-box {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--mrs-green);
+        }
+
+        /* BOTÕES DE DECISÃO */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-ui);
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-btn:hover { background: var(--mrs-blue); border-color: var(--mrs-green); }
+
+        /* PAINEL DE FEEDBACK (FATO HISTÓRICO) */
+        .feedback-panel {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .fact-box { background: rgba(255,42,42,0.1); border-left: 4px solid var(--danger); padding: 15px; margin: 15px 0; border-radius: 8px; }
+        .success-box { background: rgba(0,255,170,0.1); border-left: 4px solid var(--mrs-green); padding: 15px; margin: 15px 0; border-radius: 8px; }
+
+        .btn-next {
+            background: var(--mrs-green);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            align-self: center;
+            margin-top: 10px;
+        }
+
+        /* RÁDIO TRECHO */
+        .radio-footer {
+            width: 100%; max-width: 800px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .textarea-mrs {
+            width: 100%; background: #000; border: 1px solid var(--border-ui);
+            color: #fff; padding: 12px; border-radius: 8px; height: 80px; resize: none; margin-top: 10px;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (max-width: 600px) {
+            .main-container { padding: 5px; }
+            .stage-title { font-size: 1rem; }
+            .scenario-box { font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-game">
+        <img src="1000121485.png" class="mrs-logo-top" alt="MRS">
+        <div style="color: var(--mrs-green); font-weight: 800; letter-spacing: 2px;">SIPATMA 2026: ABRIL VERDE</div>
+    </div>
+
+    <div class="sim-container" id="game-core">
+        </div>
+
+    <div class="radio-footer">
+        <div style="font-size: 0.8rem; font-weight: 800; color: var(--neon-blue);">📡 RÁDIO TRECHO: SUA VOZ NA OPERAÇÃO</div>
+        <textarea class="textarea-mrs" id="user-input" placeholder="Registre aqui sua experiência de hoje..."></textarea>
+        <button class="btn-next" style="margin-top: 10px; font-size: 0.8rem;" onclick="transmitir()">Transmitir ao Forms</button>
+    </div>
+
+    <script>
+        /* MOTOR DO SIMULADOR MRS - ABRIL VERDE
+           Cada nível foca em uma Percepção de Risco (Onde está o erro) e uma Escolha Técnica.
+        */
+        const levels = [
+            {
+                id: 1,
+                title: "Nível 1: Vigilância de Via",
+                scenario: "Você está operando há 8 horas. O trecho é monótono e você sente seus olhos pesarem. Uma sensação de calor sobe pelo corpo e você pisca de forma lenta.",
+                options: [
+                    { text: "Lavar o rosto com água gelada e seguir para cumprir o horário.", correct: false, impact: "SONO" },
+                    { text: "Reportar cansaço e realizar uma parada segura imediata.", correct: true, impact: "SONO" }
+                ],
+                fato: "HINTON (1986): A tripulação tentou 'vencer' o sono para chegar ao destino. O resultado foi um choque frontal que matou 23 pessoas. O sono é uma falha biológica, não de caráter.",
+                curiosidade: "Você sabia? O sono causa 'microssonos' onde o cérebro desliga por 3s. A 40km/h, você percorre 33 metros totalmente inconsciente."
+            },
+            {
+                id: 2,
+                title: "Nível 2: Comunicação em Pátio",
+                scenario: "Durante uma manobra, seu rádio falha momentaneamente. Você acredita que o caminho está livre pois faz esse trajeto todos os dias no mesmo horário.",
+                options: [
+                    { text: "Presumir a via livre baseada no hábito e concluir a manobra.", correct: false, impact: "ATENÇÃO" },
+                    { text: "Interromper a manobra e só avançar com comunicação confirmada.", correct: true, impact: "ATENÇÃO" }
+                ],
+                fato: "SANTIAGO (2013): O excesso de confiança no hábito fez o condutor entrar em uma curva a 179km/h. 79 mortos. O hábito é o inimigo número 1 da atenção.",
+                curiosidade: "A 'Habituação' faz o cérebro projetar uma imagem de 'via livre' só porque ela estava livre ontem. Não confie na memória, confie no sinal."
+            },
+            {
+                id: 3,
+                title: "Nível 3: O Dilema do Horário",
+                scenario: "A operação está atrasada em 5 minutos devido a uma lentidão na estação anterior. Há uma pressão velada para recuperar o tempo na curva seguinte.",
+                options: [
+                    { text: "Aumentar a velocidade no limite máximo da tolerância para recuperar o tempo.", correct: false, impact: "PRESSA" },
+                    { text: "Manter a velocidade de segurança, aceitando o atraso em nome do rigor.", correct: true, impact: "PRESSA" }
+                ],
+                fato: "AMAGASAKI (2005): Para compensar um atraso de apenas 90 segundos, o maquinista acelerou em uma curva. O trem descarrilou e 107 pessoas morreram.",
+                curiosidade: "Sob pressão, o cérebro desenvolve 'visão de túnel'. Você foca no relógio e ignora os sinais de perigo ao seu redor."
+            },
+            {
+                id: 4,
+                title: "Nível 4: Disciplina de Sinal",
+                scenario: "Você avista um sinal com aspecto duvidoso (luz fraca/apagada). O sistema automático não indica restrição clara.",
+                options: [
+                    { text: "Considerar que o sinal está com falha de lâmpada e prosseguir com cautela.", correct: false, impact: "SINAL" },
+                    { text: "Considerar o sinal como PARADA ABSOLUTA conforme o regulamento.", correct: true, impact: "SINAL" }
+                ],
+                fato: "BAD AIBLING (2016): O controlador ignorou o protocolo de sinalização por 'achar' que o sistema estava errado. 12 mortos em colisão frontal.",
+                curiosidade: "Westinghouse inventou o freio automático em 1869 justamente porque sinais manuais falhavam. Na dúvida, o estado seguro é sempre PARADO."
+            },
+            {
+                id: 5,
+                title: "Nível 5: Foco Absoluto",
+                scenario: "Seu celular vibra no bolso com uma notificação importante da família enquanto você realiza uma aproximação crítica.",
+                options: [
+                    { text: "Dar uma olhada rápida de 2 segundos para ver se é emergência.", correct: false, impact: "CELULAR" },
+                    { text: "Ignorar totalmente e manter o dispositivo desligado/guardado.", correct: true, impact: "CELULAR" }
+                ],
+                fato: "CHATSWORTH (2008): O envio de uma mensagem de texto fez o maquinista ignorar o sinal vermelho. 25 mortos. 2 segundos na tela é uma eternidade na via.",
+                curiosidade: "Ao olhar o celular, você leva 1.5s para processar o que viu e mais 1s para reagir. Na ferrovia, 2.5s decidem vidas."
+            }
+        ];
+
+        let currentLevel = 0;
+
+        function renderLevel() {
+            const level = levels[currentLevel];
+            const container = document.getElementById("game-core");
+            container.innerHTML = `
+                <div class="stage-title">
+                    <span>${level.title}</span>
+                    <span>${currentLevel + 1}/${levels.length}</span>
+                </div>
+                <div class="scenario-box">
+                    <strong>SITUAÇÃO:</strong><br>${level.scenario}
+                </div>
+                <div class="options-grid" id="options">
+                    ${level.options.map((opt, index) => `
+                        <button class="option-btn" onclick="checkAnswer(${index})">${opt.text}</button>
+                    `).join('')}
+                </div>
+                <div id="feedback" class="feedback-panel"></div>
+            `;
+        }
+
+        function checkAnswer(index) {
+            const level = levels[currentLevel];
+            const option = level.options[index];
+            const feedback = document.getElementById("feedback");
+            const optionsDiv = document.getElementById("options");
+
+            optionsDiv.style.display = "none";
+            feedback.style.display = "block";
+
+            if (option.correct) {
+                feedback.innerHTML = `
+                    <div class="success-box">
+                        <strong>✅ DECISÃO SEGURA!</strong><br>
+                        Você aplicou o Máximo Rigor. No Abril Verde, sua atitude salva vidas.
+                    </div>
+                    <div class="intel-card" style="font-size:0.85rem; color:#94a3b8; margin: 10px 0;">
+                        <em>${level.curiosidade}</em>
+                    </div>
+                    <button class="btn-next" onclick="nextLevel()">Avançar Operação</button>
+                `;
+            } else {
+                feedback.innerHTML = `
+                    <div class="fact-box">
+                        <strong>❌ RISCO DETECTADO: ${option.impact}</strong><br>
+                        Sua escolha resultaria em uma ocorrência grave. Veja o que a história nos ensina:
+                        <p style="margin-top:10px; font-size:0.9rem;">${level.fato}</p>
+                    </div>
+                    <button class="btn-next" style="background:var(--danger); color:#fff;" onclick="restartLevel()">Tentar Novamente</button>
+                `;
+            }
+        }
+
+        function nextLevel() {
+            currentLevel++;
+            if (currentLevel < levels.length) {
+                renderLevel();
+            } else {
+                showConclusion();
+            }
+        }
+
+        function restartLevel() {
+            renderLevel();
+        }
+
+        function showConclusion() {
+            const container = document.getElementById("game-core");
+            container.innerHTML = `
+                <div class="stage-title">✅ MISSÃO CUMPRIDA!</div>
+                <div class="scenario-box" style="border-left-color: var(--mrs-green); text-align: center;">
+                    <h2 style="color:var(--mrs-green); margin-bottom:15px;">MÁXIMO RIGOR ATINGIDO</h2>
+                    <p>Neste Abril Verde, você provou que o compromisso com a vida está acima de horários, hábitos ou distrações.</p>
+                    <br>
+                    <p><strong>REFLEXÃO FINAL:</strong> As Boas Práticas são como os freios de Westinghouse: precisam funcionar sempre, especialmente quando não esperamos o perigo. Segurança não é uma escolha, é um HÁBITO.</p>
+                </div>
+                <button class="btn-next" onclick="location.reload()">REINICIAR SIMULADOR</button>
+            `;
+        }
+
+        function transmitir() {
+            const input = document.getElementById("user-input").value;
+            if(!input) { alert("Registre sua percepção antes de transmitir!"); return; }
+            window.open('https://forms.gle/ut3jDiKRPWSGVXw37');
+        }
+
+        bootApp = () => renderLevel();
+        bootApp();
+    </script>
+</body>
+</html>
