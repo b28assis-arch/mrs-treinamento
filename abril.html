@@ -6,21 +6,17 @@
     <title>MRS - Operação Crítica: Abril Verde</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* DESIGN CORPORATIVO MRS v15.0 - ABRIL VERDE
-           ------------------------------------------------
-           SIMULADOR DE DECISÃO TÉCNICA E PERCEPÇÃO DE RISCO.
-        */
         :root {
             --mrs-blue: #0b3a6f;
-            --mrs-green: #00ffaa; /* Cor da Campanha Abril Verde */
+            --mrs-green: #00ffaa;
             --danger: #ff2a2a;
+            --warning: #ffcc00;
             --bg-dark: #020617;
             --panel-bg: rgba(10, 15, 30, 0.98);
             --border-ui: rgba(0, 255, 170, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-dark);
@@ -30,11 +26,10 @@
             flex-direction: column;
             align-items: center;
             padding: 10px;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
         }
 
-        /* LOGO MRS SOMBRA (MARCA D'ÁGUA) */
         body::before {
             content: ""; position: fixed;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -42,17 +37,11 @@
             background: url('1000121485.png') no-repeat center center;
             background-size: contain; opacity: 0.04;
             z-index: -1; pointer-events: none;
-            filter: drop-shadow(0 0 30px rgba(0,0,0,1));
         }
 
-        .header-game {
-            width: 100%; max-width: 800px;
-            text-align: center; margin-bottom: 15px;
-        }
+        .header-game { width: 100%; max-width: 800px; text-align: center; margin-bottom: 15px; }
+        .mrs-logo-top { width: 100%; max-width: 800px; border-radius: 8px; margin-bottom: 5px; border: 1px solid var(--border-ui); }
 
-        .mrs-logo-top { width: 100%; max-width: 800px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border-ui); }
-
-        /* CONTAINER DO SIMULADOR */
         .sim-container {
             width: 100%; max-width: 800px;
             background: var(--panel-bg);
@@ -60,17 +49,16 @@
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 15px 50px rgba(0,0,0,0.9);
-            min-height: 450px;
+            min-height: 500px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
         .stage-title {
             color: var(--mrs-green);
             font-weight: 800;
             text-transform: uppercase;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 15px;
             border-bottom: 1px solid var(--border-ui);
             padding-bottom: 10px;
@@ -79,8 +67,8 @@
         }
 
         .scenario-box {
-            font-size: 1.05rem;
-            line-height: 1.6;
+            font-size: 1rem;
+            line-height: 1.5;
             margin-bottom: 20px;
             background: rgba(255,255,255,0.03);
             padding: 15px;
@@ -88,39 +76,29 @@
             border-left: 4px solid var(--mrs-green);
         }
 
-        /* BOTÕES DE DECISÃO */
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
 
         .option-btn {
             background: rgba(255,255,255,0.05);
             border: 1px solid var(--border-ui);
             color: #fff;
-            padding: 15px;
+            padding: 14px;
             border-radius: 8px;
             cursor: pointer;
             text-align: left;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: 0.2s;
-            display: flex;
-            align-items: center;
+            line-height: 1.3;
         }
 
         .option-btn:hover { background: var(--mrs-blue); border-color: var(--mrs-green); }
 
-        /* PAINEL DE FEEDBACK (FATO HISTÓRICO) */
-        .feedback-panel {
-            display: none;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .fact-box { background: rgba(255,42,42,0.1); border-left: 4px solid var(--danger); padding: 15px; margin: 15px 0; border-radius: 8px; }
+        .feedback-panel { display: none; animation: fadeIn 0.4s ease-out; }
+        .fact-box { background: rgba(255,42,42,0.12); border-left: 4px solid var(--danger); padding: 15px; margin: 15px 0; border-radius: 8px; }
+        .warning-box { background: rgba(255, 204, 0, 0.1); border-left: 4px solid var(--warning); padding: 15px; margin: 15px 0; border-radius: 8px; }
         .success-box { background: rgba(0,255,170,0.1); border-left: 4px solid var(--mrs-green); padding: 15px; margin: 15px 0; border-radius: 8px; }
 
-        .btn-next {
+        .btn-action {
             background: var(--mrs-green);
             color: #000;
             border: none;
@@ -129,106 +107,115 @@
             font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
-            align-self: center;
             margin-top: 10px;
-        }
-
-        /* RÁDIO TRECHO */
-        .radio-footer {
-            width: 100%; max-width: 800px;
-            margin-top: 15px;
-            text-align: center;
+            width: 100%;
         }
 
         .textarea-mrs {
             width: 100%; background: #000; border: 1px solid var(--border-ui);
-            color: #fff; padding: 12px; border-radius: 8px; height: 80px; resize: none; margin-top: 10px;
+            color: #fff; padding: 12px; border-radius: 8px; height: 70px; resize: none; margin-top: 10px; font-family: inherit;
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        @media (max-width: 600px) {
-            .main-container { padding: 5px; }
-            .stage-title { font-size: 1rem; }
-            .scenario-box { font-size: 0.95rem; }
-        }
+        @media (max-width: 600px) { .sim-container { padding: 15px; min-height: 450px; } }
     </style>
 </head>
 <body>
 
     <div class="header-game">
-        <img src="1000121485.png" class="mrs-logo-top" alt="MRS">
-        <div style="color: var(--mrs-green); font-weight: 800; letter-spacing: 2px;">SIPATMA 2026: ABRIL VERDE</div>
+        <img src="1000121485.png" class="mrs-logo-top">
+        <div style="color: var(--mrs-green); font-weight: 800; font-size: 0.9rem; letter-spacing: 1px;">SIPATMA 2026: ABRIL VERDE</div>
     </div>
 
-    <div class="sim-container" id="game-core">
-        </div>
+    <div class="sim-container" id="game-core"></div>
 
-    <div class="radio-footer">
-        <div style="font-size: 0.8rem; font-weight: 800; color: var(--neon-blue);">📡 RÁDIO TRECHO: SUA VOZ NA OPERAÇÃO</div>
-        <textarea class="textarea-mrs" id="user-input" placeholder="Registre aqui sua experiência de hoje..."></textarea>
-        <button class="btn-next" style="margin-top: 10px; font-size: 0.8rem;" onclick="transmitir()">Transmitir ao Forms</button>
+    <div style="width: 100%; max-width: 800px; margin-top: 15px; text-align: center;">
+        <div style="font-size: 0.75rem; font-weight: 800; color: var(--neon-blue);">📡 RÁDIO TRECHO: SUA VOZ NA OPERAÇÃO</div>
+        <textarea class="textarea-mrs" id="user-input" placeholder="Relate um compromisso de segurança para este Abril Verde..."></textarea>
+        <button class="btn-action" style="padding: 8px; font-size: 0.7rem; width: auto;" onclick="transmitir()">Transmitir ao Forms</button>
     </div>
 
     <script>
-        /* MOTOR DO SIMULADOR MRS - ABRIL VERDE
-           Cada nível foca em uma Percepção de Risco (Onde está o erro) e uma Escolha Técnica.
-        */
         const levels = [
             {
                 id: 1,
-                title: "Nível 1: Vigilância de Via",
-                scenario: "Você está operando há 8 horas. O trecho é monótono e você sente seus olhos pesarem. Uma sensação de calor sobe pelo corpo e você pisca de forma lenta.",
+                title: "Nível 1: Fadiga Acumulada",
+                scenario: "Final de turno. O trecho é monótono, o clima está abafado e você sente que 'pescou' por um segundo. A consciência volta, mas a sonolência persiste.",
                 options: [
-                    { text: "Lavar o rosto com água gelada e seguir para cumprir o horário.", correct: false, impact: "SONO" },
-                    { text: "Reportar cansaço e realizar uma parada segura imediata.", correct: true, impact: "SONO" }
+                    { type: 'correct', text: "Realizar parada segura imediata em local autorizado e reportar ao CCO/Supervisão." },
+                    { type: 'trap', text: "Aumentar o volume do rádio e mascar chiclete de menta para estimular os sentidos até o próximo pátio." },
+                    { type: 'more-less', text: "Lavar o rosto com água gelada e abrir a janela para manter o foco apenas até a troca de turno." },
+                    { type: 'nothing', text: "Começar a cantar em voz alta para espantar o sono e evitar o atraso do trem." }
                 ],
-                fato: "HINTON (1986): A tripulação tentou 'vencer' o sono para chegar ao destino. O resultado foi um choque frontal que matou 23 pessoas. O sono é uma falha biológica, não de caráter.",
-                curiosidade: "Você sabia? O sono causa 'microssonos' onde o cérebro desliga por 3s. A 40km/h, você percorre 33 metros totalmente inconsciente."
+                fato: "HINTON (1986): A tripulação tentou 'estimular os sentidos' para não parar o trem. O resultado foi o choque frontal que matou 23 pessoas. O microssono é involuntário.",
+                feedback: {
+                    trap: "A pegadinha te pegou! Mascar chiclete ou rádio alto dão uma falsa sensação de alerta, mas o cérebro continua 'desligando' por milissegundos fatais.",
+                    moreLess: "Isso ajuda por poucos minutos, mas não elimina o risco biológico. O Máximo Rigor exige a parada imediata."
+                }
             },
             {
                 id: 2,
-                title: "Nível 2: Comunicação em Pátio",
-                scenario: "Durante uma manobra, seu rádio falha momentaneamente. Você acredita que o caminho está livre pois faz esse trajeto todos os dias no mesmo horário.",
+                title: "Nível 2: O Silêncio do Rádio",
+                scenario: "Durante uma manobra complexa em pátio, você entra em uma zona de sombra onde o rádio fica mudo. Você conhece esse pátio há 10 anos e nunca houve problema nesse horário.",
                 options: [
-                    { text: "Presumir a via livre baseada no hábito e concluir a manobra.", correct: false, impact: "ATENÇÃO" },
-                    { text: "Interromper a manobra e só avançar com comunicação confirmada.", correct: true, impact: "ATENÇÃO" }
+                    { type: 'trap', text: "Utilizar buzinas intermitentes para sinalizar sua posição enquanto conclui a manobra em baixa velocidade." },
+                    { type: 'nothing', text: "Perguntar ao ajudante se ele viu alguém na linha antes de entrarem na zona de sombra." },
+                    { type: 'correct', text: "Interromper a manobra imediatamente e aguardar o restabelecimento da comunicação técnica." },
+                    { type: 'more-less', text: "Prosseguir a manobra em 'velocidade de passo de homem' apenas para desimpedir a via principal." }
                 ],
-                fato: "SANTIAGO (2013): O excesso de confiança no hábito fez o condutor entrar em uma curva a 179km/h. 79 mortos. O hábito é o inimigo número 1 da atenção.",
-                curiosidade: "A 'Habituação' faz o cérebro projetar uma imagem de 'via livre' só porque ela estava livre ontem. Não confie na memória, confie no sinal."
+                fato: "SANTIAGO (2013): O condutor confiou no hábito e na familiaridade do trecho. 79 mortos. O Máximo Rigor diz: sem comunicação, não há movimento.",
+                feedback: {
+                    trap: "Buzinar não substitui a comunicação direta e autorizada. O hábito é o pai da negligência em pátios ferroviários.",
+                    moreLess: "Mesmo devagar, sem rádio você está operando às cegas sobre o que pode estar ocorrendo na outra ponta da manobra."
+                }
             },
             {
                 id: 3,
-                title: "Nível 3: O Dilema do Horário",
-                scenario: "A operação está atrasada em 5 minutos devido a uma lentidão na estação anterior. Há uma pressão velada para recuperar o tempo na curva seguinte.",
+                title: "Nível 3: Pressão por Resultados",
+                scenario: "O trem está atrasado e o CCO informa que há uma janela apertada para cruzamento à frente. Qualquer minuto ganho é essencial para não 'trancar' a via.",
                 options: [
-                    { text: "Aumentar a velocidade no limite máximo da tolerância para recuperar o tempo.", correct: false, impact: "PRESSA" },
-                    { text: "Manter a velocidade de segurança, aceitando o atraso em nome do rigor.", correct: true, impact: "PRESSA" }
+                    { type: 'nothing', text: "Ignorar o velocímetro e focar apenas na paisagem para diminuir o estresse do atraso." },
+                    { type: 'correct', text: "Manter rigorosamente a velocidade da via, aceitando o atraso como custo da segurança." },
+                    { type: 'trap', text: "Ajustar a curva de frenagem para o limite mínimo permitido, ganhando tempo nas aproximações de pátio." },
+                    { type: 'more-less', text: "Acelerar levemente apenas nos trechos de reta plana para compensar parte do tempo perdido." }
                 ],
-                fato: "AMAGASAKI (2005): Para compensar um atraso de apenas 90 segundos, o maquinista acelerou em uma curva. O trem descarrilou e 107 pessoas morreram.",
-                curiosidade: "Sob pressão, o cérebro desenvolve 'visão de túnel'. Você foca no relógio e ignora os sinais de perigo ao seu redor."
+                fato: "AMAGASAKI (2005): O maquinista tentou 'ganhar tempo' na frenagem e na curva para compensar 90 segundos de atraso. 107 mortos.",
+                feedback: {
+                    trap: "Essa técnica de 'ganhar tempo na frenagem' é perigosíssima. Ela reduz sua margem de erro a zero. Um erro de cálculo e o descarrilamento é certo.",
+                    moreLess: "A pressa é um sequestro emocional. Na MRS, o rigor com a velocidade é absoluto, independente do atraso."
+                }
             },
             {
                 id: 4,
-                title: "Nível 4: Disciplina de Sinal",
-                scenario: "Você avista um sinal com aspecto duvidoso (luz fraca/apagada). O sistema automático não indica restrição clara.",
+                title: "Nível 4: Sinalização Duvidosa",
+                scenario: "Você avista um sinal com a lâmpada física apagada, mas o seu painel eletrônico (computador de bordo) indica que a via está livre e autorizada.",
                 options: [
-                    { text: "Considerar que o sinal está com falha de lâmpada e prosseguir com cautela.", correct: false, impact: "SINAL" },
-                    { text: "Considerar o sinal como PARADA ABSOLUTA conforme o regulamento.", correct: true, impact: "SINAL" }
+                    { type: 'more-less', text: "Reduzir para marcha à vista e tentar contato com o CCO para confirmar a autorização visual." },
+                    { type: 'trap', text: "Prosseguir na velocidade normal, confiando no sistema eletrônico que é mais moderno que a lâmpada física." },
+                    { type: 'nothing', text: "Jogar uma pedra no sinal ao passar para ver se o contato da lâmpada volta a funcionar." },
+                    { type: 'correct', text: "Considerar o sinal como PARADA ABSOLUTA e reportar a falha de sinalização imediatamente." }
                 ],
-                fato: "BAD AIBLING (2016): O controlador ignorou o protocolo de sinalização por 'achar' que o sistema estava errado. 12 mortos em colisão frontal.",
-                curiosidade: "Westinghouse inventou o freio automático em 1869 justamente porque sinais manuais falhavam. Na dúvida, o estado seguro é sempre PARADO."
+                fato: "BAD AIBLING (2016): O controlador confiou no computador e ignorou o protocolo físico de segurança. 12 mortos em choque frontal.",
+                feedback: {
+                    trap: "Tecnologia falha. O regulamento é claro: sinal apagado ou duvidoso é sinal de PARADA. Conviar cegamente na tela é um risco inaceitável.",
+                    moreLess: "Tentar contato sem parar primeiro é perigoso. O protocolo exige a imobilização do trem diante da dúvida do sinal."
+                }
             },
             {
                 id: 5,
-                title: "Nível 5: Foco Absoluto",
-                scenario: "Seu celular vibra no bolso com uma notificação importante da família enquanto você realiza uma aproximação crítica.",
+                title: "Nível 5: O Toque do Celular",
+                scenario: "Uma chamada de vídeo da sua família começa a tocar no seu celular dentro da cabine. Você sabe que eles estão preocupados com uma situação pessoal sua.",
                 options: [
-                    { text: "Dar uma olhada rápida de 2 segundos para ver se é emergência.", correct: false, impact: "CELULAR" },
-                    { text: "Ignorar totalmente e manter o dispositivo desligado/guardado.", correct: true, impact: "CELULAR" }
+                    { type: 'trap', text: "Atender no viva-voz rapidamente sem tirar as mãos dos comandos, apenas para dizer que está bem." },
+                    { type: 'nothing', text: "Tirar uma foto da cabine e enviar para o grupo da família para mostrar que está tudo sob controle." },
+                    { type: 'more-less', text: "Colocar o celular no modo silencioso mas mantê-lo visível para checar se há mensagens de emergência." },
+                    { type: 'correct', text: "Ignorar totalmente a chamada. O celular deve estar desligado e guardado durante toda a operação." }
                 ],
-                fato: "CHATSWORTH (2008): O envio de uma mensagem de texto fez o maquinista ignorar o sinal vermelho. 25 mortos. 2 segundos na tela é uma eternidade na via.",
-                curiosidade: "Ao olhar o celular, você leva 1.5s para processar o que viu e mais 1s para reagir. Na ferrovia, 2.5s decidem vidas."
+                fato: "CHATSWORTH (2008): Uma mensagem de texto de poucos segundos causou a colisão que matou 25 pessoas. A distração cognitiva não perdoa.",
+                feedback: {
+                    trap: "Atender no viva-voz ainda é uma distração cognitiva imensa. Seu cérebro 'sai' da via e entra na conversa. Isso causa a Cegueira Inatencional.",
+                    moreLess: "Manter o celular visível cria a tentação de olhar. O Máximo Rigor exige zero contato com dispositivos móveis."
+                }
             }
         ];
 
@@ -237,90 +224,85 @@
         function renderLevel() {
             const level = levels[currentLevel];
             const container = document.getElementById("game-core");
+            // Embaralha as opções para não ficar sempre na mesma posição
+            const shuffledOptions = [...level.options].sort(() => Math.random() - 0.5);
+
             container.innerHTML = `
                 <div class="stage-title">
                     <span>${level.title}</span>
                     <span>${currentLevel + 1}/${levels.length}</span>
                 </div>
                 <div class="scenario-box">
-                    <strong>SITUAÇÃO:</strong><br>${level.scenario}
+                    <strong>SITUAÇÃO CRÍTICA:</strong><br>${level.scenario}
                 </div>
                 <div class="options-grid" id="options">
-                    ${level.options.map((opt, index) => `
-                        <button class="option-btn" onclick="checkAnswer(${index})">${opt.text}</button>
+                    ${shuffledOptions.map(opt => `
+                        <button class="option-btn" onclick="checkAnswer('${opt.type}')">${opt.text}</button>
                     `).join('')}
                 </div>
                 <div id="feedback" class="feedback-panel"></div>
             `;
         }
 
-        function checkAnswer(index) {
+        function checkAnswer(type) {
             const level = levels[currentLevel];
-            const option = level.options[index];
             const feedback = document.getElementById("feedback");
             const optionsDiv = document.getElementById("options");
 
             optionsDiv.style.display = "none";
             feedback.style.display = "block";
 
-            if (option.correct) {
+            if (type === 'correct') {
                 feedback.innerHTML = `
                     <div class="success-box">
-                        <strong>✅ DECISÃO SEGURA!</strong><br>
-                        Você aplicou o Máximo Rigor. No Abril Verde, sua atitude salva vidas.
+                        <strong>✅ MÁXIMO RIGOR ATINGIDO!</strong><br>
+                        Decisão impecável. Você escolheu a preservação da vida sobre qualquer atalho.
                     </div>
-                    <div class="intel-card" style="font-size:0.85rem; color:#94a3b8; margin: 10px 0;">
-                        <em>${level.curiosidade}</em>
-                    </div>
-                    <button class="btn-next" onclick="nextLevel()">Avançar Operação</button>
+                    <div style="font-size:0.85rem; color:#94a3b8; margin-bottom: 15px;"><em>"${level.fato}"</em></div>
+                    <button class="btn-action" onclick="nextLevel()">Avançar para Próximo Desafio</button>
                 `;
             } else {
+                let msg = type === 'trap' ? level.feedback.trap : 
+                          type === 'more-less' ? level.feedback.moreLess : 
+                          "Decisão incorreta. Essa atitude coloca a operação em risco extremo.";
+
                 feedback.innerHTML = `
                     <div class="fact-box">
-                        <strong>❌ RISCO DETECTADO: ${option.impact}</strong><br>
-                        Sua escolha resultaria em uma ocorrência grave. Veja o que a história nos ensina:
-                        <p style="margin-top:10px; font-size:0.9rem;">${level.fato}</p>
+                        <strong>❌ FALHA NA PERCEPÇÃO DE RISCO</strong><br>
+                        ${msg}
+                        <p style="margin-top:10px; font-size:0.85rem; opacity: 0.8;">Lembre-se do fato real: ${level.fato}</p>
                     </div>
-                    <button class="btn-next" style="background:var(--danger); color:#fff;" onclick="restartLevel()">Tentar Novamente</button>
+                    <button class="btn-action" style="background:var(--danger); color:#fff;" onclick="renderLevel()">Reavaliar Decisão</button>
                 `;
             }
         }
 
         function nextLevel() {
             currentLevel++;
-            if (currentLevel < levels.length) {
-                renderLevel();
-            } else {
-                showConclusion();
-            }
+            if (currentLevel < levels.length) renderLevel();
+            else showFinal();
         }
 
-        function restartLevel() {
-            renderLevel();
-        }
-
-        function showConclusion() {
+        function showFinal() {
             const container = document.getElementById("game-core");
             container.innerHTML = `
-                <div class="stage-title">✅ MISSÃO CUMPRIDA!</div>
-                <div class="scenario-box" style="border-left-color: var(--mrs-green); text-align: center;">
-                    <h2 style="color:var(--mrs-green); margin-bottom:15px;">MÁXIMO RIGOR ATINGIDO</h2>
-                    <p>Neste Abril Verde, você provou que o compromisso com a vida está acima de horários, hábitos ou distrações.</p>
+                <div class="stage-title">✅ OPERAÇÃO CONCLUÍDA</div>
+                <div class="scenario-box" style="text-align: center;">
+                    <h2 style="color:var(--mrs-green); margin-bottom:15px;">ABRIL VERDE: VOCÊ É EXEMPLO</h2>
+                    <p>Ao longo deste simulador, você enfrentou as armadilhas do cansaço, do hábito, da pressa e da distração.</p>
                     <br>
-                    <p><strong>REFLEXÃO FINAL:</strong> As Boas Práticas são como os freios de Westinghouse: precisam funcionar sempre, especialmente quando não esperamos o perigo. Segurança não é uma escolha, é um HÁBITO.</p>
+                    <p>O Máximo Rigor não é sobre não ter problemas, é sobre <strong>como decidimos agir</strong> quando eles aparecem. Leve essa clareza para o seu próximo turno.</p>
                 </div>
-                <button class="btn-next" onclick="location.reload()">REINICIAR SIMULADOR</button>
+                <button class="btn-action" onclick="location.reload()">REINICIAR TREINAMENTO</button>
             `;
         }
 
         function transmitir() {
-            const input = document.getElementById("user-input").value;
-            if(!input) { alert("Registre sua percepção antes de transmitir!"); return; }
+            if(!document.getElementById("user-input").value) { alert("Registre seu compromisso antes de transmitir!"); return; }
             window.open('https://forms.gle/ut3jDiKRPWSGVXw37');
         }
 
-        bootApp = () => renderLevel();
-        bootApp();
+        renderLevel();
     </script>
 </body>
 </html>
