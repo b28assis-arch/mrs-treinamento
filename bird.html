@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard MRS - Pirâmide de Risco</title>
+    <title>MRS - Pirâmide de Bird Digital</title>
     <style>
         :root {
             --mrs-yellow: #facc15;
             --bg-dark: #050505;
-            --panel-bg: #111827;
+            --panel-bg: rgba(17, 24, 39, 0.8);
             --off: #1f2937;
             --green: #22c55e;
             --yellow: #eab308;
@@ -18,6 +18,12 @@
 
         body {
             background-color: var(--bg-dark);
+            /* Wallpaper MRS - Simulação de Marca d'água */
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/d/d2/Logo_MRS_Log%C3%ADstica.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: 80%;
             color: white;
             font-family: 'Segoe UI', sans-serif;
             margin: 0;
@@ -25,6 +31,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Camada escura sobre o fundo para não atrapalhar a leitura */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: -1;
         }
 
         .header {
@@ -38,176 +54,131 @@
             margin-bottom: 20px;
         }
 
-        .logo {
-            background: var(--mrs-yellow);
-            color: black;
-            padding: 4px 12px;
-            font-weight: 900;
-            font-style: italic;
-        }
+        .logo-top { background: var(--mrs-yellow); color: black; padding: 4px 12px; font-weight: 900; font-style: italic; }
 
-        .pyramid-stage {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
+        .pyramid-stage { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .layer { display: flex; justify-content: center; gap: 4px; width: 100%; }
 
-        .layer {
-            display: flex;
-            justify-content: center;
-            gap: 3px;
-            width: 100%;
-        }
-
+        /* Estilo dos blocos individuais */
         .block {
             background: var(--off);
-            border: 1px solid #333;
-            border-radius: 2px;
-            transition: 0.4s;
+            border: 1px solid #444;
+            border-radius: 3px;
+            transition: 0.3s;
             cursor: pointer;
         }
+        .block:hover { border-color: var(--mrs-yellow); }
 
-        .l4 .block { width: 60px; height: 40px; }
-        .l3 .block { width: 45px; height: 35px; } 
-        .l2 .block { width: 35px; height: 30px; }
-        .l1 .block { width: 25px; height: 25px; }
+        /* Tamanhos Egípcios */
+        .l4 .block { width: 80px; height: 50px; }
+        .l3 .block { width: 60px; height: 40px; } 
+        .l2 .block { width: 45px; height: 35px; }
+        .l1 .block { width: 32px; height: 30px; }
 
-        .active-green { background: var(--green); box-shadow: 0 0 15px var(--green); border-color: white; }
-        .active-yellow { background: var(--yellow); box-shadow: 0 0 15px var(--yellow); border-color: white; }
-        .active-orange { background: var(--orange); box-shadow: 0 0 15px var(--orange); border-color: white; }
-        .active-red { background: var(--red); box-shadow: 0 0 20px var(--red); border-color: white; }
+        /* Cores Ativas com Brilho */
+        .active-green { background: var(--green) !important; box-shadow: 0 0 15px var(--green); }
+        .active-yellow { background: var(--yellow) !important; box-shadow: 0 0 15px var(--yellow); }
+        .active-orange { background: var(--orange) !important; box-shadow: 0 0 15px var(--orange); }
+        .active-red { background: var(--red) !important; box-shadow: 0 0 25px var(--red); border-color: white; }
 
-        .dashboard-ui {
-            width: 100%;
-            max-width: 500px;
-            margin-top: 20px;
-            display: grid;
-            grid-template-cols: 1fr 1fr;
-            gap: 15px;
-        }
+        .dashboard-ui { width: 100%; max-width: 500px; margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .card { background: var(--panel-bg); padding: 15px; border-radius: 8px; border: 1px solid #333; text-align: center; }
 
-        .card {
-            background: var(--panel-bg);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #333;
-            text-align: center;
-        }
-
-        .thermo-bg {
-            height: 120px;
-            width: 30px;
-            background: #000;
-            margin: 10px auto;
-            border-radius: 15px;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid #444;
-        }
-
-        #fill {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 0%;
-            background: var(--green);
-            transition: 0.5s;
-        }
-
+        /* Modal customizado */
         #modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #1e293b;
-            padding: 20px;
-            border: 2px solid var(--mrs-yellow);
-            border-radius: 10px;
-            z-index: 100;
-            width: 80%;
-            max-width: 300px;
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #1e293b; padding: 25px; border: 2px solid var(--mrs-yellow);
+            border-radius: 12px; z-index: 100; width: 85%; max-width: 320px; box-shadow: 0 0 50px rgba(0,0,0,1);
         }
+        textarea { width: 100%; background: #000; color: white; border: 1px solid #444; padding: 8px; margin-top: 10px; border-radius: 4px; }
+        .btn-save { background: var(--mrs-yellow); color: black; border: none; padding: 12px; width: 100%; font-weight: bold; margin-top: 15px; border-radius: 4px; cursor: pointer; }
 
-        textarea {
-            width: 100%;
-            background: #000;
-            color: white;
-            border: 1px solid #444;
-            padding: 5px;
-            margin-top: 10px;
-        }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 90; }
 
-        .btn {
-            background: var(--mrs-yellow);
-            color: black;
-            border: none;
-            padding: 8px;
-            width: 100%;
-            font-weight: bold;
-            margin-top: 10px;
+        /* Alerta de Segurança */
+        #safety-alert {
+            display: none; width: 90%; max-width: 450px; background: #000; border-l: 5px solid var(--mrs-yellow);
+            padding: 15px; margin-top: 20px; color: var(--mrs-yellow); font-size: 13px; animation: slideIn 0.5s;
         }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 90;
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="logo">MRS</div>
+        <div class="logo-top">MRS</div>
         <div style="text-align: right">
-            <small style="display:block; color: var(--mrs-yellow)">DDS DIGITAL</small>
-            <span id="clock" style="font-family: monospace;">00:00</span>
+            <small style="display:block; color: var(--mrs-yellow)">SEGURANÇA FERROVIÁRIA</small>
+            <span id="clock" style="font-family: monospace; font-weight: bold;">00:00:00</span>
         </div>
     </div>
 
     <div class="pyramid-stage">
-        <div class="layer l4" onclick="openModal(4)"><div class="block" id="b4-0"></div></div>
-        <div class="layer l3" onclick="openModal(3)">
-            <div class="block" id="b3-0"></div><div class="block" id="b3-1"></div><div class="block" id="b3-2"></div>
+        <div class="layer l4">
+            <div class="block" id="b4-0" onclick="prepRecord(4, 0)"></div>
         </div>
-        <div class="layer l2" onclick="openModal(2)">
-            <div class="block" id="b2-0"></div><div class="block" id="b2-1"></div><div class="block" id="b2-2"></div><div class="block" id="b2-3"></div><div class="block" id="b2-4"></div>
+        <div class="layer l3">
+            <div class="block" id="b3-0" onclick="prepRecord(3, 0)"></div>
+            <div class="block" id="b3-1" onclick="prepRecord(3, 1)"></div>
+            <div class="block" id="b3-2" onclick="prepRecord(3, 2)"></div>
         </div>
-        <div class="layer l1" onclick="openModal(1)">
-            <div class="block" id="b1-0"></div><div class="block" id="b1-1"></div><div class="block" id="b1-2"></div><div class="block" id="b1-3"></div><div class="block" id="b1-4"></div><div class="block" id="b1-5"></div><div class="block" id="b1-6"></div><div class="block" id="b1-7"></div><div class="block" id="b1-8"></div><div class="block" id="b1-9"></div>
+        <div class="layer l2">
+            <div class="block" id="b2-0" onclick="prepRecord(2, 0)"></div>
+            <div class="block" id="b2-1" onclick="prepRecord(2, 1)"></div>
+            <div class="block" id="b2-2" onclick="prepRecord(2, 2)"></div>
+            <div class="block" id="b2-3" onclick="prepRecord(2, 3)"></div>
+            <div class="block" id="b2-4" onclick="prepRecord(2, 4)"></div>
         </div>
+        <div class="layer l1" id="base-layer">
+            </div>
+    </div>
+
+    <div id="safety-alert">
+        <strong>🛡️ ALERTA DE PREVENÇÃO:</strong><br>
+        <span id="alert-msg">Mantenha sempre o foco na via e nos procedimentos de segurança.</span>
     </div>
 
     <div class="dashboard-ui">
         <div class="card">
-            <small>TERMÔMETRO</small>
-            <div class="thermo-bg"><div id="fill"></div></div>
-            <b id="status">BAIXO</b>
+            <small>STATUS DE RISCO</small>
+            <div id="status-box" style="font-size: 18px; font-weight: bold; color: var(--green); margin-top: 10px;">BAIXO</div>
         </div>
         <div class="card">
-            <small>REGISTROS HOJE</small>
-            <div id="log-count" style="font-size: 24px; font-weight: bold; color: var(--mrs-yellow); margin: 10px 0;">0</div>
-            <button onclick="clearAll()" style="background:none; border:none; color: #666; font-size: 10px;">Zerar Painel</button>
+            <small>TOTAL DE DESVIOS</small>
+            <div id="log-count" style="font-size: 24px; font-weight: bold; color: var(--mrs-yellow); margin-top: 5px;">0</div>
+            <button onclick="resetApp()" style="background:none; border:none; color: #555; font-size: 10px; cursor: pointer;">Resetar Tudo</button>
         </div>
     </div>
 
     <div class="overlay" id="overlay"></div>
     <div id="modal">
-        <h3 id="m-title" style="margin:0; font-size: 14px; color: var(--mrs-yellow);">REGISTRAR</h3>
-        <textarea id="m-desc" rows="3" placeholder="O que aconteceu?"></textarea>
-        <button class="btn" onclick="saveIncident()">SALVAR</button>
-        <button onclick="closeModal()" style="background:none; color:white; width:100%; border:none; margin-top:5px; font-size:10px;">CANCELAR</button>
+        <h3 id="m-title" style="margin:0; color: var(--mrs-yellow); font-size: 16px;">REGISTRAR</h3>
+        <textarea id="m-desc" rows="3" placeholder="Descrição (Opcional)"></textarea>
+        <button class="btn-save" onclick="confirmSave()">SALVAR REGISTRO</button>
+        <button onclick="closeModal()" style="background:none; color:#999; width:100%; border:none; margin-top:10px; font-size:11px;">VOLTAR</button>
     </div>
 
     <script>
-        let currentLevel = 0;
-        let db = JSON.parse(localStorage.getItem('mrs_db')) || { l1: 0, l2: 0, l3: 0, l4: 0, history: [] };
+        let currentTarget = { lvl: 0, idx: 0 };
+        let db = JSON.parse(localStorage.getItem('mrs_safety_v3')) || { l1:[], l2:[], l3:[], l4:[], count: 0 };
 
-        function openModal(level) {
-            currentLevel = level;
+        const tips = {
+            1: "Ato Inseguro: Corrija o comportamento agora para evitar que vire um acidente amanhã.",
+            2: "Quase Acidente: A sorte não é um plano de segurança. Revise o procedimento imediatamente!",
+            3: "Incidente Leve: Atenção redobrada. O próximo degrau da pirâmide é fatal.",
+            4: "RISCO CRÍTICO: Pare a operação! A vida deve ser a prioridade absoluta na MRS."
+        };
+
+        // Gerar a base de 10 blocos
+        const base = document.getElementById('base-layer');
+        for(let i=0; i<10; i++){
+            base.innerHTML += `<div class="block" id="b1-${i}" onclick="prepRecord(1, ${i})"></div>`;
+        }
+
+        function prepRecord(lvl, idx) {
+            currentTarget = { lvl, idx };
+            const names = ["", "ATO INSEGURO", "QUASE ACIDENTE", "INCIDENTE LEVE", "ACIDENTE GRAVE"];
+            document.getElementById('m-title').innerText = names[lvl];
             document.getElementById('modal').style.display = 'block';
             document.getElementById('overlay').style.display = 'block';
         }
@@ -218,44 +189,47 @@
             document.getElementById('m-desc').value = '';
         }
 
-        function saveIncident() {
-            if (currentLevel === 1 && db.l1 < 10) db.l1++;
-            if (currentLevel === 2 && db.l2 < 5) db.l2++;
-            if (currentLevel === 3 && db.l3 < 3) db.l3++;
-            if (currentLevel === 4 && db.l4 < 1) db.l4++;
-
-            db.history.push({ level: currentLevel, time: new Date().toLocaleTimeString() });
-            localStorage.setItem('mrs_db', JSON.stringify(db));
-            render();
+        function confirmSave() {
+            const { lvl, idx } = currentTarget;
+            const id = `l${lvl}`;
+            
+            if(!db[id].includes(idx)) {
+                db[id].push(idx);
+                db.count++;
+                localStorage.setItem('mrs_safety_v3', JSON.stringify(db));
+                
+                // Mostrar Alerta de Segurança
+                const alertBox = document.getElementById('safety-alert');
+                document.getElementById('alert-msg').innerText = tips[lvl];
+                alertBox.style.display = 'block';
+                
+                render();
+            }
             closeModal();
         }
 
         function render() {
-            updateRow('b1', db.l1, 'active-green', 10);
-            updateRow('b2', db.l2, 'active-yellow', 5);
-            updateRow('b3', db.l3, 'active-orange', 3);
-            updateRow('b4', db.l4, 'active-red', 1);
-
-            const fill = document.getElementById('fill');
-            const total = (db.l1 * 4) + (db.l2 * 10) + (db.l3 * 20) + (db.l4 * 100);
-            const percent = Math.min(total, 100);
-            fill.style.height = percent + '%';
-            document.getElementById('log-count').innerText = db.history.length;
-        }
-
-        function updateRow(prefix, count, className, total) {
-            for (let i = 0; i < total; i++) {
-                const el = document.getElementById(`${prefix}-${i}`);
-                el.className = 'block';
-                if (i < count) el.classList.add(className);
+            const colors = ["", "active-green", "active-yellow", "active-orange", "active-red"];
+            for(let l=1; l<=4; l++) {
+                db[`l${l}`].forEach(idx => {
+                    const el = document.getElementById(`b${l}-${idx}`);
+                    if(el) el.classList.add(colors[l]);
+                });
             }
+            document.getElementById('log-count').innerText = db.count;
+            
+            const status = document.getElementById('status-box');
+            if(db.l4.length > 0) { status.innerText = "CRÍTICO"; status.style.color = "var(--red)"; }
+            else if(db.l3.length > 0) { status.innerText = "ALERTA"; status.style.color = "var(--orange)"; }
+            else if(db.l2.length > 0) { status.innerText = "ATENÇÃO"; status.style.color = "var(--yellow)"; }
+            else { status.innerText = "BAIXO"; status.style.color = "var(--green)"; }
         }
 
-        function clearAll() {
-            if(confirm("Zerar painel?")) {
-                db = { l1: 0, l2: 0, l3: 0, l4: 0, history: [] };
-                localStorage.setItem('mrs_db', JSON.stringify(db));
-                render();
+        function resetApp() {
+            if(confirm("Deseja zerar os indicadores de hoje?")) {
+                db = { l1:[], l2:[], l3:[], l4:[], count: 0 };
+                localStorage.removeItem('mrs_safety_v3');
+                location.reload();
             }
         }
 
