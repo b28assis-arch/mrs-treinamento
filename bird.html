@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MRS - Pirâmide de Bird Digital</title>
+    <title>MRS - Pirâmide de Bird (Voz)</title>
     <style>
         :root {
             --mrs-yellow: #facc15;
             --bg-dark: #050505;
-            --panel-bg: rgba(17, 24, 39, 0.8);
+            --panel-bg: rgba(17, 24, 39, 0.85);
             --off: #1f2937;
             --green: #22c55e;
             --yellow: #eab308;
@@ -18,89 +18,57 @@
 
         body {
             background-color: var(--bg-dark);
-            /* Wallpaper MRS - Simulação de Marca d'água */
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/d/d2/Logo_MRS_Log%C3%ADstica.png');
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
-            background-size: 80%;
+            background-size: 70%;
             color: white;
             font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin: 0; padding: 10px;
+            display: flex; flex-direction: column; align-items: center;
             min-height: 100vh;
         }
 
-        /* Camada escura sobre o fundo para não atrapalhar a leitura */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            z-index: -1;
-        }
+        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: -1; }
 
-        .header {
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 3px solid var(--mrs-yellow);
-            padding-bottom: 8px;
-            margin-bottom: 20px;
-        }
-
+        .header { width: 100%; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--mrs-yellow); padding-bottom: 8px; margin-bottom: 20px; }
         .logo-top { background: var(--mrs-yellow); color: black; padding: 4px 12px; font-weight: 900; font-style: italic; }
 
+        /* Estilo da Pirâmide */
         .pyramid-stage { display: flex; flex-direction: column; align-items: center; gap: 6px; }
         .layer { display: flex; justify-content: center; gap: 4px; width: 100%; }
+        .block { background: var(--off); border: 1px solid #444; border-radius: 3px; transition: 0.3s; cursor: pointer; }
 
-        /* Estilo dos blocos individuais */
-        .block {
-            background: var(--off);
-            border: 1px solid #444;
-            border-radius: 3px;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-        .block:hover { border-color: var(--mrs-yellow); }
-
-        /* Tamanhos Egípcios */
         .l4 .block { width: 80px; height: 50px; }
         .l3 .block { width: 60px; height: 40px; } 
         .l2 .block { width: 45px; height: 35px; }
         .l1 .block { width: 32px; height: 30px; }
 
-        /* Cores Ativas com Brilho */
         .active-green { background: var(--green) !important; box-shadow: 0 0 15px var(--green); }
         .active-yellow { background: var(--yellow) !important; box-shadow: 0 0 15px var(--yellow); }
         .active-orange { background: var(--orange) !important; box-shadow: 0 0 15px var(--orange); }
         .active-red { background: var(--red) !important; box-shadow: 0 0 25px var(--red); border-color: white; }
 
-        .dashboard-ui { width: 100%; max-width: 500px; margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        /* Interface de Voz */
+        .voice-ctrl { margin: 20px 0; text-align: center; }
+        .mic-btn {
+            background: #222; border: 2px solid var(--mrs-yellow); width: 60px; height: 60px;
+            border-radius: 50%; color: var(--mrs-yellow); font-size: 24px; cursor: pointer;
+            transition: 0.3s; display: flex; align-items: center; justify-content: center; margin: 0 auto;
+        }
+        .listening { background: var(--red); color: white; border-color: white; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 20px var(--red); } 100% { transform: scale(1); } }
+
+        #voice-status { font-size: 11px; margin-top: 5px; color: #888; text-transform: uppercase; }
+
+        .dashboard-ui { width: 100%; max-width: 500px; margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .card { background: var(--panel-bg); padding: 15px; border-radius: 8px; border: 1px solid #333; text-align: center; }
 
-        /* Modal customizado */
-        #modal {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: #1e293b; padding: 25px; border: 2px solid var(--mrs-yellow);
-            border-radius: 12px; z-index: 100; width: 85%; max-width: 320px; box-shadow: 0 0 50px rgba(0,0,0,1);
-        }
-        textarea { width: 100%; background: #000; color: white; border: 1px solid #444; padding: 8px; margin-top: 10px; border-radius: 4px; }
-        .btn-save { background: var(--mrs-yellow); color: black; border: none; padding: 12px; width: 100%; font-weight: bold; margin-top: 15px; border-radius: 4px; cursor: pointer; }
-
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 90; }
-
-        /* Alerta de Segurança */
         #safety-alert {
-            display: none; width: 90%; max-width: 450px; background: #000; border-l: 5px solid var(--mrs-yellow);
+            display: none; width: 90%; max-width: 450px; background: #000; border-left: 5px solid var(--mrs-yellow);
             padding: 15px; margin-top: 20px; color: var(--mrs-yellow); font-size: 13px; animation: slideIn 0.5s;
         }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -108,104 +76,100 @@
     <div class="header">
         <div class="logo-top">MRS</div>
         <div style="text-align: right">
-            <small style="display:block; color: var(--mrs-yellow)">SEGURANÇA FERROVIÁRIA</small>
+            <small style="display:block; color: var(--mrs-yellow)">DDS VOICE CONTROL</small>
             <span id="clock" style="font-family: monospace; font-weight: bold;">00:00:00</span>
         </div>
     </div>
 
     <div class="pyramid-stage">
-        <div class="layer l4">
-            <div class="block" id="b4-0" onclick="prepRecord(4, 0)"></div>
-        </div>
+        <div class="layer l4"><div class="block" id="b4-0" onclick="prepRecord(4, 0)"></div></div>
         <div class="layer l3">
             <div class="block" id="b3-0" onclick="prepRecord(3, 0)"></div>
             <div class="block" id="b3-1" onclick="prepRecord(3, 1)"></div>
             <div class="block" id="b3-2" onclick="prepRecord(3, 2)"></div>
         </div>
         <div class="layer l2">
-            <div class="block" id="b2-0" onclick="prepRecord(2, 0)"></div>
-            <div class="block" id="b2-1" onclick="prepRecord(2, 1)"></div>
-            <div class="block" id="b2-2" onclick="prepRecord(2, 2)"></div>
-            <div class="block" id="b2-3" onclick="prepRecord(2, 3)"></div>
+            <div class="block" id="b2-0" onclick="prepRecord(2, 0)"></div><div class="block" id="b2-1" onclick="prepRecord(2, 1)"></div>
+            <div class="block" id="b2-2" onclick="prepRecord(2, 2)"></div><div class="block" id="b2-3" onclick="prepRecord(2, 3)"></div>
             <div class="block" id="b2-4" onclick="prepRecord(2, 4)"></div>
         </div>
-        <div class="layer l1" id="base-layer">
-            </div>
+        <div class="layer l1" id="base-layer"></div>
+    </div>
+
+    <div class="voice-ctrl">
+        <button id="mic-trigger" class="mic-btn" onclick="toggleVoice()">🎤</button>
+        <div id="voice-status">Toque para falar comandos</div>
     </div>
 
     <div id="safety-alert">
         <strong>🛡️ ALERTA DE PREVENÇÃO:</strong><br>
-        <span id="alert-msg">Mantenha sempre o foco na via e nos procedimentos de segurança.</span>
+        <span id="alert-msg"></span>
     </div>
 
     <div class="dashboard-ui">
         <div class="card">
-            <small>STATUS DE RISCO</small>
+            <small>RISCO ATUAL</small>
             <div id="status-box" style="font-size: 18px; font-weight: bold; color: var(--green); margin-top: 10px;">BAIXO</div>
         </div>
         <div class="card">
-            <small>TOTAL DE DESVIOS</small>
+            <small>REGISTROS</small>
             <div id="log-count" style="font-size: 24px; font-weight: bold; color: var(--mrs-yellow); margin-top: 5px;">0</div>
-            <button onclick="resetApp()" style="background:none; border:none; color: #555; font-size: 10px; cursor: pointer;">Resetar Tudo</button>
         </div>
     </div>
 
-    <div class="overlay" id="overlay"></div>
-    <div id="modal">
-        <h3 id="m-title" style="margin:0; color: var(--mrs-yellow); font-size: 16px;">REGISTRAR</h3>
-        <textarea id="m-desc" rows="3" placeholder="Descrição (Opcional)"></textarea>
-        <button class="btn-save" onclick="confirmSave()">SALVAR REGISTRO</button>
-        <button onclick="closeModal()" style="background:none; color:#999; width:100%; border:none; margin-top:10px; font-size:11px;">VOLTAR</button>
-    </div>
-
     <script>
-        let currentTarget = { lvl: 0, idx: 0 };
-        let db = JSON.parse(localStorage.getItem('mrs_safety_v3')) || { l1:[], l2:[], l3:[], l4:[], count: 0 };
-
+        let db = JSON.parse(localStorage.getItem('mrs_voice_db')) || { l1:[], l2:[], l3:[], l4:[], count: 0 };
         const tips = {
-            1: "Ato Inseguro: Corrija o comportamento agora para evitar que vire um acidente amanhã.",
-            2: "Quase Acidente: A sorte não é um plano de segurança. Revise o procedimento imediatamente!",
-            3: "Incidente Leve: Atenção redobrada. O próximo degrau da pirâmide é fatal.",
-            4: "RISCO CRÍTICO: Pare a operação! A vida deve ser a prioridade absoluta na MRS."
+            1: "Ato Inseguro: Corrija o comportamento agora para evitar o acidente amanhã.",
+            2: "Quase Acidente: Sorte não é plano. Revise o procedimento!",
+            3: "Incidente Leve: Próximo nível da pirâmide é fatal. Pare e avalie.",
+            4: "RISCO CRÍTICO: Pare a operação! Foco total na vida."
         };
 
-        // Gerar a base de 10 blocos
+        // Gerar Base
         const base = document.getElementById('base-layer');
-        for(let i=0; i<10; i++){
-            base.innerHTML += `<div class="block" id="b1-${i}" onclick="prepRecord(1, ${i})"></div>`;
+        for(let i=0; i<10; i++) base.innerHTML += `<div class="block" id="b1-${i}" onclick="prepRecord(1, ${i})"></div>`;
+
+        // Lógica de Voz
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'pt-BR';
+        recognition.continuous = false;
+
+        function toggleVoice() {
+            try { recognition.start(); } catch(e) { recognition.stop(); }
         }
 
-        function prepRecord(lvl, idx) {
-            currentTarget = { lvl, idx };
-            const names = ["", "ATO INSEGURO", "QUASE ACIDENTE", "INCIDENTE LEVE", "ACIDENTE GRAVE"];
-            document.getElementById('m-title').innerText = names[lvl];
-            document.getElementById('modal').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
+        recognition.onstart = () => {
+            document.getElementById('mic-trigger').classList.add('listening');
+            document.getElementById('voice-status').innerText = "Ouvindo...";
+        };
 
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('m-desc').value = '';
-        }
-
-        function confirmSave() {
-            const { lvl, idx } = currentTarget;
-            const id = `l${lvl}`;
+        recognition.onresult = (event) => {
+            const command = event.results[0][0].transcript.toLowerCase();
+            document.getElementById('voice-status').innerText = `Comando: "${command}"`;
             
-            if(!db[id].includes(idx)) {
-                db[id].push(idx);
+            if (command.includes("ato")) autoSave(1);
+            else if (command.includes("quase")) autoSave(2);
+            else if (command.includes("leve") || command.includes("incidente")) autoSave(3);
+            else if (command.includes("grave") || command.includes("acidente")) autoSave(4);
+            else if (command.includes("zerar") || command.includes("reiniciar")) resetApp();
+        };
+
+        recognition.onend = () => {
+            document.getElementById('mic-trigger').classList.remove('listening');
+        };
+
+        function autoSave(lvl) {
+            const id = `l${lvl}`;
+            const total = [0, 10, 5, 3, 1][lvl];
+            if(db[id].length < total) {
+                db[id].push(db[id].length);
                 db.count++;
-                localStorage.setItem('mrs_safety_v3', JSON.stringify(db));
-                
-                // Mostrar Alerta de Segurança
-                const alertBox = document.getElementById('safety-alert');
+                localStorage.setItem('mrs_voice_db', JSON.stringify(db));
                 document.getElementById('alert-msg').innerText = tips[lvl];
-                alertBox.style.display = 'block';
-                
+                document.getElementById('safety-alert').style.display = 'block';
                 render();
             }
-            closeModal();
         }
 
         function render() {
@@ -217,18 +181,16 @@
                 });
             }
             document.getElementById('log-count').innerText = db.count;
-            
             const status = document.getElementById('status-box');
             if(db.l4.length > 0) { status.innerText = "CRÍTICO"; status.style.color = "var(--red)"; }
             else if(db.l3.length > 0) { status.innerText = "ALERTA"; status.style.color = "var(--orange)"; }
-            else if(db.l2.length > 0) { status.innerText = "ATENÇÃO"; status.style.color = "var(--yellow)"; }
             else { status.innerText = "BAIXO"; status.style.color = "var(--green)"; }
         }
 
         function resetApp() {
-            if(confirm("Deseja zerar os indicadores de hoje?")) {
+            if(confirm("Reiniciar indicadores?")) {
                 db = { l1:[], l2:[], l3:[], l4:[], count: 0 };
-                localStorage.removeItem('mrs_safety_v3');
+                localStorage.removeItem('mrs_voice_db');
                 location.reload();
             }
         }
