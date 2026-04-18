@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MRS - Pirâmide de Bird (Voz)</title>
+    <title>MRS - Gestão de Risco Bird</title>
     <style>
         :root {
             --mrs-yellow: #facc15;
             --bg-dark: #050505;
-            --panel-bg: rgba(17, 24, 39, 0.85);
             --off: #1f2937;
             --green: #22c55e;
             --yellow: #eab308;
@@ -20,183 +19,141 @@
             background-color: var(--bg-dark);
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/d/d2/Logo_MRS_Log%C3%ADstica.png');
             background-repeat: no-repeat;
-            background-position: center;
+            background-position: center 30%;
             background-attachment: fixed;
-            background-size: 70%;
+            background-size: 60%;
             color: white;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0; padding: 10px;
+            font-family: sans-serif;
+            margin: 0; padding: 15px;
             display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh;
         }
 
-        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: -1; }
+        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: -1; }
 
-        .header { width: 100%; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--mrs-yellow); padding-bottom: 8px; margin-bottom: 20px; }
-        .logo-top { background: var(--mrs-yellow); color: black; padding: 4px 12px; font-weight: 900; font-style: italic; }
+        .header { width: 100%; max-width: 500px; display: flex; justify-content: space-between; border-bottom: 2px solid var(--mrs-yellow); margin-bottom: 20px; padding-bottom: 5px; }
 
-        /* Estilo da Pirâmide */
-        .pyramid-stage { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        .layer { display: flex; justify-content: center; gap: 4px; width: 100%; }
-        .block { background: var(--off); border: 1px solid #444; border-radius: 3px; transition: 0.3s; cursor: pointer; }
+        /* Pirâmide Real */
+        .pyramid { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .row { display: flex; gap: 4px; }
+        .block { width: 30px; height: 25px; background: var(--off); border: 1px solid #444; border-radius: 2px; cursor: pointer; transition: 0.3s; }
+        
+        /* Tamanhos Egito */
+        .l4 .block { width: 80px; height: 45px; }
+        .l3 .block { width: 60px; height: 35px; }
+        .l2 .block { width: 45px; height: 30px; }
+        
+        /* Cores Ativas */
+        .active-1 { background: var(--green) !important; box-shadow: 0 0 10px var(--green); }
+        .active-2 { background: var(--yellow) !important; box-shadow: 0 0 10px var(--yellow); }
+        .active-3 { background: var(--orange) !important; box-shadow: 0 0 10px var(--orange); }
+        .active-4 { background: var(--red) !important; box-shadow: 0 0 20px var(--red); }
 
-        .l4 .block { width: 80px; height: 50px; }
-        .l3 .block { width: 60px; height: 40px; } 
-        .l2 .block { width: 45px; height: 35px; }
-        .l1 .block { width: 32px; height: 30px; }
+        /* Painel Assis: Risco vs Segurança */
+        .status-panel { width: 100%; max-width: 500px; margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .card { background: rgba(30,41,59,0.7); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #333; }
+        
+        .alert-box { width: 100%; max-width: 480px; background: #000; color: var(--mrs-yellow); border-left: 4px solid var(--mrs-yellow); padding: 10px; margin-top: 15px; font-size: 13px; display: none; }
 
-        .active-green { background: var(--green) !important; box-shadow: 0 0 15px var(--green); }
-        .active-yellow { background: var(--yellow) !important; box-shadow: 0 0 15px var(--yellow); }
-        .active-orange { background: var(--orange) !important; box-shadow: 0 0 15px var(--orange); }
-        .active-red { background: var(--red) !important; box-shadow: 0 0 25px var(--red); border-color: white; }
-
-        /* Interface de Voz */
-        .voice-ctrl { margin: 20px 0; text-align: center; }
-        .mic-btn {
-            background: #222; border: 2px solid var(--mrs-yellow); width: 60px; height: 60px;
-            border-radius: 50%; color: var(--mrs-yellow); font-size: 24px; cursor: pointer;
-            transition: 0.3s; display: flex; align-items: center; justify-content: center; margin: 0 auto;
-        }
-        .listening { background: var(--red); color: white; border-color: white; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 20px var(--red); } 100% { transform: scale(1); } }
-
-        #voice-status { font-size: 11px; margin-top: 5px; color: #888; text-transform: uppercase; }
-
-        .dashboard-ui { width: 100%; max-width: 500px; margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .card { background: var(--panel-bg); padding: 15px; border-radius: 8px; border: 1px solid #333; text-align: center; }
-
-        #safety-alert {
-            display: none; width: 90%; max-width: 450px; background: #000; border-left: 5px solid var(--mrs-yellow);
-            padding: 15px; margin-top: 20px; color: var(--mrs-yellow); font-size: 13px; animation: slideIn 0.5s;
-        }
+        .btn-safe { background: #065f46; color: #34d399; border: 1px solid #059669; padding: 10px; border-radius: 5px; width: 100%; font-weight: bold; margin-top: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="logo-top">MRS</div>
-        <div style="text-align: right">
-            <small style="display:block; color: var(--mrs-yellow)">DDS VOICE CONTROL</small>
-            <span id="clock" style="font-family: monospace; font-weight: bold;">00:00:00</span>
-        </div>
+        <div style="background:var(--mrs-yellow); color:black; font-weight:bold; padding:2px 10px;">MRS</div>
+        <div id="clock">00:00</div>
     </div>
 
-    <div class="pyramid-stage">
-        <div class="layer l4"><div class="block" id="b4-0" onclick="prepRecord(4, 0)"></div></div>
-        <div class="layer l3">
-            <div class="block" id="b3-0" onclick="prepRecord(3, 0)"></div>
-            <div class="block" id="b3-1" onclick="prepRecord(3, 1)"></div>
-            <div class="block" id="b3-2" onclick="prepRecord(3, 2)"></div>
-        </div>
-        <div class="layer l2">
-            <div class="block" id="b2-0" onclick="prepRecord(2, 0)"></div><div class="block" id="b2-1" onclick="prepRecord(2, 1)"></div>
-            <div class="block" id="b2-2" onclick="prepRecord(2, 2)"></div><div class="block" id="b2-3" onclick="prepRecord(2, 3)"></div>
-            <div class="block" id="b2-4" onclick="prepRecord(2, 4)"></div>
-        </div>
-        <div class="layer l1" id="base-layer"></div>
+    <div class="pyramid">
+        <div class="row l4" id="l4"></div>
+        <div class="row l3" id="l3"></div>
+        <div class="row l2" id="l2"></div>
+        <div class="row l1" id="l1"></div>
     </div>
 
-    <div class="voice-ctrl">
-        <button id="mic-trigger" class="mic-btn" onclick="toggleVoice()">🎤</button>
-        <div id="voice-status">Toque para falar comandos</div>
-    </div>
+    <div id="msg" class="alert-box"></div>
 
-    <div id="safety-alert">
-        <strong>🛡️ ALERTA DE PREVENÇÃO:</strong><br>
-        <span id="alert-msg"></span>
-    </div>
+    <button class="btn-safe" onclick="registrarSeguranca()">🛡️ REGISTRAR AÇÃO SEGURA</button>
 
-    <div class="dashboard-ui">
+    <div class="status-panel">
         <div class="card">
-            <small>RISCO ATUAL</small>
-            <div id="status-box" style="font-size: 18px; font-weight: bold; color: var(--green); margin-top: 10px;">BAIXO</div>
+            <small>STATUS DO DIA</small>
+            <div id="status-txt" style="font-weight:bold; font-size:20px; color:var(--green); margin-top:5px;">SEGURO</div>
         </div>
         <div class="card">
-            <small>REGISTROS</small>
-            <div id="log-count" style="font-size: 24px; font-weight: bold; color: var(--mrs-yellow); margin-top: 5px;">0</div>
+            <small>PONTOS DE RISCO</small>
+            <div id="risco-val" style="font-weight:bold; font-size:24px; color:var(--yellow); margin-top:5px;">0</div>
         </div>
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('mrs_voice_db')) || { l1:[], l2:[], l3:[], l4:[], count: 0 };
-        const tips = {
-            1: "Ato Inseguro: Corrija o comportamento agora para evitar o acidente amanhã.",
-            2: "Quase Acidente: Sorte não é plano. Revise o procedimento!",
-            3: "Incidente Leve: Próximo nível da pirâmide é fatal. Pare e avalie.",
-            4: "RISCO CRÍTICO: Pare a operação! Foco total na vida."
-        };
+        let risco = 0;
+        let seguranca = 0;
+        let db = { l1:[], l2:[], l3:[], l4:[] };
 
-        // Gerar Base
-        const base = document.getElementById('base-layer');
-        for(let i=0; i<10; i++) base.innerHTML += `<div class="block" id="b1-${i}" onclick="prepRecord(1, ${i})"></div>`;
+        const msgs = [
+            "",
+            "Ato Inseguro: Corrija agora! Pequenos desvios causam grandes acidentes.",
+            "Quase Acidente: Atenção! A sorte não é um procedimento de segurança.",
+            "Incidente Leve: Pare e reflita. O próximo erro pode ser fatal.",
+            "ACIDENTE GRAVE: RISCO CRÍTICO! Interrompa a operação imediatamente."
+        ];
 
-        // Lógica de Voz
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.lang = 'pt-BR';
-        recognition.continuous = false;
-
-        function toggleVoice() {
-            try { recognition.start(); } catch(e) { recognition.stop(); }
+        // Criar blocos com precisão
+        function createBlocks(id, count) {
+            const container = document.getElementById(id);
+            const level = id.replace('l','');
+            for(let i=0; i<count; i++) {
+                let b = document.createElement('div');
+                b.className = 'block';
+                b.onclick = () => registrarRisco(level, i, b);
+                container.appendChild(b);
+            }
         }
 
-        recognition.onstart = () => {
-            document.getElementById('mic-trigger').classList.add('listening');
-            document.getElementById('voice-status').innerText = "Ouvindo...";
-        };
+        createBlocks('l4', 1); createBlocks('l3', 3); createBlocks('l2', 5); createBlocks('l1', 10);
 
-        recognition.onresult = (event) => {
-            const command = event.results[0][0].transcript.toLowerCase();
-            document.getElementById('voice-status').innerText = `Comando: "${command}"`;
+        function registrarRisco(lvl, idx, el) {
+            if (el.classList.contains('active-' + lvl)) return;
             
-            if (command.includes("ato")) autoSave(1);
-            else if (command.includes("quase")) autoSave(2);
-            else if (command.includes("leve") || command.includes("incidente")) autoSave(3);
-            else if (command.includes("grave") || command.includes("acidente")) autoSave(4);
-            else if (command.includes("zerar") || command.includes("reiniciar")) resetApp();
-        };
+            el.classList.add('active-' + lvl);
+            risco += parseInt(lvl);
+            if (seguranca > 0) seguranca--; // Efeito Espelho Assis
+            
+            showMsg(msgs[lvl]);
+            updateUI();
+        }
 
-        recognition.onend = () => {
-            document.getElementById('mic-trigger').classList.remove('listening');
-        };
+        function registrarSeguranca() {
+            if (seguranca < 5) seguranca++;
+            // Proteção Assis: Muita segurança diminui o risco visual (apaga um bloco da base)
+            if (seguranca >= 4 && risco > 0) {
+                risco--;
+                showMsg("🛡️ Excelência operacional! Ação segura reduz o risco da unidade.");
+            }
+            updateUI();
+        }
 
-        function autoSave(lvl) {
-            const id = `l${lvl}`;
-            const total = [0, 10, 5, 3, 1][lvl];
-            if(db[id].length < total) {
-                db[id].push(db[id].length);
-                db.count++;
-                localStorage.setItem('mrs_voice_db', JSON.stringify(db));
-                document.getElementById('alert-msg').innerText = tips[lvl];
-                document.getElementById('safety-alert').style.display = 'block';
-                render();
+        function updateUI() {
+            const statusTxt = document.getElementById('status-txt');
+            document.getElementById('risco-val').innerText = risco;
+
+            if (seguranca >= 4 && risco <= 2) {
+                statusTxt.innerText = "SEGURO"; statusTxt.style.color = "var(--green)";
+            } else if (risco >= 5) {
+                statusTxt.innerText = "CRÍTICO"; statusTxt.style.color = "var(--red)";
+            } else {
+                statusTxt.innerText = "ATENÇÃO"; statusTxt.style.color = "var(--yellow)";
             }
         }
 
-        function render() {
-            const colors = ["", "active-green", "active-yellow", "active-orange", "active-red"];
-            for(let l=1; l<=4; l++) {
-                db[`l${l}`].forEach(idx => {
-                    const el = document.getElementById(`b${l}-${idx}`);
-                    if(el) el.classList.add(colors[l]);
-                });
-            }
-            document.getElementById('log-count').innerText = db.count;
-            const status = document.getElementById('status-box');
-            if(db.l4.length > 0) { status.innerText = "CRÍTICO"; status.style.color = "var(--red)"; }
-            else if(db.l3.length > 0) { status.innerText = "ALERTA"; status.style.color = "var(--orange)"; }
-            else { status.innerText = "BAIXO"; status.style.color = "var(--green)"; }
+        function showMsg(txt) {
+            const m = document.getElementById('msg');
+            m.innerHTML = "<strong>ALERTA:</strong> " + txt;
+            m.style.display = 'block';
         }
 
-        function resetApp() {
-            if(confirm("Reiniciar indicadores?")) {
-                db = { l1:[], l2:[], l3:[], l4:[], count: 0 };
-                localStorage.removeItem('mrs_voice_db');
-                location.reload();
-            }
-        }
-
-        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-        render();
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}); }, 1000);
     </script>
 </body>
 </html>
