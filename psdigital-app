@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PSDigital</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>🚂 Passagem de Serviço</h2>
+
+<input id="prefixo" placeholder="Prefixo do trem">
+<input id="vagoes" placeholder="Vagões">
+<input id="peso" placeholder="Peso">
+
+<button onclick="criarPassagem()">Gerar QR</button>
+
+<canvas id="qrcode"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script type="module" src="firebase.js"></script>
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
