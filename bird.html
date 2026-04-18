@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MRS - Gestão de Risco Bird</title>
+    <title>MRS - Pirâmide de Bird Blindada</title>
     <style>
         :root {
             --mrs-yellow: #facc15;
@@ -19,141 +19,173 @@
             background-color: var(--bg-dark);
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/d/d2/Logo_MRS_Log%C3%ADstica.png');
             background-repeat: no-repeat;
-            background-position: center 30%;
+            background-position: center 35%;
             background-attachment: fixed;
-            background-size: 60%;
+            background-size: 70%;
             color: white;
-            font-family: sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0; padding: 15px;
             display: flex; flex-direction: column; align-items: center;
         }
 
-        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: -1; }
+        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: -1; }
 
-        .header { width: 100%; max-width: 500px; display: flex; justify-content: space-between; border-bottom: 2px solid var(--mrs-yellow); margin-bottom: 20px; padding-bottom: 5px; }
+        .header { width: 100%; max-width: 500px; display: flex; justify-content: space-between; border-bottom: 3px solid var(--mrs-yellow); margin-bottom: 20px; padding-bottom: 8px; }
+        .logo-box { background: var(--mrs-yellow); color: black; padding: 2px 12px; font-weight: 900; font-style: italic; }
 
-        /* Pirâmide Real */
-        .pyramid { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-        .row { display: flex; gap: 4px; }
-        .block { width: 30px; height: 25px; background: var(--off); border: 1px solid #444; border-radius: 2px; cursor: pointer; transition: 0.3s; }
+        /* Pirâmide */
+        .pyramid { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .row { display: flex; gap: 4px; position: relative; }
+        .block { width: 35px; height: 30px; background: var(--off); border: 1px solid #444; border-radius: 3px; cursor: pointer; transition: 0.4s; }
         
-        /* Tamanhos Egito */
-        .l4 .block { width: 80px; height: 45px; }
-        .l3 .block { width: 60px; height: 35px; }
-        .l2 .block { width: 45px; height: 30px; }
-        
+        /* Bloqueio visual */
+        .locked { opacity: 0.3; cursor: not-allowed !important; }
+
         /* Cores Ativas */
-        .active-1 { background: var(--green) !important; box-shadow: 0 0 10px var(--green); }
-        .active-2 { background: var(--yellow) !important; box-shadow: 0 0 10px var(--yellow); }
-        .active-3 { background: var(--orange) !important; box-shadow: 0 0 10px var(--orange); }
-        .active-4 { background: var(--red) !important; box-shadow: 0 0 20px var(--red); }
+        .active-1 { background: var(--green) !important; box-shadow: 0 0 15px var(--green); }
+        .active-2 { background: var(--yellow) !important; box-shadow: 0 0 15px var(--yellow); }
+        .active-3 { background: var(--orange) !important; box-shadow: 0 0 15px var(--orange); }
+        .active-4 { background: var(--red) !important; box-shadow: 0 0 30px var(--red); border-color: white; }
 
-        /* Painel Assis: Risco vs Segurança */
-        .status-panel { width: 100%; max-width: 500px; margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .card { background: rgba(30,41,59,0.7); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #333; }
-        
-        .alert-box { width: 100%; max-width: 480px; background: #000; color: var(--mrs-yellow); border-left: 4px solid var(--mrs-yellow); padding: 10px; margin-top: 15px; font-size: 13px; display: none; }
+        /* Controles */
+        .controls { width: 100%; max-width: 500px; margin-top: 25px; display: flex; flex-direction: column; gap: 10px; }
+        .btn-voice { background: #222; border: 2px solid var(--mrs-yellow); color: var(--mrs-yellow); padding: 12px; border-radius: 50px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .listening { background: var(--red); color: white; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-        .btn-safe { background: #065f46; color: #34d399; border: 1px solid #059669; padding: 10px; border-radius: 5px; width: 100%; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        .btn-safe { background: #065f46; color: #34d399; border: 1px solid #059669; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        .card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; width: 100%; max-width: 500px; }
+        .card { background: rgba(30,41,59,0.7); padding: 12px; border-radius: 10px; text-align: center; border: 1px solid #333; }
+
+        #alert { width: 90%; max-width: 480px; background: #000; border-left: 5px solid var(--mrs-yellow); padding: 15px; margin-top: 15px; color: var(--mrs-yellow); font-size: 13px; display: none; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div style="background:var(--mrs-yellow); color:black; font-weight:bold; padding:2px 10px;">MRS</div>
-        <div id="clock">00:00</div>
+        <div class="logo-box">MRS</div>
+        <div id="clock" style="font-weight: bold;">00:00:00</div>
     </div>
 
     <div class="pyramid">
-        <div class="row l4" id="l4"></div>
-        <div class="row l3" id="l3"></div>
-        <div class="row l2" id="l2"></div>
-        <div class="row l1" id="l1"></div>
+        <div class="row" id="l4" style="width: 80px; height: 50px;"></div> <div class="row" id="l3"></div> <div class="row" id="l2"></div> <div class="row" id="l1"></div> </div>
+
+    <div id="alert"></div>
+
+    <div class="controls">
+        <button id="mic" class="btn-voice" onclick="toggleVoice()">🎤 ATIVAR COMANDO DE VOZ</button>
+        <button class="btn-safe" onclick="handleSafe()">🛡️ REGISTRAR AÇÃO SEGURA</button>
     </div>
 
-    <div id="msg" class="alert-box"></div>
-
-    <button class="btn-safe" onclick="registrarSeguranca()">🛡️ REGISTRAR AÇÃO SEGURA</button>
-
-    <div class="status-panel">
+    <div class="card-row">
         <div class="card">
-            <small>STATUS DO DIA</small>
-            <div id="status-txt" style="font-weight:bold; font-size:20px; color:var(--green); margin-top:5px;">SEGURO</div>
+            <small>STATUS DA UNIDADE</small>
+            <div id="status" style="font-size: 18px; font-weight: bold; color: var(--green); margin-top: 5px;">SEGURO</div>
         </div>
         <div class="card">
             <small>PONTOS DE RISCO</small>
-            <div id="risco-val" style="font-weight:bold; font-size:24px; color:var(--yellow); margin-top:5px;">0</div>
+            <div id="points" style="font-size: 22px; font-weight: bold; color: var(--mrs-yellow); margin-top: 5px;">0</div>
         </div>
     </div>
 
+    <button onclick="resetAll()" style="margin-top:20px; background:none; border:none; color:#555; font-size:10px;">Zerar Painel</button>
+
     <script>
-        let risco = 0;
-        let seguranca = 0;
-        let db = { l1:[], l2:[], l3:[], l4:[] };
+        let db = JSON.parse(localStorage.getItem('mrs_final_db')) || { l1:0, l2:0, l3:0, l4:0, safe:0 };
+        
+        const config = { l1: 10, l2: 5, l3: 3, l4: 1 };
+        const msgs = ["", 
+            "Ato Inseguro: Corrija o comportamento imediatamente!",
+            "Quase Acidente: A sorte falhou, o procedimento precisa de revisão.",
+            "Incidente Leve: Atenção total! O próximo nível é o acidente grave.",
+            "ACIDENTE GRAVE: RISCO CRÍTICO! Pare a ferrovia agora."];
 
-        const msgs = [
-            "",
-            "Ato Inseguro: Corrija agora! Pequenos desvios causam grandes acidentes.",
-            "Quase Acidente: Atenção! A sorte não é um procedimento de segurança.",
-            "Incidente Leve: Pare e reflita. O próximo erro pode ser fatal.",
-            "ACIDENTE GRAVE: RISCO CRÍTICO! Interrompa a operação imediatamente."
-        ];
+        function init() {
+            Object.keys(config).forEach(id => {
+                const row = document.getElementById(id);
+                row.innerHTML = '';
+                for(let i=0; i<config[id]; i++) {
+                    let b = document.createElement('div');
+                    b.className = 'block';
+                    const lvl = parseInt(id[1]);
+                    b.onclick = () => addRisk(lvl);
+                    row.appendChild(b);
+                }
+            });
+            render();
+        }
 
-        // Criar blocos com precisão
-        function createBlocks(id, count) {
-            const container = document.getElementById(id);
-            const level = id.replace('l','');
-            for(let i=0; i<count; i++) {
-                let b = document.createElement('div');
-                b.className = 'block';
-                b.onclick = () => registrarRisco(level, i, b);
-                container.appendChild(b);
+        function addRisk(lvl) {
+            // Trava de Progressão: Só aceita se o nível anterior estiver completo
+            if (lvl > 1 && db[`l${lvl-1}`] < config[`l${lvl-1}`]) {
+                alert(`⚠️ Bloqueado! Complete o nível ${lvl-1} antes de subir a pirâmide.`);
+                return;
+            }
+
+            if (db[`l${lvl}`] < config[lvl]) {
+                db[`l${lvl}`]++;
+                if (db.safe > 0) db.safe--; // Efeito Espelho Assis
+                save();
+                showMsg(msgs[lvl]);
             }
         }
 
-        createBlocks('l4', 1); createBlocks('l3', 3); createBlocks('l2', 5); createBlocks('l1', 10);
+        function handleSafe() {
+            if (db.safe < 5) db.safe++;
+            // Se a segurança estiver alta, reduz risco da base (Bird Reversa)
+            if (db.safe >= 4 && db.l1 > 0) db.l1--;
+            save();
+            showMsg("🛡️ Ação Segura registrada. A cultura de prevenção fortalece a MRS!");
+        }
 
-        function registrarRisco(lvl, idx, el) {
-            if (el.classList.contains('active-' + lvl)) return;
+        function render() {
+            for(let l=1; l<=4; l++) {
+                const blocks = document.getElementById(`l${l}`).children;
+                const isLocked = l > 1 && db[`l${l-1}`] < config[`l${l-1}`];
+                
+                for(let i=0; i<blocks.length; i++) {
+                    blocks[i].className = 'block' + (i < db[`l${l}`] ? ` active-${l}` : '');
+                    if (isLocked && i >= db[`l${l}`]) blocks[i].classList.add('locked');
+                }
+            }
             
-            el.classList.add('active-' + lvl);
-            risco += parseInt(lvl);
-            if (seguranca > 0) seguranca--; // Efeito Espelho Assis
+            const total = (db.l1 * 2) + (db.l2 * 10) + (db.l3 * 30) + (db.l4 * 100);
+            document.getElementById('points').innerText = total;
             
-            showMsg(msgs[lvl]);
-            updateUI();
+            const st = document.getElementById('status');
+            if(db.l4 > 0) { st.innerText="CRÍTICO"; st.style.color="var(--red)"; }
+            else if(total > 30) { st.innerText="ATENÇÃO"; st.style.color="var(--yellow)"; }
+            else { st.innerText="SEGURO"; st.style.color="var(--green)"; }
         }
 
-        function registrarSeguranca() {
-            if (seguranca < 5) seguranca++;
-            // Proteção Assis: Muita segurança diminui o risco visual (apaga um bloco da base)
-            if (seguranca >= 4 && risco > 0) {
-                risco--;
-                showMsg("🛡️ Excelência operacional! Ação segura reduz o risco da unidade.");
-            }
-            updateUI();
+        // COMANDO DE VOZ
+        const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (Speech) {
+            const rec = new Speech();
+            rec.lang = 'pt-BR';
+            rec.onresult = (e) => {
+                const cmd = e.results[0][0].transcript.toLowerCase();
+                if (cmd.includes("ato")) addRisk(1);
+                else if (cmd.includes("quase")) addRisk(2);
+                else if (cmd.includes("leve")) addRisk(3);
+                else if (cmd.includes("grave")) addRisk(4);
+                else if (cmd.includes("segura")) handleSafe();
+            };
+            rec.onend = () => document.getElementById('mic').classList.remove('listening');
+            window.toggleVoice = () => { rec.start(); document.getElementById('mic').classList.add('listening'); };
         }
 
-        function updateUI() {
-            const statusTxt = document.getElementById('status-txt');
-            document.getElementById('risco-val').innerText = risco;
-
-            if (seguranca >= 4 && risco <= 2) {
-                statusTxt.innerText = "SEGURO"; statusTxt.style.color = "var(--green)";
-            } else if (risco >= 5) {
-                statusTxt.innerText = "CRÍTICO"; statusTxt.style.color = "var(--red)";
-            } else {
-                statusTxt.innerText = "ATENÇÃO"; statusTxt.style.color = "var(--yellow)";
-            }
+        function showMsg(t) {
+            const a = document.getElementById('alert');
+            a.innerHTML = `<strong>DDS INFORMA:</strong><br>${t}`;
+            a.style.display = 'block';
         }
 
-        function showMsg(txt) {
-            const m = document.getElementById('msg');
-            m.innerHTML = "<strong>ALERTA:</strong> " + txt;
-            m.style.display = 'block';
-        }
-
-        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}); }, 1000);
+        function save() { localStorage.setItem('mrs_final_db', JSON.stringify(db)); render(); }
+        function resetAll() { if(confirm("Zerar?")) { db={l1:0,l2:0,l3:0,l4:0,safe:0}; save(); location.reload(); }}
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+        init();
     </script>
 </body>
 </html>
