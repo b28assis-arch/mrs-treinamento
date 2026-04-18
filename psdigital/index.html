@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSDigital</title>
+
+<style>
+  body {
+    font-family: Arial;
+    padding: 20px;
+    text-align: center;
+  }
+
+  input {
+    width: 90%;
+    padding: 10px;
+    margin: 5px;
+  }
+
+  button {
+    width: 95%;
+    padding: 12px;
+    background: #0a84ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+</head>
+
+<body>
+
+<h2>🚆 Passagem de Serviço</h2>
+
+<input id="prefixo" placeholder="Prefixo do trem"><br>
+<input id="vagoes" placeholder="Quantidade de vagões"><br>
+<input id="peso" placeholder="Peso total"><br><br>
+
+<button onclick="gerar()">Gerar QR + Enviar</button>
+
+<br><br>
+
+<canvas id="qrcode"></canvas>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "SUA_API_AQUI",
+  authDomain: "psdigital-9cc99.firebaseapp.com",
+  projectId: "psdigital-9cc99",
+  storageBucket: "psdigital-9cc99.appspot.com",
+  messagingSenderId: "384128063838",
+  appId: "1:384128063838:web:67e835ebad6108c58557cf"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.gerar = async function () {
+  const dados = {
+    prefixo: document.getElementById("prefixo").value,
+    vagoes: document.getElementById("vagoes").value,
+    peso: document.getElementById("peso").value,
+    data: new Date().toLocaleString()
+  };
+
+  const texto = JSON.stringify(dados);
+
+  QRCode.toCanvas(document.getElementById("qrcode"), texto);
+
+  await addDoc(collection(db, "passagens"), dados);
+
+  alert("Enviado com sucesso 🚀");
+};
+</script>
+
+</body>
+</html>
