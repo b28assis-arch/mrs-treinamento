@@ -5,35 +5,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Passagem de Serviço</title>
 
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
 <style>
 body {
-  font-family: Arial;
-  background: #0f172a;
+  background: #0f1b2d;
   color: white;
+  font-family: Arial;
   padding: 15px;
 }
-h2 { text-align: center; }
-input, select, button {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 8px;
-  border: none;
+
+h2 {
+  text-align: center;
 }
-button {
-  background: #22c55e;
-  color: white;
-  font-weight: bold;
-}
+
 .card {
-  background: #1e293b;
+  background: #1e2d44;
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
 }
-canvas {
-  background: white;
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin: 5px 0;
   border-radius: 8px;
+  border: none;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.btn {
+  background: #22c55e;
+  color: white;
+}
+
+.whats {
+  background: #25D366;
+}
+
+canvas {
+  margin-top: 10px;
 }
 </style>
 </head>
@@ -42,13 +62,11 @@ canvas {
 
 <h2>🚆 Passagem de Serviço</h2>
 
-<div id="formTela">
-
 <div class="card">
 <input id="prefixo" placeholder="Prefixo do trem">
 <input id="local" placeholder="Local">
-<input id="sai" placeholder="Maquinista que sai">
-<input id="entra" placeholder="Maquinista que entra">
+<input id="maquinistaSai" placeholder="Maquinista que sai">
+<input id="maquinistaEntra" placeholder="Maquinista que entra">
 </div>
 
 <div class="card">
@@ -60,102 +78,57 @@ canvas {
 </select>
 </div>
 
-<button onclick="gerarLink()">📤 Gerar Link para Assinatura</button>
-
-</div>
-
-<div id="assinaturaTela" style="display:none;">
-
 <div class="card">
-<h3>Confirmação de Passagem</h3>
-<p id="resumo"></p>
+<h3>Condições</h3>
+<select id="restricao"><option>Sem restrição</option><option>Com restrição</option></select>
+<select id="camera"><option>Câmera OK</option><option>Sem câmera</option></select>
+<select id="cabos"><option>Cabos OK</option><option>Cabos desconectados</option></select>
 </div>
 
 <div class="card">
-<h3>Assinatura do Recebedor</h3>
-<canvas id="canvas" width="300" height="150"></canvas>
-<button onclick="limpar()">Limpar</button>
+<h3>Circulação</h3>
+<input id="origem" placeholder="Origem">
+<input id="destino" placeholder="Destino">
+<select id="velocidade">
+<option>Normal</option>
+<option>Restrita</option>
+</select>
 </div>
 
-<button onclick="confirmar()">✅ Confirmar Assinatura</button>
+<button class="btn" onclick="gerar()">📲 Gerar Link + QR</button>
+<button class="whats" onclick="enviarWhats()">📤 Enviar no WhatsApp</button>
 
-</div>
-
-<div id="confirmado" style="display:none;">
-<h2>✅ Serviço transferido com sucesso</h2>
-<p>Ambos possuem o registro digital.</p>
-</div>
+<canvas id="qrcode"></canvas>
 
 <script>
-const urlParams = new URLSearchParams(window.location.search);
-const dadosURL = urlParams.get("dados");
+let linkFinal = "";
 
-if (dadosURL) {
-  document.getElementById("formTela").style.display = "none";
-  document.getElementById("assinaturaTela").style.display = "block";
+function gerar() {
 
-  const dados = JSON.parse(decodeURIComponent(dadosURL));
-
-  document.getElementById("resumo").innerText =
-    "Trem: " + dados.prefixo +
-    "\nLocal: " + dados.local +
-    "\nSai: " + dados.sai +
-    "\nEntra: " + dados.entra;
-}
-
-function gerarLink() {
   const dados = {
     prefixo: document.getElementById("prefixo").value,
     local: document.getElementById("local").value,
-    sai: document.getElementById("sai").value,
-    entra: document.getElementById("entra").value,
-    freio: document.getElementById("freio").value
+    sai: document.getElementById("maquinistaSai").value,
+    entra: document.getElementById("maquinistaEntra").value,
+    freio: document.getElementById("freio").value,
+    origem: document.getElementById("origem").value,
+    destino: document.getElementById("destino").value
   };
 
-  const link = window.location.origin + window.location.pathname +
-    "?dados=" + encodeURIComponent(JSON.stringify(dados));
+  linkFinal = window.location.origin + "/mrs-treinamento/confirm.html?" + new URLSearchParams(dados);
 
-  alert("Envie este link ao companheiro:\n\n" + link);
+  QRCode.toCanvas(document.getElementById("qrcode"), linkFinal);
+
+  alert("Link gerado!");
 }
 
-// assinatura
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-let desenhando = false;
+function enviarWhats(){
+  if(!linkFinal){
+    alert("Gera o link primeiro!");
+    return;
+  }
 
-canvas.addEventListener("mousedown", () => desenhando = true);
-canvas.addEventListener("mouseup", () => desenhando = false);
-canvas.addEventListener("mousemove", desenhar);
-
-canvas.addEventListener("touchstart", () => desenhando = true);
-canvas.addEventListener("touchend", () => desenhando = false);
-canvas.addEventListener("touchmove", function(e){
-  desenharTouch(e);
-});
-
-function desenhar(e) {
-  if (!desenhando) return;
-  ctx.lineWidth = 2;
-  ctx.lineTo(e.offsetX, e.offsetY);
-  ctx.stroke();
-}
-
-function desenharTouch(e) {
-  if (!desenhando) return;
-  const rect = canvas.getBoundingClientRect();
-  const x = e.touches[0].clientX - rect.left;
-  const y = e.touches[0].clientY - rect.top;
-  ctx.lineTo(x, y);
-  ctx.stroke();
-}
-
-function limpar() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-function confirmar() {
-  document.getElementById("assinaturaTela").style.display = "none";
-  document.getElementById("confirmado").style.display = "block";
+  window.open("https://wa.me/?text=" + encodeURIComponent(linkFinal));
 }
 </script>
 
