@@ -3,81 +3,160 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PSDigital</title>
+<title>Passagem de Serviço</title>
 
 <style>
-  body {
-    font-family: Arial;
-    padding: 20px;
-    text-align: center;
-  }
-
-  input {
-    width: 90%;
-    padding: 10px;
-    margin: 5px;
-  }
-
-  button {
-    width: 95%;
-    padding: 12px;
-    background: #0a84ff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-  }
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  padding: 15px;
+}
+h2 { text-align: center; }
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: none;
+}
+button {
+  background: #22c55e;
+  color: white;
+  font-weight: bold;
+}
+.card {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+canvas {
+  background: white;
+  border-radius: 8px;
+}
 </style>
-
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
 </head>
 
 <body>
 
 <h2>🚆 Passagem de Serviço</h2>
 
-<input id="prefixo" placeholder="Prefixo do trem"><br>
-<input id="vagoes" placeholder="Quantidade de vagões"><br>
-<input id="peso" placeholder="Peso total"><br><br>
+<div id="formTela">
 
-<button onclick="gerar()">Gerar QR + Enviar</button>
+<div class="card">
+<input id="prefixo" placeholder="Prefixo do trem">
+<input id="local" placeholder="Local">
+<input id="sai" placeholder="Maquinista que sai">
+<input id="entra" placeholder="Maquinista que entra">
+</div>
 
-<br><br>
+<div class="card">
+<h3>Freio</h3>
+<select id="freio">
+<option>BOM</option>
+<option>REGULAR</option>
+<option>RUIM</option>
+</select>
+</div>
 
-<canvas id="qrcode"></canvas>
+<button onclick="gerarLink()">📤 Gerar Link para Assinatura</button>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+</div>
 
-const firebaseConfig = {
-  apiKey: "SUA_API_AQUI",
-  authDomain: "psdigital-9cc99.firebaseapp.com",
-  projectId: "psdigital-9cc99",
-  storageBucket: "psdigital-9cc99.appspot.com",
-  messagingSenderId: "384128063838",
-  appId: "1:384128063838:web:67e835ebad6108c58557cf"
-};
+<div id="assinaturaTela" style="display:none;">
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+<div class="card">
+<h3>Confirmação de Passagem</h3>
+<p id="resumo"></p>
+</div>
 
-window.gerar = async function () {
+<div class="card">
+<h3>Assinatura do Recebedor</h3>
+<canvas id="canvas" width="300" height="150"></canvas>
+<button onclick="limpar()">Limpar</button>
+</div>
+
+<button onclick="confirmar()">✅ Confirmar Assinatura</button>
+
+</div>
+
+<div id="confirmado" style="display:none;">
+<h2>✅ Serviço transferido com sucesso</h2>
+<p>Ambos possuem o registro digital.</p>
+</div>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const dadosURL = urlParams.get("dados");
+
+if (dadosURL) {
+  document.getElementById("formTela").style.display = "none";
+  document.getElementById("assinaturaTela").style.display = "block";
+
+  const dados = JSON.parse(decodeURIComponent(dadosURL));
+
+  document.getElementById("resumo").innerText =
+    "Trem: " + dados.prefixo +
+    "\nLocal: " + dados.local +
+    "\nSai: " + dados.sai +
+    "\nEntra: " + dados.entra;
+}
+
+function gerarLink() {
   const dados = {
     prefixo: document.getElementById("prefixo").value,
-    vagoes: document.getElementById("vagoes").value,
-    peso: document.getElementById("peso").value,
-    data: new Date().toLocaleString()
+    local: document.getElementById("local").value,
+    sai: document.getElementById("sai").value,
+    entra: document.getElementById("entra").value,
+    freio: document.getElementById("freio").value
   };
 
-  const texto = JSON.stringify(dados);
+  const link = window.location.origin + window.location.pathname +
+    "?dados=" + encodeURIComponent(JSON.stringify(dados));
 
-  QRCode.toCanvas(document.getElementById("qrcode"), texto);
+  alert("Envie este link ao companheiro:\n\n" + link);
+}
 
-  await addDoc(collection(db, "passagens"), dados);
+// assinatura
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+let desenhando = false;
 
-  alert("Enviado com sucesso 🚀");
-};
+canvas.addEventListener("mousedown", () => desenhando = true);
+canvas.addEventListener("mouseup", () => desenhando = false);
+canvas.addEventListener("mousemove", desenhar);
+
+canvas.addEventListener("touchstart", () => desenhando = true);
+canvas.addEventListener("touchend", () => desenhando = false);
+canvas.addEventListener("touchmove", function(e){
+  desenharTouch(e);
+});
+
+function desenhar(e) {
+  if (!desenhando) return;
+  ctx.lineWidth = 2;
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.stroke();
+}
+
+function desenharTouch(e) {
+  if (!desenhando) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = e.touches[0].clientX - rect.left;
+  const y = e.touches[0].clientY - rect.top;
+  ctx.lineTo(x, y);
+  ctx.stroke();
+}
+
+function limpar() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function confirmar() {
+  document.getElementById("assinaturaTela").style.display = "none";
+  document.getElementById("confirmado").style.display = "block";
+}
 </script>
 
 </body>
