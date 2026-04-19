@@ -1,246 +1,220 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Passagem de Serviço - MRS</title>
 
-<title>Passagem de Serviço</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 body {
-  font-family: Arial, sans-serif;
-  background: #fff;
-  color: #000;
-  padding: 10px;
+  font-family: Arial;
+  background:#0b3d91;
+  color:#fff;
+  padding:10px;
+}
+
+.container {
+  background:#fff;
+  color:#000;
+  padding:15px;
+  border-radius:10px;
 }
 
 h2 {
-  text-align: center;
-  font-size: 20px;
+  text-align:center;
 }
 
 input, select, textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 8px;
-  font-size: 16px;
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  font-size:16px;
 }
 
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
+  width:100%;
+  border-collapse:collapse;
 }
 
-th, td {
-  border: 1px solid #000;
-  padding: 6px;
-  font-size: 14px;
-  text-align: center;
-}
-
-th {
-  background: #eee;
+td, th {
+  border:1px solid #ccc;
+  padding:8px;
 }
 
 .section {
-  background: #ddd;
-  font-weight: bold;
+  background:#0b3d91;
+  color:#fff;
+  font-weight:bold;
 }
 
 canvas {
-  border: 1px solid #000;
-  width: 150px;
-  height: 60px;
-}
-
-.assinatura-linha {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
+  border:2px solid #000;
+  width:100%;
+  height:120px;
 }
 
 button {
-  width: 100%;
-  padding: 15px;
-  margin-top: 10px;
-  font-size: 16px;
-  background: #000;
-  color: white;
-  border: none;
+  width:100%;
+  padding:15px;
+  margin-top:10px;
+  font-size:16px;
+  background:#0b3d91;
+  color:#fff;
+  border:none;
+  border-radius:8px;
 }
-
 </style>
 </head>
 
 <body>
 
-<h2>PASSAGEM DE SERVIÇO DE MAQUINISTA</h2>
+<div class="container">
 
-<input id="prefixo" placeholder="Prefixo do trem">
+<h2>🚂 Passagem de Serviço</h2>
+
+<input id="prefixo" placeholder="Prefixo do Trem">
 <input id="data" type="date">
 <input id="hora" type="time">
 <input id="local" placeholder="Local">
-
-<input id="sai_nome" placeholder="Maquinista que sai (Nome + Matrícula)">
-<input id="entra_nome" placeholder="Maquinista que entra (Nome + Matrícula)">
+<input id="sai" placeholder="Maquinista que sai">
+<input id="entra" placeholder="Maquinista que entra">
 
 <table>
-<tr>
-<th>Nº</th>
-<th>Descrição</th>
-<th>ATENÇÃO</th>
-<th>OK</th>
-</tr>
+<tr class="section"><td colspan="3">LOCOMOTIVAS</td></tr>
 
-<tr class="section"><td colspan="4">LOCOMOTIVAS</td></tr>
+<tr><td>01</td><td>Condições restritas</td><td><select id="i1"><option>SIM</option><option>NÃO</option></select></td></tr>
+<tr><td>02</td><td>Câmera interna</td><td><select id="i2"><option>SIM</option><option>NÃO</option></select></td></tr>
+<tr><td>03</td><td>Cabos conectados</td><td><select id="i3"><option>SIM</option><option>NÃO</option></select></td></tr>
 
-<tr><td>01</td><td>Condições restritas</td>
-<td><select><option>SIM</option><option>NÃO</option></select></td>
-<td><input type="checkbox"></td></tr>
+<tr class="section"><td colspan="3">VAGÕES</td></tr>
 
-<tr><td>02</td><td>Câmera interna</td>
-<td><select><option>SIM</option><option>NÃO</option></select></td>
-<td><input type="checkbox"></td></tr>
+<tr><td>04</td><td>Vagões isolados</td><td><select id="i4"><option>SIM</option><option>NÃO</option></select></td></tr>
+<tr><td>05</td><td>Vagões com restrição</td><td><select id="i5"><option>SIM</option><option>NÃO</option></select></td></tr>
 
-<tr><td>03</td><td>Cabos conectados</td>
-<td><select><option>SIM</option><option>NÃO</option></select></td>
-<td><input type="checkbox"></td></tr>
+<tr class="section"><td colspan="3">COMPOSIÇÃO</td></tr>
 
-<tr class="section"><td colspan="4">VAGÕES</td></tr>
+<tr><td>06</td><td>Freio</td><td>
+<select id="i6">
+<option>BOM</option>
+<option>REGULAR</option>
+<option>RUIM</option>
+</select></td></tr>
 
-<tr><td>04</td><td>Vagões isolados</td>
-<td><select><option>SIM</option><option>NÃO</option></select></td>
-<td><input type="checkbox"></td></tr>
+<tr><td>07</td><td>Dificuldade VMA</td><td><select id="i7"><option>SIM</option><option>NÃO</option></select></td></tr>
+<tr><td>08</td><td>Defeitos</td><td><select id="i8"><option>SIM</option><option>NÃO</option></select></td></tr>
+<tr><td>09</td><td>Teste não realizado</td><td><select id="i9"><option>SIM</option><option>NÃO</option></select></td></tr>
+<tr><td>10</td><td>Documentação OK</td><td><select id="i10"><option>SIM</option><option>NÃO</option></select></td></tr>
 
-<tr><td>05</td><td>Vagões com restrição</td>
-<td><select><option>SIM</option><option>NÃO</option></select></td>
-<td><input type="checkbox"></td></tr>
-
-<tr class="section"><td colspan="4">COMPOSIÇÃO</td></tr>
-
-<tr><td>06</td><td>Condição do freio</td>
-<td><select><option>BOM</option><option>RUIM</option></select></td>
-<td><input type="checkbox"></td></tr>
-
-<tr><td>07</td><td>Dificuldade VMA</td>
-<td><select><option>SIM</option><option>NÃO</option></select></td>
-<td><input type="checkbox"></td></tr>
-
-<tr><td>08</td><td>Defeitos informados</td>
-<td><select><option>SIM</option><option>NÃO</option></select></td>
-<td><input type="checkbox"></td></tr>
-
-<tr><td>09</td><td>Teste não realizado</td>
-<td><select><option>SIM</option><option>NÃO</option></select></td>
-<td><input type="checkbox"></td></tr>
-
-<tr><td>10</td><td>Documentação OK</td>
-<td><select><option>SIM</option><option>NÃO</option></select></td>
-<td><input type="checkbox"></td></tr>
-
-<tr class="section"><td colspan="4">CIRCULAÇÃO</td></tr>
+<tr class="section"><td colspan="3">CIRCULAÇÃO</td></tr>
 
 <tr><td>11</td><td>Licença especial</td>
-<td><select><option>SIM</option><option>NÃO</option></select></td>
-<td><input type="checkbox"></td></tr>
+<td><select id="i11"><option>SIM</option><option>NÃO</option></select></td></tr>
 
 <tr><td>12</td><td>Velocidade restrita</td>
-<td><select><option>SIM</option><option>NÃO</option></select></td>
-<td><input type="checkbox"></td></tr>
+<td><select id="i12"><option>SIM</option><option>NÃO</option></select></td></tr>
 
 <tr><td>13</td><td>Último sinal</td>
 <td>
-<select>
+<select id="i13">
 <option>Verde</option>
 <option>Amarelo</option>
 <option>Vermelho</option>
+<option>Amarelo piscando</option>
+<option>Vermelho piscando</option>
+<option>Apagado</option>
 </select>
-</td>
-<td><input type="checkbox"></td></tr>
+</td></tr>
 
 </table>
 
-<textarea id="obs" rows="4" placeholder="Observações relevantes"></textarea>
+<textarea id="obs" placeholder="Observações"></textarea>
 
-<p><b>ATENÇÃO:</b> O maquinista que assume deve verificar as condições descritas e dar continuidade com segurança à operação.</p>
+<h3>Assinatura - Quem sai</h3>
+<canvas id="ass1"></canvas>
 
-<!-- ASSINATURAS NA FRENTE DO NOME -->
-<div class="assinatura-linha">
-  <span>Quem sai:</span>
-  <canvas id="ass1"></canvas>
+<h3>Assinatura - Quem entra</h3>
+<canvas id="ass2"></canvas>
+
+<button onclick="limpar()">Limpar Assinatura</button>
+<button onclick="gerar()">📄 Gerar PDF + QR</button>
+
+<canvas id="qr"></canvas>
+
 </div>
-
-<div class="assinatura-linha">
-  <span>Quem entra:</span>
-  <canvas id="ass2"></canvas>
-</div>
-
-<button onclick="limpar()">Limpar Assinaturas</button>
-<button onclick="gerarPDF()">Gerar PDF</button>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-function ativar(canvas){
-  const ctx = canvas.getContext("2d");
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
+const { jsPDF } = window.jspdf;
 
-  let desenhando = false;
-
-  function pos(e){
-    const r = canvas.getBoundingClientRect();
-    return {
-      x: (e.touches ? e.touches[0].clientX : e.clientX) - r.left,
-      y: (e.touches ? e.touches[0].clientY : e.clientY) - r.top
-    };
-  }
-
-  canvas.addEventListener("mousedown", ()=>{desenhando=true; ctx.beginPath();});
-  canvas.addEventListener("mouseup", ()=>desenhando=false);
-  canvas.addEventListener("mousemove", e=>{
-    if(!desenhando)return;
-    const p = pos(e);
-    ctx.lineTo(p.x,p.y);
-    ctx.stroke();
-  });
-
-  canvas.addEventListener("touchstart", ()=>{desenhando=true; ctx.beginPath();});
-  canvas.addEventListener("touchend", ()=>desenhando=false);
-  canvas.addEventListener("touchmove", e=>{
-    e.preventDefault();
-    if(!desenhando)return;
-    const p = pos(e);
-    ctx.lineTo(p.x,p.y);
-    ctx.stroke();
-  });
-
-  return ctx;
+function pegarDados(){
+return {
+prefixo: prefixo.value,
+data: data.value,
+hora: hora.value,
+local: local.value,
+sai: sai.value,
+entra: entra.value,
+i1:i1.value,i2:i2.value,i3:i3.value,
+i4:i4.value,i5:i5.value,
+i6:i6.value,i7:i7.value,i8:i8.value,i9:i9.value,i10:i10.value,
+i11:i11.value,i12:i12.value,i13:i13.value,
+obs: obs.value
+}
 }
 
-const ctx1 = ativar(document.getElementById("ass1"));
-const ctx2 = ativar(document.getElementById("ass2"));
+function gerar(){
+
+let dados = pegarDados()
+
+// salvar histórico
+let hist = JSON.parse(localStorage.getItem("historico")||"[]")
+hist.push(dados)
+localStorage.setItem("historico", JSON.stringify(hist))
+
+// gerar PDF
+let pdf = new jsPDF()
+
+pdf.text("Passagem de Serviço",10,10)
+pdf.text(JSON.stringify(dados,null,2),10,20)
+
+pdf.save("passagem.pdf")
+
+// gerar QR com dados
+QRCode.toCanvas(document.getElementById("qr"),
+JSON.stringify(dados))
+
+}
 
 function limpar(){
-  ctx1.clearRect(0,0,300,100);
-  ctx2.clearRect(0,0,300,100);
+let c1 = document.getElementById("ass1").getContext("2d")
+let c2 = document.getElementById("ass2").getContext("2d")
+
+c1.clearRect(0,0,300,150)
+c2.clearRect(0,0,300,150)
 }
 
-function gerarPDF(){
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+// assinatura
+function ativarCanvas(id){
+let canvas = document.getElementById(id)
+let ctx = canvas.getContext("2d")
+let desenhando = false
 
-  doc.text("PASSAGEM DE SERVIÇO", 20, 20);
-  doc.text("Prefixo: "+prefixo.value, 20, 40);
-  doc.text("Local: "+local.value, 20, 50);
-
-  doc.addImage(ass1.toDataURL(),"PNG",20,70,60,20);
-  doc.addImage(ass2.toDataURL(),"PNG",120,70,60,20);
-
-  doc.save("passagem.pdf");
+canvas.addEventListener("touchstart",()=>{desenhando=true})
+canvas.addEventListener("touchend",()=>{desenhando=false})
+canvas.addEventListener("touchmove",(e)=>{
+if(!desenhando)return
+let rect = canvas.getBoundingClientRect()
+let x = e.touches[0].clientX - rect.left
+let y = e.touches[0].clientY - rect.top
+ctx.lineTo(x,y)
+ctx.stroke()
+})
 }
+
+ativarCanvas("ass1")
+ativarCanvas("ass2")
+
 </script>
 
 </body>
