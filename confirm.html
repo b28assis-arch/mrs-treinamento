@@ -3,15 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <title>Confirmar Passagem</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+    }
+
+    button {
+      background: #22c55e;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    canvas {
+      border: 2px solid #fff;
+      margin-top: 20px;
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>📲 Confirmar Passagem</h2>
+<h2>📋 Confirmar Recebimento</h2>
 
-<button onclick="confirmar()">Confirmar</button>
+<p id="dados">Carregando...</p>
 
-<script type="module" src="firebase.js"></script>
-<script type="module" src="app.js"></script>
+<h3>✍️ Assinatura</h3>
+<canvas id="assinatura" width="300" height="150"></canvas>
+
+<br>
+<button onclick="confirmar()">✔ Confirmar Serviço</button>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBsum70fbk3AWpH1QyvmkvQtufs4Xd01yQ",
+  authDomain: "psdigital-9cc99.firebaseapp.com",
+  projectId: "psdigital-9cc99"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// pegar ID do link
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get("id");
+
+let ref = doc(db, "passagens", id);
+
+// carregar dados
+const snap = await getDoc(ref);
+
+if (snap.exists()) {
+  const d = snap.data();
+  document.getElementById("dados").innerHTML =
+    `🚂 ${d.prefixo}<br>📍 ${d.origem} → ${d.destino}<br>👷 ${d.maquinistaSai} → ${d.maquinistaEntra}`;
+} else {
+  document.getElementById("dados").innerHTML = "❌ Passagem não encontrada";
+}
+
+// assinatura
+const canvas = document.getElementById("assinatura");
+const ctx = canvas.getContext("2d");
+let desenhando = false;
+
+canvas.addEventListener("mousedown", () => desenhando = true);
+canvas.addEventListener("mouseup", () => desenhando = false);
+canvas.addEventListener("mousemove", desenhar);
+
+function desenhar(e) {
+  if (!desenhando) return;
+  ctx.lineWidth = 2;
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.stroke();
+}
+
+// confirmar
+window.confirmar = async function () {
+  const assinatura = canvas.toDataURL();
+
+  await updateDoc(ref, {
+    confirmado: true,
+    assinatura: assinatura,
+    dataConfirmacao: new Date()
+  });
+
+  alert("✅ Serviço confirmado com sucesso!");
+};
+
+</script>
 
 </body>
 </html>
