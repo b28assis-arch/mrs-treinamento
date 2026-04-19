@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Assinatura - Passagem</title>
+<title>Confirmar Passagem</title>
 
 <style>
 body {
@@ -13,19 +13,11 @@ body {
   padding: 15px;
 }
 
-h2 {
-  text-align: center;
-}
-
 .card {
   background: #1e2d44;
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
-}
-
-p {
-  margin: 5px 0;
 }
 
 canvas {
@@ -38,72 +30,69 @@ canvas {
 button {
   width: 100%;
   padding: 15px;
-  border: none;
   border-radius: 10px;
-  font-size: 16px;
+  border: none;
   margin-top: 10px;
 }
 
-.assinar {
-  background: #22c55e;
-  color: white;
-}
-
-.limpar {
-  background: #ef4444;
-  color: white;
-}
+.ok { background: #22c55e; }
+.limpar { background: #ef4444; }
 </style>
 </head>
 
 <body>
 
-<h2>✍️ Confirmar Passagem</h2>
+<h2>✍️ Assinatura</h2>
 
 <div class="card" id="dados"></div>
 
 <div class="card">
-<h3>Assinatura do Maquinista</h3>
 <canvas id="assinatura"></canvas>
 
-<button class="limpar" onclick="limpar()">🧹 Limpar</button>
-<button class="assinar" onclick="confirmar()">✅ Confirmar</button>
+<button class="limpar" onclick="limpar()">Limpar</button>
+<button class="ok" onclick="confirmar()">Confirmar</button>
 </div>
 
-<script>
-// pegar dados da URL
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// 🔥 COLE SEU FIREBASE AQUI
+const firebaseConfig = {
+  apiKey: "COLE_AQUI",
+  authDomain: "COLE_AQUI",
+  projectId: "COLE_AQUI",
+  storageBucket: "COLE_AQUI",
+  messagingSenderId: "COLE_AQUI",
+  appId: "COLE_AQUI"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// 📥 pegar dados da URL
 const params = new URLSearchParams(window.location.search);
 
-const dadosDiv = document.getElementById("dados");
-
-dadosDiv.innerHTML = `
-<p><b>Prefixo:</b> ${params.get("prefixo")}</p>
-<p><b>Local:</b> ${params.get("local")}</p>
-<p><b>Maquinista Sai:</b> ${params.get("sai")}</p>
-<p><b>Maquinista Entra:</b> ${params.get("entra")}</p>
-<p><b>Freio:</b> ${params.get("freio")}</p>
-<p><b>Origem:</b> ${params.get("origem")}</p>
-<p><b>Destino:</b> ${params.get("destino")}</p>
+document.getElementById("dados").innerHTML = `
+<b>🚆 ${params.get("prefixo")}</b><br>
+${params.get("local")}<br>
+${params.get("sai")} ➜ ${params.get("entra")}<br>
+Freio: ${params.get("freio")}
 `;
 
-// assinatura
+// ✍️ assinatura
 const canvas = document.getElementById("assinatura");
 const ctx = canvas.getContext("2d");
 
 let desenhando = false;
 
 canvas.addEventListener("mousedown", () => desenhando = true);
-canvas.addEventListener("mouseup", () => {
-  desenhando = false;
-  ctx.beginPath();
-});
+canvas.addEventListener("mouseup", () => { desenhando = false; ctx.beginPath(); });
 canvas.addEventListener("mousemove", desenhar);
 
 canvas.addEventListener("touchstart", () => desenhando = true);
-canvas.addEventListener("touchend", () => {
-  desenhando = false;
-  ctx.beginPath();
-});
+canvas.addEventListener("touchend", () => { desenhando = false; ctx.beginPath(); });
 canvas.addEventListener("touchmove", desenharTouch);
 
 function desenhar(e) {
@@ -136,22 +125,31 @@ function desenharTouch(e) {
   ctx.moveTo(x, y);
 }
 
-function limpar() {
+window.limpar = function() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function confirmar() {
+// 💾 SALVAR
+window.confirmar = async function () {
 
   const assinatura = canvas.toDataURL();
+  const dados = Object.fromEntries(params);
 
-  alert("✅ Passagem confirmada com sucesso!");
+  try {
 
-  console.log({
-    dados: Object.fromEntries(params),
-    assinatura: assinatura
-  });
+    await addDoc(collection(db, "passagens"), {
+      ...dados,
+      assinatura: assinatura,
+      data: new Date().toISOString()
+    });
 
-}
+    alert("✅ Salvo com sucesso!");
+
+  } catch (e) {
+    alert("Erro: " + e);
+  }
+};
+
 </script>
 
 </body>
