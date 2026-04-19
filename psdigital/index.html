@@ -226,7 +226,7 @@ button {
 <canvas id="ass2"></canvas>
 </div>
 
-<button class="btn" onclick="gerar()">📲 Gerar QR + Link</button>
+<button onclick="enviar()">📲 Gerar QR + Enviar</button>
 
 <canvas id="qr"></canvas>
 
@@ -238,6 +238,40 @@ function gerar() {
 
   QRCode.toCanvas(document.getElementById("qr"), link);
 }
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_DOMINIO",
+  projectId: "SEU_PROJECT_ID",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.enviar = async function () {
+
+  let dados = {
+    prefixo: document.querySelector("input[placeholder='Prefixo do Trem']").value,
+    local: document.querySelector("input[placeholder='Local']").value,
+    sai: document.querySelectorAll("input")[4].value,
+    entra: document.querySelectorAll("input")[5].value,
+    data: new Date().toLocaleString(),
+    status: "pendente"
+  };
+
+  let docRef = await addDoc(collection(db, "passagens"), dados);
+
+  let link = window.location.origin + "/psdigital/confirm.html?id=" + docRef.id;
+
+  QRCode.toCanvas(document.getElementById("qr"), link);
+
+  window.open("https://wa.me/?text=" + link);
+};
+
 </script>
 
 </body>
