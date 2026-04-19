@@ -2,153 +2,92 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Confirmar Passagem</title>
 
 <style>
 body {
-  background: #0f1b2d;
-  color: white;
   font-family: Arial;
-  padding: 15px;
+  padding: 20px;
+  text-align: center;
 }
 
-.card {
-  background: #1e2d44;
+.box {
+  background: #f2f2f2;
   padding: 15px;
   border-radius: 10px;
-  margin-bottom: 15px;
 }
 
 canvas {
-  background: white;
-  border-radius: 10px;
+  border: 2px solid black;
   width: 100%;
-  height: 200px;
+  height: 150px;
 }
 
 button {
-  width: 100%;
-  padding: 15px;
-  border-radius: 10px;
-  border: none;
   margin-top: 10px;
+  padding: 15px;
+  width: 100%;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 8px;
 }
-
-.ok { background: #22c55e; }
-.limpar { background: #ef4444; }
 </style>
 </head>
 
 <body>
 
-<h2>✍️ Assinatura</h2>
+<h2>Confirmar Passagem</h2>
 
-<div class="card" id="dados"></div>
-
-<div class="card">
-<canvas id="assinatura"></canvas>
-
-<button class="limpar" onclick="limpar()">Limpar</button>
-<button class="ok" onclick="confirmar()">Confirmar</button>
+<div class="box">
+<p id="info">Carregando...</p>
 </div>
+
+<h3>Assinatura</h3>
+<canvas id="canvas"></canvas>
+
+<button onclick="confirmar()">✅ Confirmar</button>
+
+<p id="status"></p>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// 🔥 COLE SEU FIREBASE AQUI
 const firebaseConfig = {
-  apiKey: "AIzaSyBsum70fbk3AWpH1QyvmkvQtufs4Xd01yQ",
-  authDomain: "psdigital-9cc99.firebaseapp.com",
-  projectId: "psdigital-9cc99",
-  storageBucket: "psdigital-9cc99.firebasestorage.app",
-  messagingSenderId: "384128063838",
-  appId: "1:384128063838:web:67e835ebad6108c58557cf",
-  measurementId: "G-NMCJ54DZLW"
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_DOMINIO",
+  projectId: "SEU_PROJECT_ID",
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// 📥 pegar dados da URL
 const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
 
-document.getElementById("dados").innerHTML = `
-<b>🚆 ${params.get("prefixo")}</b><br>
-${params.get("local")}<br>
-${params.get("sai")} ➜ ${params.get("entra")}<br>
-Freio: ${params.get("freio")}
-`;
+const ref = doc(db, "passagens", id);
 
-// ✍️ assinatura
-const canvas = document.getElementById("assinatura");
-const ctx = canvas.getContext("2d");
+const snap = await getDoc(ref);
 
-let desenhando = false;
-
-canvas.addEventListener("mousedown", () => desenhando = true);
-canvas.addEventListener("mouseup", () => { desenhando = false; ctx.beginPath(); });
-canvas.addEventListener("mousemove", desenhar);
-
-canvas.addEventListener("touchstart", () => desenhando = true);
-canvas.addEventListener("touchend", () => { desenhando = false; ctx.beginPath(); });
-canvas.addEventListener("touchmove", desenharTouch);
-
-function desenhar(e) {
-  if (!desenhando) return;
-  ctx.lineWidth = 2;
-  ctx.lineCap = "round";
-  ctx.strokeStyle = "black";
-
-  ctx.lineTo(e.offsetX, e.offsetY);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(e.offsetX, e.offsetY);
+if (snap.exists()) {
+  let d = snap.data();
+  document.getElementById("info").innerHTML =
+    "Trem: " + d.prefixo + "<br>" +
+    "Local: " + d.local + "<br>" +
+    "Status: " + d.status;
 }
 
-function desenharTouch(e) {
-  e.preventDefault();
-  const rect = canvas.getBoundingClientRect();
-  const x = e.touches[0].clientX - rect.left;
-  const y = e.touches[0].clientY - rect.top;
-
-  if (!desenhando) return;
-
-  ctx.lineWidth = 2;
-  ctx.lineCap = "round";
-  ctx.strokeStyle = "black";
-
-  ctx.lineTo(x, y);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-}
-
-window.limpar = function() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-// 💾 SALVAR
 window.confirmar = async function () {
 
-  const assinatura = canvas.toDataURL();
-  const dados = Object.fromEntries(params);
+  await updateDoc(ref, {
+    status: "confirmado",
+    confirmadoEm: new Date().toLocaleString()
+  });
 
-  try {
-
-    await addDoc(collection(db, "passagens"), {
-      ...dados,
-      assinatura: assinatura,
-      data: new Date().toISOString()
-    });
-
-    alert("✅ Salvo com sucesso!");
-
-  } catch (e) {
-    alert("Erro: " + e);
-  }
+  document.getElementById("status").innerHTML =
+    "✅ PASSAGEM CONFIRMADA COM SUCESSO";
 };
 
 </script>
