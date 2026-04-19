@@ -2,133 +2,241 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Passagem de Serviço</title>
-
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<title>Passagem de Serviço - MRS</title>
 
 <style>
 body {
-  background: #0f1b2d;
-  color: white;
   font-family: Arial;
-  padding: 15px;
+  padding: 10px;
+  background: #f4f4f4;
 }
 
 h2 {
   text-align: center;
 }
 
-.card {
-  background: #1e2d44;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 15px;
+.box {
+  background: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
 }
 
-input, select {
+input, select, textarea {
   width: 100%;
-  padding: 12px;
+  padding: 8px;
   margin: 5px 0;
-  border-radius: 8px;
-  border: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+td, th {
+  border: 1px solid #000;
+  padding: 5px;
+  text-align: center;
+}
+
+canvas {
+  border: 1px solid black;
+  width: 100%;
+  height: 120px;
 }
 
 button {
   width: 100%;
   padding: 15px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
   margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
 }
 
 .btn {
-  background: #22c55e;
+  background: green;
   color: white;
 }
-
-.whats {
-  background: #25D366;
-}
-
-canvas {
-  margin-top: 10px;
-}
 </style>
+
 </head>
 
 <body>
 
 <h2>🚆 Passagem de Serviço</h2>
 
-<div class="card">
-<input id="prefixo" placeholder="Prefixo do trem">
-<input id="local" placeholder="Local">
-<input id="maquinistaSai" placeholder="Maquinista que sai">
-<input id="maquinistaEntra" placeholder="Maquinista que entra">
+<div class="box">
+<input placeholder="Prefixo do Trem">
+<input placeholder="Data">
+<input placeholder="Hora">
+<input placeholder="Local">
+
+<input placeholder="Maquinista que sai (Nome + Matrícula)">
+<input placeholder="Maquinista que entra (Nome + Matrícula)">
 </div>
 
-<div class="card">
-<h3>Freio</h3>
-<select id="freio">
+<div class="box">
+<table>
+<tr>
+<th>Nº</th>
+<th>Descrição</th>
+<th>ATENÇÃO</th>
+<th>OK</th>
+</tr>
+
+<tr>
+<td colspan="4"><b>Locomotivas</b></td>
+</tr>
+
+<tr>
+<td>01</td>
+<td>Condições restritas</td>
+<td>
+<select><option>SIM</option><option>NÃO</option></select>
+</td>
+<td><input type="checkbox"></td>
+</tr>
+
+<tr>
+<td>02</td>
+<td>Câmera interna</td>
+<td>
+<select><option>SIM</option><option>NÃO</option></select>
+</td>
+<td><input type="checkbox"></td>
+</tr>
+
+<tr>
+<td>03</td>
+<td>Cabos conectados</td>
+<td>
+<select><option>SIM</option><option>NÃO</option></select>
+</td>
+<td><input type="checkbox"></td>
+</tr>
+
+<tr>
+<td colspan="4"><b>Vagões</b></td>
+</tr>
+
+<tr>
+<td>04</td>
+<td>Vagões isolados</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td>
+</tr>
+
+<tr>
+<td>05</td>
+<td>Vagões com restrição</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td>
+</tr>
+
+<tr>
+<td colspan="4"><b>Composição</b></td>
+</tr>
+
+<tr>
+<td>06</td>
+<td>Condição do freio</td>
+<td>
+<select>
 <option>BOM</option>
 <option>REGULAR</option>
 <option>RUIM</option>
 </select>
-</div>
+</td>
+<td><input type="checkbox"></td>
+</tr>
 
-<div class="card">
-<h3>Condições</h3>
-<select id="restricao"><option>Sem restrição</option><option>Com restrição</option></select>
-<select id="camera"><option>Câmera OK</option><option>Sem câmera</option></select>
-<select id="cabos"><option>Cabos OK</option><option>Cabos desconectados</option></select>
-</div>
+<tr>
+<td>07</td>
+<td>Dificuldade VMA</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td>
+</tr>
 
-<div class="card">
-<h3>Circulação</h3>
-<input id="origem" placeholder="Origem">
-<input id="destino" placeholder="Destino">
-<select id="velocidade">
-<option>Normal</option>
-<option>Restrita</option>
+<tr>
+<td>08</td>
+<td>Defeitos informados</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td>
+</tr>
+
+<tr>
+<td>09</td>
+<td>Teste não realizado</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td>
+</tr>
+
+<tr>
+<td>10</td>
+<td>Documentação OK</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td>
+</tr>
+
+<tr>
+<td colspan="4"><b>Circulação</b></td>
+</tr>
+
+<tr>
+<td>11</td>
+<td>Licença especial</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td>
+</tr>
+
+<tr>
+<td>12</td>
+<td>Velocidade restrita</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td>
+</tr>
+
+<tr>
+<td>13</td>
+<td>Último sinal</td>
+<td>
+<select>
+<option>Verde</option>
+<option>Amarelo</option>
+<option>Vermelho</option>
 </select>
+</td>
+<td><input type="checkbox"></td>
+</tr>
+
+</table>
 </div>
 
-<button class="btn" onclick="gerar()">📲 Gerar Link + QR</button>
-<button class="whats" onclick="enviarWhats()">📤 Enviar no WhatsApp</button>
+<div class="box">
+<textarea placeholder="Observações relevantes"></textarea>
+</div>
 
-<canvas id="qrcode"></canvas>
+<div class="box">
+<b>Assinatura - Quem sai</b>
+<canvas id="ass1"></canvas>
+
+<b>Assinatura - Quem entra</b>
+<canvas id="ass2"></canvas>
+</div>
+
+<button class="btn" onclick="gerar()">📲 Gerar QR + Link</button>
+
+<canvas id="qr"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
 <script>
-let linkFinal = "";
-
 function gerar() {
+  let link = window.location.href + "?ok=true";
 
-  const dados = {
-    prefixo: document.getElementById("prefixo").value,
-    local: document.getElementById("local").value,
-    sai: document.getElementById("maquinistaSai").value,
-    entra: document.getElementById("maquinistaEntra").value,
-    freio: document.getElementById("freio").value,
-    origem: document.getElementById("origem").value,
-    destino: document.getElementById("destino").value
-  };
-
-  linkFinal = window.location.origin + "/mrs-treinamento/confirm.html?" + new URLSearchParams(dados);
-
-  QRCode.toCanvas(document.getElementById("qrcode"), linkFinal);
-
-  alert("Link gerado!");
-}
-
-function enviarWhats(){
-  if(!linkFinal){
-    alert("Gera o link primeiro!");
-    return;
-  }
-
-  window.open("https://wa.me/?text=" + encodeURIComponent(linkFinal));
+  QRCode.toCanvas(document.getElementById("qr"), link);
 }
 </script>
 
