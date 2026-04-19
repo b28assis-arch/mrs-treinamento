@@ -1,210 +1,245 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Passagem de Serviço</title>
 
 <style>
-:root{
-  --bg:#0f172a;
-  --card:#111827;
-  --text:#e5e7eb;
-  --muted:#9ca3af;
-  --primary:#22c55e;
-  --border:#1f2937;
+body {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  color: #000;
+  padding: 10px;
 }
 
-*{ box-sizing:border-box; }
-
-body{
-  margin:0;
-  font-family:'Segoe UI', Arial, sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  padding:16px;
+h2 {
+  text-align: center;
+  font-size: 20px;
 }
 
-/* Cabeçalho */
-h2{
-  text-align:center;
-  font-size:22px;
-  margin-bottom:16px;
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+  font-size: 16px;
 }
 
-/* Card */
-.card{
-  background:var(--card);
-  padding:14px;
-  border-radius:14px;
-  margin-bottom:14px;
-  box-shadow:0 4px 12px rgba(0,0,0,.4);
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
 }
 
-/* Inputs */
-input, select, textarea{
-  width:100%;
-  padding:14px;
-  font-size:17px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:#020617;
-  color:#fff;
-  margin-bottom:10px;
+th, td {
+  border: 1px solid #000;
+  padding: 6px;
+  font-size: 14px;
+  text-align: center;
 }
 
-/* Labels */
-.label{
-  font-size:15px;
-  font-weight:bold;
-  margin:10px 0 4px;
+th {
+  background: #eee;
 }
 
-/* Botões */
-button{
-  width:100%;
-  padding:16px;
-  font-size:18px;
-  font-weight:bold;
-  border:none;
-  border-radius:12px;
-  margin-top:10px;
+.section {
+  background: #ddd;
+  font-weight: bold;
 }
 
-.btn-primary{
-  background:var(--primary);
-  color:#000;
+canvas {
+  border: 1px solid #000;
+  width: 150px;
+  height: 60px;
 }
 
-.btn-secondary{
-  background:#374151;
-  color:#fff;
+.assinatura-linha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-/* Canvas */
-canvas{
-  width:100%;
-  height:150px;
-  background:#fff;
-  border-radius:10px;
-  margin-top:8px;
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  font-size: 16px;
+  background: #000;
+  color: white;
+  border: none;
 }
-
-/* Sinal com cor */
-select#sinal{
-  font-weight:bold;
-}
-
-.sinal-verde{ color:#22c55e; }
-.sinal-amarelo{ color:#facc15; }
-.sinal-vermelho{ color:#ef4444; }
 
 </style>
 </head>
 
 <body>
 
-<h2>🚂 Passagem de Serviço</h2>
+<h2>PASSAGEM DE SERVIÇO DE MAQUINISTA</h2>
 
-<div class="card">
-  <input placeholder="Prefixo do Trem" id="prefixo">
-  <input placeholder="Data" id="data">
-  <input placeholder="Hora" id="hora">
-  <input placeholder="Local" id="local">
-  <input placeholder="Maquinista que sai" id="sai">
-  <input placeholder="Maquinista que entra" id="entra">
+<input id="prefixo" placeholder="Prefixo do trem">
+<input id="data" type="date">
+<input id="hora" type="time">
+<input id="local" placeholder="Local">
 
-  <div class="label">🚦 Último sinal</div>
-  <select id="sinal" onchange="corSinal(this)">
-    <option value="verde">🟢 Verde</option>
-    <option value="amarelo">🟡 Amarelo</option>
-    <option value="vermelho">🔴 Vermelho</option>
-  </select>
+<input id="sai_nome" placeholder="Maquinista que sai (Nome + Matrícula)">
+<input id="entra_nome" placeholder="Maquinista que entra (Nome + Matrícula)">
 
-  <textarea placeholder="Observações"></textarea>
-</div>
+<table>
+<tr>
+<th>Nº</th>
+<th>Descrição</th>
+<th>ATENÇÃO</th>
+<th>OK</th>
+</tr>
 
-<div class="card">
-  <div class="label">✍️ Assinatura</div>
+<tr class="section"><td colspan="4">LOCOMOTIVAS</td></tr>
+
+<tr><td>01</td><td>Condições restritas</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td></tr>
+
+<tr><td>02</td><td>Câmera interna</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td></tr>
+
+<tr><td>03</td><td>Cabos conectados</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td></tr>
+
+<tr class="section"><td colspan="4">VAGÕES</td></tr>
+
+<tr><td>04</td><td>Vagões isolados</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td></tr>
+
+<tr><td>05</td><td>Vagões com restrição</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td></tr>
+
+<tr class="section"><td colspan="4">COMPOSIÇÃO</td></tr>
+
+<tr><td>06</td><td>Condição do freio</td>
+<td><select><option>BOM</option><option>RUIM</option></select></td>
+<td><input type="checkbox"></td></tr>
+
+<tr><td>07</td><td>Dificuldade VMA</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td></tr>
+
+<tr><td>08</td><td>Defeitos informados</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td></tr>
+
+<tr><td>09</td><td>Teste não realizado</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td></tr>
+
+<tr><td>10</td><td>Documentação OK</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td></tr>
+
+<tr class="section"><td colspan="4">CIRCULAÇÃO</td></tr>
+
+<tr><td>11</td><td>Licença especial</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td></tr>
+
+<tr><td>12</td><td>Velocidade restrita</td>
+<td><select><option>SIM</option><option>NÃO</option></select></td>
+<td><input type="checkbox"></td></tr>
+
+<tr><td>13</td><td>Último sinal</td>
+<td>
+<select>
+<option>Verde</option>
+<option>Amarelo</option>
+<option>Vermelho</option>
+</select>
+</td>
+<td><input type="checkbox"></td></tr>
+
+</table>
+
+<textarea id="obs" rows="4" placeholder="Observações relevantes"></textarea>
+
+<p><b>ATENÇÃO:</b> O maquinista que assume deve verificar as condições descritas e dar continuidade com segurança à operação.</p>
+
+<!-- ASSINATURAS NA FRENTE DO NOME -->
+<div class="assinatura-linha">
+  <span>Quem sai:</span>
   <canvas id="ass1"></canvas>
-  <button class="btn-secondary" onclick="limparAssinatura()">🧹 Limpar assinatura</button>
 </div>
 
-<div class="card">
-  <button class="btn-primary" onclick="gerar()">📲 Gerar QR + Link</button>
-  <canvas id="qr"></canvas>
+<div class="assinatura-linha">
+  <span>Quem entra:</span>
+  <canvas id="ass2"></canvas>
 </div>
 
-<!-- QR CODE -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<button onclick="limpar()">Limpar Assinaturas</button>
+<button onclick="gerarPDF()">Gerar PDF</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-window.onload = function(){
+function ativar(canvas){
+  const ctx = canvas.getContext("2d");
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
 
-const canvas = document.getElementById("ass1");
-const ctx = canvas.getContext("2d");
+  let desenhando = false;
 
-canvas.width = canvas.offsetWidth;
-canvas.height = canvas.offsetHeight;
+  function pos(e){
+    const r = canvas.getBoundingClientRect();
+    return {
+      x: (e.touches ? e.touches[0].clientX : e.clientX) - r.left,
+      y: (e.touches ? e.touches[0].clientY : e.clientY) - r.top
+    };
+  }
 
-ctx.lineWidth = 2;
-ctx.lineCap = "round";
-
-let desenhando = false;
-
-function pos(e){
-  const rect = canvas.getBoundingClientRect();
-  return {
-    x:(e.touches ? e.touches[0].clientX : e.clientX) - rect.left,
-    y:(e.touches ? e.touches[0].clientY : e.clientY) - rect.top
-  };
-}
-
-// MOUSE
-canvas.addEventListener("mousedown",()=>{ desenhando=true; ctx.beginPath(); });
-canvas.addEventListener("mouseup",()=>desenhando=false);
-canvas.addEventListener("mousemove",(e)=>{
-  if(!desenhando) return;
-  const p=pos(e);
-  ctx.lineTo(p.x,p.y);
-  ctx.stroke();
-});
-
-// TOUCH
-canvas.addEventListener("touchstart",(e)=>{ desenhando=true; ctx.beginPath(); });
-canvas.addEventListener("touchend",()=>desenhando=false);
-canvas.addEventListener("touchmove",(e)=>{
-  e.preventDefault();
-  if(!desenhando) return;
-  const p=pos(e);
-  ctx.lineTo(p.x,p.y);
-  ctx.stroke();
-});
-
-// limpar
-window.limparAssinatura = function(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-};
-
-};
-
-// QR
-function gerar(){
-  let link = window.location.href + "?ok=true";
-
-  QRCode.toCanvas(document.getElementById("qr"), link, function(error){
-    if(error){
-      alert("Erro ao gerar QR");
-    }else{
-      alert("✅ QR gerado com sucesso!");
-    }
+  canvas.addEventListener("mousedown", ()=>{desenhando=true; ctx.beginPath();});
+  canvas.addEventListener("mouseup", ()=>desenhando=false);
+  canvas.addEventListener("mousemove", e=>{
+    if(!desenhando)return;
+    const p = pos(e);
+    ctx.lineTo(p.x,p.y);
+    ctx.stroke();
   });
+
+  canvas.addEventListener("touchstart", ()=>{desenhando=true; ctx.beginPath();});
+  canvas.addEventListener("touchend", ()=>desenhando=false);
+  canvas.addEventListener("touchmove", e=>{
+    e.preventDefault();
+    if(!desenhando)return;
+    const p = pos(e);
+    ctx.lineTo(p.x,p.y);
+    ctx.stroke();
+  });
+
+  return ctx;
 }
 
-// cor do sinal
-function corSinal(el){
-  el.classList.remove("sinal-verde","sinal-amarelo","sinal-vermelho");
-  el.classList.add("sinal-" + el.value);
+const ctx1 = ativar(document.getElementById("ass1"));
+const ctx2 = ativar(document.getElementById("ass2"));
+
+function limpar(){
+  ctx1.clearRect(0,0,300,100);
+  ctx2.clearRect(0,0,300,100);
+}
+
+function gerarPDF(){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.text("PASSAGEM DE SERVIÇO", 20, 20);
+  doc.text("Prefixo: "+prefixo.value, 20, 40);
+  doc.text("Local: "+local.value, 20, 50);
+
+  doc.addImage(ass1.toDataURL(),"PNG",20,70,60,20);
+  doc.addImage(ass2.toDataURL(),"PNG",120,70,60,20);
+
+  doc.save("passagem.pdf");
 }
 </script>
 
