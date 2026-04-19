@@ -1,53 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Passagem de Serviço</title>
 
 <style>
-body {
-  font-family: 'Segoe UI', Arial;
-  background: #0f172a;
-  color: #fff;
-  padding: 15px;
+:root{
+  --bg:#0f172a;
+  --card:#111827;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --primary:#22c55e;
+  --border:#1f2937;
 }
 
-h2 {
-  text-align: center;
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family:'Segoe UI', Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  padding:16px;
 }
 
-input, select, textarea {
-  width: 100%;
-  padding: 14px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: none;
-  margin-bottom: 10px;
+/* Cabeçalho */
+h2{
+  text-align:center;
+  font-size:22px;
+  margin-bottom:16px;
 }
 
-button {
-  width: 100%;
-  padding: 18px;
-  font-size: 18px;
-  font-weight: bold;
-  background: #22c55e;
-  border: none;
-  border-radius: 12px;
-  margin-top: 10px;
+/* Card */
+.card{
+  background:var(--card);
+  padding:14px;
+  border-radius:14px;
+  margin-bottom:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,.4);
 }
 
-canvas {
-  width: 100%;
-  height: 150px;
-  background: #fff;
-  border-radius: 10px;
-  margin-top: 10px;
+/* Inputs */
+input, select, textarea{
+  width:100%;
+  padding:14px;
+  font-size:17px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#020617;
+  color:#fff;
+  margin-bottom:10px;
 }
 
-.label {
-  margin-top: 10px;
-  font-weight: bold;
+/* Labels */
+.label{
+  font-size:15px;
+  font-weight:bold;
+  margin:10px 0 4px;
 }
+
+/* Botões */
+button{
+  width:100%;
+  padding:16px;
+  font-size:18px;
+  font-weight:bold;
+  border:none;
+  border-radius:12px;
+  margin-top:10px;
+}
+
+.btn-primary{
+  background:var(--primary);
+  color:#000;
+}
+
+.btn-secondary{
+  background:#374151;
+  color:#fff;
+}
+
+/* Canvas */
+canvas{
+  width:100%;
+  height:150px;
+  background:#fff;
+  border-radius:10px;
+  margin-top:8px;
+}
+
+/* Sinal com cor */
+select#sinal{
+  font-weight:bold;
+}
+
+.sinal-verde{ color:#22c55e; }
+.sinal-amarelo{ color:#facc15; }
+.sinal-vermelho{ color:#ef4444; }
+
 </style>
 </head>
 
@@ -55,40 +106,44 @@ canvas {
 
 <h2>🚂 Passagem de Serviço</h2>
 
-<input placeholder="Prefixo do Trem" id="prefixo">
-<input placeholder="Data" id="data">
-<input placeholder="Hora" id="hora">
-<input placeholder="Local" id="local">
-<input placeholder="Maquinista que sai" id="sai">
-<input placeholder="Maquinista que entra" id="entra">
+<div class="card">
+  <input placeholder="Prefixo do Trem" id="prefixo">
+  <input placeholder="Data" id="data">
+  <input placeholder="Hora" id="hora">
+  <input placeholder="Local" id="local">
+  <input placeholder="Maquinista que sai" id="sai">
+  <input placeholder="Maquinista que entra" id="entra">
 
-<div class="label">Último sinal</div>
-<select id="sinal">
-  <option>Verde</option>
-  <option>Amarelo</option>
-  <option>Vermelho</option>
-</select>
+  <div class="label">🚦 Último sinal</div>
+  <select id="sinal" onchange="corSinal(this)">
+    <option value="verde">🟢 Verde</option>
+    <option value="amarelo">🟡 Amarelo</option>
+    <option value="vermelho">🔴 Vermelho</option>
+  </select>
 
-<textarea placeholder="Observações"></textarea>
+  <textarea placeholder="Observações"></textarea>
+</div>
 
-<div class="label">✍️ Assinatura - Quem sai</div>
-<canvas id="ass1"></canvas>
-<button onclick="limparAssinatura()">🧹 Limpar assinatura</button>
+<div class="card">
+  <div class="label">✍️ Assinatura</div>
+  <canvas id="ass1"></canvas>
+  <button class="btn-secondary" onclick="limparAssinatura()">🧹 Limpar assinatura</button>
+</div>
 
-<button onclick="gerar()">📲 Gerar QR + Link</button>
+<div class="card">
+  <button class="btn-primary" onclick="gerar()">📲 Gerar QR + Link</button>
+  <canvas id="qr"></canvas>
+</div>
 
-<canvas id="qr"></canvas>
-
-<!-- QR CODE LIB -->
+<!-- QR CODE -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
 <script>
-window.onload = function() {
+window.onload = function(){
 
 const canvas = document.getElementById("ass1");
 const ctx = canvas.getContext("2d");
 
-// ajusta tamanho real
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
 
@@ -97,69 +152,59 @@ ctx.lineCap = "round";
 
 let desenhando = false;
 
-// posição correta
-function pos(e) {
+function pos(e){
   const rect = canvas.getBoundingClientRect();
   return {
-    x: (e.touches ? e.touches[0].clientX : e.clientX) - rect.left,
-    y: (e.touches ? e.touches[0].clientY : e.clientY) - rect.top
+    x:(e.touches ? e.touches[0].clientX : e.clientX) - rect.left,
+    y:(e.touches ? e.touches[0].clientY : e.clientY) - rect.top
   };
 }
 
-// =================
 // MOUSE
-// =================
-canvas.addEventListener("mousedown", () => {
-  desenhando = true;
-  ctx.beginPath();
-});
-
-canvas.addEventListener("mouseup", () => desenhando = false);
-
-canvas.addEventListener("mousemove", (e) => {
-  if (!desenhando) return;
-  const p = pos(e);
-  ctx.lineTo(p.x, p.y);
+canvas.addEventListener("mousedown",()=>{ desenhando=true; ctx.beginPath(); });
+canvas.addEventListener("mouseup",()=>desenhando=false);
+canvas.addEventListener("mousemove",(e)=>{
+  if(!desenhando) return;
+  const p=pos(e);
+  ctx.lineTo(p.x,p.y);
   ctx.stroke();
 });
 
-// =================
-// TOUCH (CELULAR)
-// =================
-canvas.addEventListener("touchstart", (e) => {
-  desenhando = true;
-  ctx.beginPath();
-});
-
-canvas.addEventListener("touchend", () => desenhando = false);
-
-canvas.addEventListener("touchmove", (e) => {
+// TOUCH
+canvas.addEventListener("touchstart",(e)=>{ desenhando=true; ctx.beginPath(); });
+canvas.addEventListener("touchend",()=>desenhando=false);
+canvas.addEventListener("touchmove",(e)=>{
   e.preventDefault();
-  if (!desenhando) return;
-
-  const p = pos(e);
-  ctx.lineTo(p.x, p.y);
+  if(!desenhando) return;
+  const p=pos(e);
+  ctx.lineTo(p.x,p.y);
   ctx.stroke();
 });
 
-// limpar assinatura
-window.limparAssinatura = function() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+// limpar
+window.limparAssinatura = function(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 };
 
 };
 
-// gerar QR
-function gerar() {
+// QR
+function gerar(){
   let link = window.location.href + "?ok=true";
 
-  QRCode.toCanvas(document.getElementById("qr"), link, function (error) {
-    if (error) {
+  QRCode.toCanvas(document.getElementById("qr"), link, function(error){
+    if(error){
       alert("Erro ao gerar QR");
-    } else {
+    }else{
       alert("✅ QR gerado com sucesso!");
     }
   });
+}
+
+// cor do sinal
+function corSinal(el){
+  el.classList.remove("sinal-verde","sinal-amarelo","sinal-vermelho");
+  el.classList.add("sinal-" + el.value);
 }
 </script>
 
