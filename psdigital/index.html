@@ -11,6 +11,7 @@
 <style>
     :root {
         --mrs-azul: #002b5c;
+        --mrs-azul-claro: #00428a;
         --mrs-amarelo: #FFC600;
         
         /* Cores dos botões */
@@ -25,56 +26,62 @@
     body {
         margin: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: var(--mrs-azul); 
+        /* Fundo moderno com gradiente sutil */
+        background: radial-gradient(circle at top, var(--mrs-azul-claro), var(--mrs-azul));
+        background-attachment: fixed;
         color: #333;
     }
 
-    /* MARCA D'ÁGUA DA LOGO NO FUNDO */
+    /* MARCA D'ÁGUA DA NOVA LOGO NO FUNDO */
     .bg-watermark {
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 80vw;
-        max-width: 400px;
-        height: 80vw;
-        max-height: 400px;
-        background-image: url('icone.png'); /* Usa a imagem que você subiu no GitHub */
+        width: 85vw;
+        max-width: 450px;
+        height: 85vw;
+        max-height: 450px;
+        /* Puxando o novo arquivo que você subiu */
+        background-image: url('fundo-mrs%20(1).png'); 
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
-        opacity: 0.15; /* Deixa transparente */
+        opacity: 0.12; /* Bem suave para não atrapalhar a leitura */
         z-index: 0;
-        pointer-events: none; /* Impede que a logo bloqueie os cliques na tela */
+        pointer-events: none; 
     }
 
     .header-mrs {
         position: relative;
         z-index: 1;
-        background: var(--mrs-azul);
+        background: rgba(0, 43, 92, 0.85); /* Fundo translúcido moderno */
+        backdrop-filter: blur(5px);
         color: var(--mrs-amarelo);
-        padding: 15px;
+        padding: 18px 15px;
         text-align: center;
         border-bottom: 4px solid var(--mrs-amarelo);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
 
-    .header-mrs h2 { margin: 0; font-size: 20px; }
-    .header-mrs p { margin: 5px 0 0 0; font-size: 12px; color: #fff; }
+    .header-mrs h2 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 1px; }
+    .header-mrs p { margin: 5px 0 0 0; font-size: 13px; color: #fff; font-weight: 500; letter-spacing: 2px;}
 
     .container {
         position: relative;
         z-index: 1;
         max-width: 800px;
         margin: auto;
-        padding: 10px;
+        padding: 12px;
     }
 
     .card {
-        background: rgba(255, 255, 255, 0.95); /* Fundo branco levemente translúcido */
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 15px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        background: rgba(255, 255, 255, 0.97);
+        border-radius: 12px; /* Bordas mais arredondadas e modernas */
+        padding: 18px;
+        margin-bottom: 18px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+        border: 1px solid rgba(255,255,255,0.2);
     }
 
     label {
@@ -82,55 +89,63 @@
         font-size: 13px;
         color: var(--mrs-azul);
         display: block;
-        margin-top: 10px;
+        margin-top: 12px;
     }
 
     input[type="text"], input[type="date"], input[type="time"], select, textarea {
         width: 100%;
         padding: 12px;
-        margin-top: 5px;
-        border-radius: 6px;
+        margin-top: 6px;
+        border-radius: 8px;
         border: 1px solid #ccc;
         box-sizing: border-box;
         font-size: 16px; 
+        background: #fafafa;
+        transition: 0.3s;
     }
 
     input:focus, textarea:focus {
         border-color: var(--mrs-azul);
+        background: #fff;
+        box-shadow: 0 0 8px rgba(0, 43, 92, 0.2);
         outline: none;
     }
 
     .section-title {
         background: var(--mrs-azul);
         color: #fff;
-        padding: 8px 12px;
-        margin: 15px -15px 10px -15px;
+        padding: 10px 15px;
+        margin: 10px -18px 15px -18px;
         font-weight: bold;
         text-transform: uppercase;
-        font-size: 14px;
+        font-size: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .category-title {
-        font-size: 15px;
+        font-size: 16px;
+        font-weight: bold;
         color: var(--mrs-azul);
-        border-bottom: 2px solid var(--mrs-amarelo);
-        margin: 20px 0 10px 0;
+        border-bottom: 3px solid var(--mrs-amarelo);
+        margin: 25px 0 12px 0;
         padding-bottom: 5px;
     }
 
     .question-box {
         background: #fff;
-        border: 1px solid #eee;
-        padding: 12px;
-        border-radius: 6px;
-        margin-bottom: 10px;
+        border: 1px solid #e0e0e0;
+        padding: 14px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     
     .question-text {
         font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 10px;
-        color: #111;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #222;
+        line-height: 1.4;
     }
 
     .radio-group {
@@ -142,14 +157,14 @@
     .radio-label {
         flex: 1 1 calc(50% - 8px);
         text-align: center;
-        padding: 10px 5px;
+        padding: 12px 5px;
         border: 2px solid #ddd;
-        border-radius: 6px;
+        border-radius: 8px;
         font-size: 13px;
         font-weight: bold;
         cursor: pointer;
-        transition: 0.2s;
-        background: #fff;
+        transition: all 0.2s ease-in-out;
+        background: #f9f9f9;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -157,49 +172,68 @@
 
     .radio-label input { display: none; }
 
-    /* Cores Vermelho, Verde e Amarelo para os botões */
+    /* Cores dos botões ao selecionar */
     .radio-label.atencao-btn:has(input:checked) {
         background: var(--atencao-bg);
         border-color: var(--atencao-border);
         color: #c62828;
+        transform: scale(1.02);
     }
 
     .radio-label.ok-btn:has(input:checked) {
         background: var(--ok-bg);
         border-color: var(--ok-border);
         color: #2e7d32;
+        transform: scale(1.02);
     }
 
     .radio-label.amarelo-btn:has(input:checked) {
         background: var(--amarelo-bg);
         border-color: var(--amarelo-border);
         color: #f57f17;
+        transform: scale(1.02);
     }
 
     .canvas-container {
-        border: 2px dashed #aaa;
-        border-radius: 6px;
-        background: #fafafa;
-        margin-top: 5px;
+        border: 2px dashed #b0bec5;
+        border-radius: 8px;
+        background: #f4f6f8;
+        margin-top: 8px;
         touch-action: none;
     }
 
-    canvas { width: 100%; height: 100px; display: block; }
+    canvas { width: 100%; height: 110px; display: block; }
 
     button {
         width: 100%;
-        padding: 14px;
-        margin-top: 10px;
+        padding: 16px;
+        margin-top: 12px;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         font-weight: bold;
         font-size: 16px;
         cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: 0.3s;
     }
 
-    .btn-gerar { background: var(--mrs-amarelo); color: var(--mrs-azul); }
-    .btn-limpar { background: #e0e0e0; color: #333; }
-    .btn-share { background: #4caf50; color: white; display: none; }
+    .btn-gerar { 
+        background: var(--mrs-amarelo); 
+        color: var(--mrs-azul); 
+        box-shadow: 0 4px 10px rgba(255, 198, 0, 0.4);
+    }
+    .btn-gerar:active { transform: translateY(2px); }
+
+    .btn-limpar { background: #e0e0e0; color: #444; }
+    
+    .btn-share { 
+        background: #4caf50; 
+        color: white; 
+        display: none; 
+        box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
+    }
+    .btn-share:active { transform: translateY(2px); }
 
     .qrBox { display: none; flex-direction: column; align-items: center; margin-top: 20px; }
     .hidden { display: none; }
@@ -280,7 +314,6 @@
             </div>
 
             <div class="category-title">Composição</div>
-            
             <div class="question-box">
                 <div class="question-text">06. Condições gerais do freio da composição.</div>
                 <div class="radio-group">
@@ -289,7 +322,6 @@
                     <label class="radio-label ok-btn" style="flex: 1 1 30%;"><input type="radio" name="q6" value="OK: BOM"> BOM</label>
                 </div>
             </div>
-            
             <div class="question-box">
                 <div class="question-text">07. Existe alguma dificuldade em manter a VMA?</div>
                 <div class="radio-group">
@@ -338,7 +370,6 @@
                     <label class="radio-label ok-btn"><input type="radio" name="q12" value="OK: NAO"> NÃO (OK)</label>
                 </div>
             </div>
-            
             <div class="question-box">
                 <div class="question-text">13. Aspecto do último sinal (semáforo) recebido pelo trem.</div>
                 <div class="radio-group">
@@ -403,7 +434,7 @@
     function ativarCanvas(id) {
         let c = document.getElementById(id);
         let ctx = c.getContext("2d");
-        ctx.lineWidth = 2; ctx.lineCap = "round"; ctx.strokeStyle = "#002b5c";
+        ctx.lineWidth = 2.5; ctx.lineCap = "round"; ctx.strokeStyle = "#002b5c";
         let desenhando = false;
 
         const iniciar = (e) => { e.preventDefault(); desenhando = true; ctx.beginPath();
