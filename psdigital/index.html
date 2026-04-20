@@ -2,279 +2,460 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Passagem de Serviço</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Passagem de Serviço - MRS</title>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-*{box-sizing:border-box}
+    :root {
+        --mrs-azul: #002b5c;
+        --mrs-amarelo: #FFC600;
+        --mrs-bg: #f4f6f8;
+    }
 
-body{
-margin:0;
-font-family:'Segoe UI',sans-serif;
-background:linear-gradient(135deg,#081c3a,#0a2a66,#123c8c);
-}
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--mrs-bg);
+        color: #333;
+    }
 
-.container{
-max-width:900px;
-margin:auto;
-padding:15px;
-}
+    .header-mrs {
+        background: var(--mrs-azul);
+        color: var(--mrs-amarelo);
+        padding: 15px;
+        text-align: center;
+        border-bottom: 4px solid var(--mrs-amarelo);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
 
-.card{
-background:rgba(255,255,255,0.95);
-border-radius:16px;
-padding:15px;
-margin-bottom:15px;
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
-}
+    .header-mrs h2 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: 1px;
+    }
 
-.header{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:10px;
-}
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 15px;
+    }
 
-.logo{
-height:40px;
-}
+    .card {
+        background: #fff;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
 
-h2{
-margin:0;
-color:#0a2a66;
-}
+    label {
+        font-weight: bold;
+        font-size: 13px;
+        color: var(--mrs-azul);
+        display: block;
+        margin-top: 10px;
+    }
 
-input,select,textarea{
-width:100%;
-padding:12px;
-margin-top:8px;
-border-radius:10px;
-border:1px solid #ddd;
-font-size:15px;
-}
+    input, select, textarea {
+        width: 100%;
+        padding: 12px;
+        margin-top: 5px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 16px; /* Evita zoom automático no iPhone */
+    }
 
-.linha{
-display:flex;
-gap:10px;
-}
+    input:focus, select:focus, textarea:focus {
+        border-color: var(--mrs-azul);
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 43, 92, 0.3);
+    }
 
-.linha input{flex:1}
+    .section-title {
+        background: var(--mrs-azul);
+        color: #fff;
+        padding: 8px 12px;
+        margin: 15px -15px 10px -15px;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 14px;
+    }
 
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:10px;
-}
+    .canvas-container {
+        border: 2px dashed #aaa;
+        border-radius: 6px;
+        background: #fafafa;
+        margin-top: 5px;
+        touch-action: none; /* Evita que a tela role ao assinar */
+    }
 
-td{
-padding:10px;
-border-bottom:1px solid #eee;
-font-size:14px;
-}
+    canvas {
+        width: 100%;
+        height: 100px;
+        display: block;
+    }
 
-.section{
-background:#eaf0ff;
-font-weight:bold;
-color:#123c8c;
-}
+    button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
 
-canvas{
-width:100%;
-height:120px;
-border:2px dashed #aaa;
-border-radius:10px;
-background:#fff;
-}
+    .btn-gerar {
+        background: var(--mrs-amarelo);
+        color: var(--mrs-azul);
+    }
 
-button{
-width:100%;
-padding:14px;
-margin-top:10px;
-border:none;
-border-radius:12px;
-background:linear-gradient(135deg,#123c8c,#081c3a);
-color:#fff;
-font-weight:bold;
-font-size:16px;
-}
+    .btn-gerar:hover { background: #e6b300; }
 
-#qr{margin-top:10px}
+    .btn-limpar {
+        background: #e0e0e0;
+        color: #333;
+    }
+
+    .qrBox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    /* Oculta inicialmente */
+    #licencaBox, #qrContainer { display: none; }
 </style>
 </head>
 
 <body>
 
+<div class="header-mrs">
+    <h2>🚂 PASSAGEM DE SERVIÇO</h2>
+</div>
+
 <div class="container">
+    <form id="formPassagem">
+        <div class="card">
+            <div class="section-title">Dados Gerais</div>
+            
+            <label>Prefixo do Trem</label>
+            <input id="prefixo" list="trens" placeholder="Ex: NGM0101">
+            <datalist id="trens">
+                <option value="NGM0101">
+                <option value="MGU0202">
+                <option value="TMO0303">
+            </datalist>
 
-<div class="card">
-<div class="header">
-<img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6c/MRS_Logistica.png">
-<h2>Passagem de Serviço</h2>
-</div>
-</div>
+            <div style="display: flex; gap: 10px;">
+                <div style="flex: 1;">
+                    <label>Data</label>
+                    <input id="data" type="date">
+                </div>
+                <div style="flex: 1;">
+                    <label>Hora</label>
+                    <input id="hora" type="time">
+                </div>
+            </div>
 
-<div class="card">
-<input id="prefixo" placeholder="Prefixo do Trem">
-<div class="linha">
-<input id="data" type="date">
-<input id="hora" type="time">
-</div>
-<input id="local" placeholder="Local">
-<input id="sai" placeholder="Maquinista que sai">
-<input id="entra" placeholder="Maquinista que entra">
-</div>
+            <label>Local (Pátio/Km)</label>
+            <input id="local" list="locais" placeholder="Selecione ou digite">
+            <datalist id="locais">
+                <option value="Pátio Arará">
+                <option value="Barra do Piraí">
+                <option value="Brisamar">
+                <option value="Conselheiro Lafaiete">
+            </datalist>
 
-<div class="card">
-<table>
+            <label>Maquinista - Quem Sai (Nome/Matrícula)</label>
+            <input id="sai" placeholder="Ex: João Silva (12345)">
 
-<tr class="section"><td colspan="3">🚂 LOCOMOTIVAS</td></tr>
-<tr><td>01</td><td>Condições restritas</td><td><select id="i1"><option>SIM</option><option>NÃO</option></select></td></tr>
-<tr><td>02</td><td>Câmera interna</td><td><select id="i2"><option>SIM</option><option>NÃO</option></select></td></tr>
-<tr><td>03</td><td>Cabos conectados</td><td><select id="i3"><option>SIM</option><option>NÃO</option></select></td></tr>
+            <label>Maquinista - Quem Entra (Nome/Matrícula)</label>
+            <input id="entra" placeholder="Ex: Carlos Souza (54321)">
+        </div>
 
-<tr class="section"><td colspan="3">🚃 VAGÕES</td></tr>
-<tr><td>04</td><td>Vagões isolados</td><td><select id="i4"><option>SIM</option><option>NÃO</option></select></td></tr>
-<tr><td>05</td><td>Vagões com restrição</td><td><select id="i5"><option>SIM</option><option>NÃO</option></select></td></tr>
+        <div class="card">
+            <div class="section-title">Circulação</div>
+            
+            <label>Licença Especial (LE)</label>
+            <select id="licencaSel" onchange="toggleLicenca()">
+                <option value="NAO">NÃO</option>
+                <option value="SIM">SIM</option>
+            </select>
 
-<tr class="section"><td colspan="3">⚙️ COMPOSIÇÃO</td></tr>
-<tr><td>06</td><td>Freio</td>
-<td><select id="i6">
-<option>BOM</option>
-<option>REGULAR</option>
-<option>RUIM</option>
-</select></td></tr>
+            <div id="licencaBox">
+                <label>Origem da LE</label>
+                <input id="origem" placeholder="Km / Pátio">
+                
+                <label>Destino da LE</label>
+                <input id="destino" placeholder="Km / Pátio">
+            </div>
+        </div>
 
-<tr><td>07</td><td>Dificuldade VMA</td><td><select id="i7"><option>SIM</option><option>NÃO</option></select></td></tr>
-<tr><td>08</td><td>Defeitos</td><td><select id="i8"><option>SIM</option><option>NÃO</option></select></td></tr>
-<tr><td>09</td><td>Teste não realizado</td><td><select id="i9"><option>SIM</option><option>NÃO</option></select></td></tr>
-<tr><td>10</td><td>Documentação OK</td><td><select id="i10"><option>SIM</option><option>NÃO</option></select></td></tr>
+        <div class="card">
+            <div class="section-title">Observações (Avarias, RESTRIÇÕES, etc.)</div>
+            <textarea id="obs" rows="4" placeholder="Detalhe aqui as condições da locomotiva e da via..."></textarea>
+        </div>
 
-<tr class="section"><td colspan="3">🚦 CIRCULAÇÃO</td></tr>
+        <div class="card">
+            <div class="section-title">Assinaturas</div>
 
-<tr>
-<td>11</td><td>Licença especial</td>
-<td><select onchange="toggleLicenca(this.value)">
-<option>SIM</option>
-<option>NÃO</option>
-</select></td>
-</tr>
+            <label>Assinatura - Quem Sai</label>
+            <div class="canvas-container">
+                <canvas id="ass1"></canvas>
+            </div>
 
-<tr id="licenca" style="display:none">
-<td colspan="3">
-<div class="linha">
-<input id="origem" placeholder="Origem">
-<input id="destino" placeholder="Destino">
-</div>
-</td>
-</tr>
+            <label>Assinatura - Quem Entra</label>
+            <div class="canvas-container">
+                <canvas id="ass2"></canvas>
+            </div>
 
-<tr><td>12</td><td>Velocidade restrita</td>
-<td><select id="i12"><option>SIM</option><option>NÃO</option></select></td></tr>
+            <button type="button" class="btn-limpar" onclick="limparAssinaturas()">Limpar Assinaturas</button>
+            <button type="button" class="btn-gerar" onclick="gerarDocumento()">Gerar PDF e QR Code</button>
 
-<tr><td>13</td><td>Último sinal</td>
-<td>
-<select id="i13">
-<option>Verde</option>
-<option>Amarelo</option>
-<option>Vermelho</option>
-<option>Amarelo piscando</option>
-<option>Vermelho piscando</option>
-<option>Apagado</option>
-</select>
-</td></tr>
-
-</table>
-
-<textarea id="obs" placeholder="Observações"></textarea>
-</div>
-
-<div class="card">
-<h4>Assinatura - Quem sai</h4>
-<canvas id="ass1"></canvas>
-
-<h4>Assinatura - Quem entra</h4>
-<canvas id="ass2"></canvas>
-
-<button onclick="limpar()">Limpar Assinatura</button>
-<button onclick="gerar()">📄 Gerar PDF + QR</button>
-
-<canvas id="qr"></canvas>
-</div>
-
+            <div class="qrBox" id="qrContainer">
+                <canvas id="qr"></canvas>
+                <p style="font-weight: bold; color: var(--mrs-azul);">Escaneie o QR Code</p>
+            </div>
+        </div>
+    </form>
 </div>
 
 <script>
-const { jsPDF } = window.jspdf
+    const { jsPDF } = window.jspdf;
 
-function toggleLicenca(v){
-document.getElementById("licenca").style.display =
-v==="SIM"?"table-row":"none"
-}
+    // --- 1. FUNÇÕES DE INICIALIZAÇÃO E AUTO-SAVE ---
+    window.onload = function() {
+        // Preenche Data e Hora atuais se estiverem vazios
+        const now = new Date();
+        document.getElementById('data').value = now.toISOString().split('T')[0];
+        document.getElementById('hora').value = now.toTimeString().slice(0,5);
 
-function pegar(){
-return{
-prefixo:prefixo.value,
-data:data.value,
-hora:hora.value,
-local:local.value,
-sai:sai.value,
-entra:entra.value,
-origem:origem.value,
-destino:destino.value,
-obs:obs.value
-}
-}
+        // Carrega rascunho salvo no modo Offline (LocalStorage)
+        carregarRascunho();
 
-function gerar(){
+        // Configura salvamento automático a cada digitação
+        document.getElementById('formPassagem').addEventListener('input', salvarRascunho);
+        
+        // Ajustar Canvas para o tamanho real na tela
+        ajustarResolucaoCanvas('ass1');
+        ajustarResolucaoCanvas('ass2');
+        ativarCanvas("ass1");
+        ativarCanvas("ass2");
+    };
 
-let dados=pegar()
+    function toggleLicenca() {
+        const v = document.getElementById("licencaSel").value;
+        document.getElementById("licencaBox").style.display = (v === "SIM") ? "block" : "none";
+    }
 
-// histórico
-let hist=JSON.parse(localStorage.getItem("hist")||"[]")
-hist.push(dados)
-localStorage.setItem("hist",JSON.stringify(hist))
+    function salvarRascunho() {
+        const dados = {
+            prefixo: document.getElementById('prefixo').value,
+            local: document.getElementById('local').value,
+            sai: document.getElementById('sai').value,
+            entra: document.getElementById('entra').value,
+            obs: document.getElementById('obs').value,
+            licencaSel: document.getElementById('licencaSel').value,
+            origem: document.getElementById('origem').value,
+            destino: document.getElementById('destino').value
+        };
+        localStorage.setItem('rascunho_mrs', JSON.stringify(dados));
+    }
 
-// PDF
-let pdf=new jsPDF()
-pdf.text("Passagem de Serviço",10,10)
-pdf.text(JSON.stringify(dados,null,2),10,20)
-pdf.save("passagem.pdf")
+    function carregarRascunho() {
+        const salvo = localStorage.getItem('rascunho_mrs');
+        if(salvo) {
+            const dados = JSON.parse(salvo);
+            document.getElementById('prefixo').value = dados.prefixo || "";
+            document.getElementById('local').value = dados.local || "";
+            document.getElementById('sai').value = dados.sai || "";
+            document.getElementById('entra').value = dados.entra || "";
+            document.getElementById('obs').value = dados.obs || "";
+            document.getElementById('licencaSel').value = dados.licencaSel || "NAO";
+            document.getElementById('origem').value = dados.origem || "";
+            document.getElementById('destino').value = dados.destino || "";
+            toggleLicenca();
+        }
+    }
 
-// QR
-QRCode.toCanvas(document.getElementById("qr"),
-JSON.stringify(dados))
-}
+    // --- 2. LÓGICA DO CANVAS (MOUSE E TOUCH CORRIGIDO) ---
+    function ajustarResolucaoCanvas(id) {
+        let c = document.getElementById(id);
+        let rect = c.getBoundingClientRect();
+        c.width = rect.width;
+        c.height = rect.height;
+    }
 
-function limpar(){
-["ass1","ass2"].forEach(id=>{
-let c=document.getElementById(id)
-c.getContext("2d").clearRect(0,0,c.width,c.height)
-})
-}
+    function ativarCanvas(id) {
+        let c = document.getElementById(id);
+        let ctx = c.getContext("2d");
+        ctx.lineWidth = 2;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#002b5c"; // Cor da caneta
 
-// assinatura
-function ativar(id){
-let c=document.getElementById(id)
-let ctx=c.getContext("2d")
-let d=false
+        let desenhando = false;
 
-c.addEventListener("touchstart",()=>{d=true})
-c.addEventListener("touchend",()=>{d=false})
-c.addEventListener("touchmove",(e)=>{
-if(!d)return
-let r=c.getBoundingClientRect()
-let x=e.touches[0].clientX-r.left
-let y=e.touches[0].clientY-r.top
-ctx.lineTo(x,y)
-ctx.stroke()
-})
-}
+        const iniciar = (e) => {
+            e.preventDefault();
+            desenhando = true;
+            ctx.beginPath();
+            let rect = c.getBoundingClientRect();
+            let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+            ctx.moveTo(x, y);
+        };
 
-ativar("ass1")
-ativar("ass2")
+        const desenhar = (e) => {
+            e.preventDefault();
+            if (!desenhando) return;
+            let rect = c.getBoundingClientRect();
+            let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        };
+
+        const parar = () => {
+            desenhando = false;
+        };
+
+        // Eventos Mobile (Touch)
+        c.addEventListener("touchstart", iniciar, {passive: false});
+        c.addEventListener("touchmove", desenhar, {passive: false});
+        c.addEventListener("touchend", parar);
+
+        // Eventos PC (Mouse)
+        c.addEventListener("mousedown", iniciar);
+        c.addEventListener("mousemove", desenhar);
+        c.addEventListener("mouseup", parar);
+        c.addEventListener("mouseout", parar);
+    }
+
+    function limparAssinaturas() {
+        ["ass1", "ass2"].forEach(id => {
+            let c = document.getElementById(id);
+            let ctx = c.getContext("2d");
+            ctx.clearRect(0, 0, c.width, c.height);
+        });
+    }
+
+    // --- 3. GERAÇÃO DE PDF E QR CODE ---
+    function gerarDocumento() {
+        const dados = {
+            prefixo: document.getElementById("prefixo").value,
+            data: document.getElementById("data").value,
+            hora: document.getElementById("hora").value,
+            local: document.getElementById("local").value,
+            sai: document.getElementById("sai").value,
+            entra: document.getElementById("entra").value,
+            licenca: document.getElementById("licencaSel").value,
+            origem: document.getElementById("origem").value,
+            destino: document.getElementById("destino").value,
+            obs: document.getElementById("obs").value
+        };
+
+        if (dados.licenca === "SIM" && (!dados.origem || !dados.destino)) {
+            alert("Atenção: Preencha a ORIGEM e DESTINO da Licença Especial!");
+            return;
+        }
+
+        // Criando PDF Profissional
+        let pdf = new jsPDF();
+        
+        // Cabeçalho
+        pdf.setFillColor(0, 43, 92); // Azul MRS
+        pdf.rect(0, 0, 210, 20, 'F');
+        pdf.setTextColor(255, 198, 0); // Amarelo MRS
+        pdf.setFontSize(16);
+        pdf.setFont("helvetica", "bold");
+        pdf.text("PASSAGEM DE SERVIÇO - MRS", 105, 13, null, null, "center");
+
+        // Corpo
+        pdf.setTextColor(0, 0, 0);
+        pdf.setFontSize(11);
+        pdf.setFont("helvetica", "normal");
+        
+        let y = 30;
+        pdf.text(`Prefixo do Trem: ${dados.prefixo}`, 10, y);
+        pdf.text(`Data e Hora: ${dados.data.split('-').reverse().join('/')} às ${dados.hora}`, 110, y); y += 10;
+        pdf.text(`Local: ${dados.local}`, 10, y); y += 15;
+
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Equipe:", 10, y); y += 8;
+        pdf.setFont("helvetica", "normal");
+        pdf.text(`Maquinista (Sai): ${dados.sai}`, 10, y); y += 8;
+        pdf.text(`Maquinista (Entra): ${dados.entra}`, 10, y); y += 15;
+
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Circulação:", 10, y); y += 8;
+        pdf.setFont("helvetica", "normal");
+        pdf.text(`Licença Especial (LE): ${dados.licenca}`, 10, y);
+        if (dados.licenca === "SIM") {
+            y += 8;
+            pdf.text(`Trecho da LE: De ${dados.origem} até ${dados.destino}`, 10, y);
+        }
+        y += 15;
+
+        // Quebra automática de linhas para a Observação não vazar da página
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Observações:", 10, y); y += 8;
+        pdf.setFont("helvetica", "normal");
+        let linhasObs = pdf.splitTextToSize(dados.obs || "Nenhuma observação registrada.", 190);
+        pdf.text(linhasObs, 10, y);
+        y += (linhasObs.length * 6) + 15;
+
+        // Inserir imagens das assinaturas capturadas
+        pdf.line(10, y, 200, y); y += 10;
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Assinaturas:", 10, y); y += 10;
+
+        let imgSai = document.getElementById("ass1").toDataURL("image/png");
+        let imgEntra = document.getElementById("ass2").toDataURL("image/png");
+
+        pdf.setFont("helvetica", "normal");
+        pdf.text("Quem Sai:", 10, y);
+        pdf.addImage(imgSai, 'PNG', 10, y + 2, 70, 20); // Posiciona a img do canvas
+        
+        pdf.text("Quem Entra:", 110, y);
+        pdf.addImage(imgEntra, 'PNG', 110, y + 2, 70, 20);
+
+        // Salvar Arquivo
+        let nomeArquivo = `Passagem_${dados.prefixo}_${dados.data}.pdf`;
+        pdf.save(nomeArquivo);
+
+        // Limpa o rascunho após gerar o PDF com sucesso
+        localStorage.removeItem('rascunho_mrs');
+
+        // Gera QR Code
+        document.getElementById("qrContainer").style.display = "flex";
+        QRCode.toCanvas(document.getElementById("qr"), JSON.stringify(dados), {
+            width: 200,
+            color: { dark: '#002b5c', light: '#ffffff' }
+        });
+    }
 </script>
 
+<script>
+    // Registra o Service Worker para funcionar Offline
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then((registration) => {
+                    console.log('Service Worker registrado com sucesso!', registration.scope);
+                })
+                .catch((error) => {
+                    console.log('Falha ao registrar o Service Worker:', error);
+                });
+        });
+    }
+</script>
 </body>
 </html>
