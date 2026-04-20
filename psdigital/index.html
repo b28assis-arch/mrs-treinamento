@@ -12,17 +12,17 @@
     :root {
         --mrs-azul: #002b5c;
         --mrs-amarelo: #FFC600;
-        --mrs-bg: #f4f6f8;
         --atencao-bg: #ffebee;
         --atencao-border: #f44336;
         --ok-bg: #e8f5e9;
         --ok-border: #4caf50;
     }
 
+    /* FUNDO DA PÁGINA AZUL */
     body {
         margin: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: var(--mrs-bg);
+        background: var(--mrs-azul); 
         color: #333;
     }
 
@@ -32,7 +32,6 @@
         padding: 15px;
         text-align: center;
         border-bottom: 4px solid var(--mrs-amarelo);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
     .header-mrs h2 { margin: 0; font-size: 20px; }
@@ -49,7 +48,7 @@
         border-radius: 8px;
         padding: 15px;
         margin-bottom: 15px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
     label {
@@ -93,7 +92,6 @@
         padding-bottom: 5px;
     }
 
-    /* Estilo das Perguntas (Quadro A) */
     .question-box {
         background: #fdfdfd;
         border: 1px solid #eee;
@@ -111,11 +109,12 @@
 
     .radio-group {
         display: flex;
-        gap: 10px;
+        flex-wrap: wrap; /* Permite quebrar linha nos botões */
+        gap: 8px;
     }
 
     .radio-label {
-        flex: 1;
+        flex: 1 1 calc(50% - 8px);
         text-align: center;
         padding: 10px 5px;
         border: 2px solid #ddd;
@@ -125,18 +124,19 @@
         cursor: pointer;
         transition: 0.2s;
         background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .radio-label input { display: none; }
 
-    /* Cores ao selecionar ATENÇÃO */
     .radio-label.atencao-btn:has(input:checked) {
         background: var(--atencao-bg);
         border-color: var(--atencao-border);
         color: #c62828;
     }
 
-    /* Cores ao selecionar OK */
     .radio-label.ok-btn:has(input:checked) {
         background: var(--ok-bg);
         border-color: var(--ok-border);
@@ -166,9 +166,11 @@
 
     .btn-gerar { background: var(--mrs-amarelo); color: var(--mrs-azul); }
     .btn-limpar { background: #e0e0e0; color: #333; }
+    
+    /* Novo botão de compartilhamento Bluetooth/WhatsApp */
+    .btn-share { background: #4caf50; color: white; display: none; }
 
     .qrBox { display: none; flex-direction: column; align-items: center; margin-top: 20px; }
-    
     .hidden { display: none; }
 </style>
 </head>
@@ -204,8 +206,7 @@
 
         <div class="card">
             <div class="section-title">A) Informações Relevantes</div>
-            <p style="font-size: 12px; color: #666;">Selecione a condição de cada item. Os campos marcados como <b>ATENÇÃO</b> exigem justificativa no Quadro B.</p>
-
+            
             <div class="category-title">Locomotivas</div>
             <div class="question-box">
                 <div class="question-text">01. Condições restritas das locomotivas (isoladas, desligadas ou avariadas).</div>
@@ -301,18 +302,21 @@
                     <label class="radio-label ok-btn"><input type="radio" name="q12" value="OK: NAO"> NÃO (OK)</label>
                 </div>
             </div>
+            
             <div class="question-box">
                 <div class="question-text">13. Aspecto do último sinal (semáforo) recebido pelo trem.</div>
                 <div class="radio-group">
-                    <label class="radio-label atencao-btn"><input type="radio" name="q13" value="ATENCAO: VERMELHO/APAGADO"> Verm. Apagado / Vermelho (Atenção)</label>
-                    <label class="radio-label ok-btn"><input type="radio" name="q13" value="OK: VERDE/AMARELO"> Verde Pisca / Verde / Amarelo (OK)</label>
+                    <label class="radio-label atencao-btn" style="flex: 1 1 30%;"><input type="radio" name="q13" value="ATENCAO: VERMELHO"> Vermelho</label>
+                    <label class="radio-label atencao-btn" style="flex: 1 1 30%;"><input type="radio" name="q13" value="ATENCAO: VERMELHO PISCA"> Verm. Pisca</label>
+                    <label class="radio-label atencao-btn" style="flex: 1 1 30%;"><input type="radio" name="q13" value="ATENCAO: APAGADO"> Apagado</label>
+                    <label class="radio-label ok-btn" style="flex: 1 1 45%;"><input type="radio" name="q13" value="OK: AMARELO"> Amarelo</label>
+                    <label class="radio-label ok-btn" style="flex: 1 1 45%;"><input type="radio" name="q13" value="OK: VERDE"> Verde</label>
                 </div>
             </div>
         </div>
 
         <div class="card">
             <div class="section-title">B) Observações das Descrições</div>
-            <p style="font-size: 12px; color: #666;">Descreva abaixo os detalhes para os campos assinalados como ATENÇÃO. (Ex: "Item 06 - Freio falhando no vagão X").</p>
             <textarea id="observacoes" rows="5" placeholder="Digite as observações aqui..."></textarea>
         </div>
 
@@ -327,10 +331,12 @@
 
             <button type="button" class="btn-limpar" onclick="limparAssinaturas()">Limpar Assinaturas</button>
             <button type="button" class="btn-gerar" onclick="gerarPDF()">Gerar Documento Oficial</button>
+            
+            <button type="button" id="btnShare" class="btn-share">📤 Enviar PDF (Bluetooth / WhatsApp)</button>
 
             <div class="qrBox" id="qrContainer">
                 <canvas id="qr"></canvas>
-                <p style="font-weight: bold; color: var(--mrs-azul);">Escaneie o QR Code</p>
+                <p style="font-size: 12px; color: #666; text-align: center;">Escaneie o QR Code ou use o botão Enviar PDF acima.</p>
             </div>
         </div>
     </form>
@@ -352,7 +358,6 @@
         document.getElementById("q11-details").style.display = mostrar ? "block" : "none";
     }
 
-    // Lógica do Canvas (Mantida perfeita da versão anterior)
     function ajustarResolucaoCanvas(id) {
         let c = document.getElementById(id);
         let rect = c.getBoundingClientRect();
@@ -385,11 +390,9 @@
         });
     }
 
-    // Gerador do PDF Oficial
     function gerarPDF() {
         let pdf = new jsPDF();
         
-        // Coleta os dados
         const getVal = id => document.getElementById(id).value;
         const getRadio = name => {
             let el = document.querySelector(`input[name="${name}"]:checked`);
@@ -402,19 +405,17 @@
             if(!getVal('q11-origem') || !getVal('q11-destino')){
                 alert("Atenção: Preencha ORIGEM e DESTINO na pergunta 11!"); return;
             }
-            q11Extra = ` (Origem: ${getVal('q11-origem')} | Destino: ${getVal('q11-destino')})`;
+            q11Extra = ` (Orig: ${getVal('q11-origem')} | Dest: ${getVal('q11-destino')})`;
         }
 
-        // Função auxiliar para quebrar página se a folha acabar
         let y = 0;
         const checarPagina = (espacoNecessario) => {
             if (y + espacoNecessario > 280) {
                 pdf.addPage();
-                y = 20; // Reseta o Y pro topo da nova página
+                y = 20; 
             }
         };
 
-        // --- INÍCIO DO DESENHO DO PDF ---
         pdf.setFillColor(0, 43, 92); pdf.rect(0, 0, 210, 15, 'F');
         pdf.setTextColor(255, 198, 0); pdf.setFontSize(14); pdf.setFont("helvetica", "bold");
         pdf.text("PASSAGEM DE SERVIÇO DE MAQUINISTA", 105, 10, null, null, "center");
@@ -427,7 +428,6 @@
         pdf.text(`Maquinista que sai: ${getVal('sai')}`, 10, y); y += 8;
         pdf.text(`Maquinista que entra: ${getVal('entra')}`, 10, y); y += 15;
 
-        // Quadro A
         pdf.setFont("helvetica", "bold"); pdf.text("A) DESCRIÇÃO DAS INFORMAÇÕES RELEVANTES:", 10, y); y += 8;
         pdf.setFont("helvetica", "normal"); pdf.setFontSize(9);
 
@@ -448,18 +448,15 @@
         ];
 
         respostas.forEach(linha => {
-            checarPagina(10); // Cria página nova se não couber
-            // Pinta a linha de vermelho se tiver ATENÇÃO
+            checarPagina(10); 
             if(linha.includes("ATENCAO")) { pdf.setTextColor(200, 0, 0); pdf.setFont("helvetica", "bold"); } 
             else { pdf.setTextColor(0, 0, 0); pdf.setFont("helvetica", "normal"); }
             
-            // Tratamento caso a string seja muito grande (Q11 por ex)
             let splitText = pdf.splitTextToSize(linha, 190);
             pdf.text(splitText, 10, y);
             y += splitText.length * 5;
         });
 
-        // Quadro B
         y += 5; checarPagina(30);
         pdf.setTextColor(0, 0, 0); pdf.setFont("helvetica", "bold"); pdf.setFontSize(10);
         pdf.text("B) OBSERVAÇÕES DAS DESCRIÇÕES (Itens de Atenção):", 10, y); y += 8;
@@ -469,8 +466,7 @@
         pdf.text(linhasObs, 10, y);
         y += (linhasObs.length * 5) + 15;
 
-        // Assinaturas
-        checarPagina(40); // Garante que as assinaturas não vão ficar pela metade na folha
+        checarPagina(40); 
         pdf.line(10, y, 200, y); y += 10;
         pdf.setFont("helvetica", "bold"); pdf.text("Assinaturas:", 10, y); y += 10;
 
@@ -481,11 +477,35 @@
         pdf.text("Quem Entra:", 110, y);
         pdf.addImage(document.getElementById("ass2").toDataURL("image/png"), 'PNG', 110, y + 2, 70, 20);
 
-        pdf.save(`Passagem_${getVal('prefixo')}_${getVal('data')}.pdf`);
+        // NOME DO ARQUIVO
+        let nomeArquivo = `Passagem_${getVal('prefixo')}_${getVal('data')}.pdf`;
+        pdf.save(nomeArquivo);
         
-        // Gera o QR Code visual na tela apenas para confirmação rápida
+        // MOSTRAR QR CODE (simplificado para celulares antigos lerem)
         document.getElementById("qrContainer").style.display = "flex";
-        QRCode.toCanvas(document.getElementById("qr"), `Prefixo:${getVal('prefixo')}|Data:${getVal('data')}|Resp:Ok`, { width: 150 });
+        let textoQR = `Passagem: ${getVal('prefixo')}\nData: ${getVal('data')}`;
+        QRCode.toCanvas(document.getElementById("qr"), textoQR, { width: 150 });
+
+        // LÓGICA DE COMPARTILHAR (BLUETOOTH / WHATSAPP)
+        let pdfBlob = pdf.output('blob');
+        let pdfFile = new File([pdfBlob], nomeArquivo, { type: 'application/pdf' });
+        let shareBtn = document.getElementById('btnShare');
+
+        // Se o celular do usuário suportar a função "Compartilhar"
+        if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+            shareBtn.style.display = 'block';
+            shareBtn.onclick = async () => {
+                try {
+                    await navigator.share({
+                        files: [pdfFile],
+                        title: 'Passagem de Serviço MRS',
+                        text: `Segue a Passagem de Serviço gerada. Prefixo: ${getVal('prefixo')}`
+                    });
+                } catch (err) {
+                    console.log('Compartilhamento cancelado ou falhou.', err);
+                }
+            };
+        }
     }
 </script>
 
