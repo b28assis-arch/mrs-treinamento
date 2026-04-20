@@ -13,8 +13,6 @@
         --mrs-azul: #002b5c;
         --mrs-azul-claro: #00428a;
         --mrs-amarelo: #FFC600;
-        
-        /* Cores dos botões */
         --atencao-bg: #ffebee;
         --atencao-border: #f44336;
         --ok-bg: #e8f5e9;
@@ -26,28 +24,26 @@
     body {
         margin: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        /* Fundo moderno com gradiente sutil */
         background: radial-gradient(circle at top, var(--mrs-azul-claro), var(--mrs-azul));
         background-attachment: fixed;
         color: #333;
     }
 
-    /* MARCA D'ÁGUA DA NOVA LOGO NO FUNDO */
+    /* Puxando o nome compactado da logo (RENOMEIE LÁ NO GITHUB PARA fundo.png) */
     .bg-watermark {
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         width: 85vw;
-        max-width: 450px;
+        max-width: 400px;
         height: 85vw;
-        max-height: 450px;
-        /* Puxando o novo arquivo que você subiu */
-        background-image: url('fundo-mrs%20(1).png'); 
+        max-height: 400px;
+        background-image: url('fundo.png'); 
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
-        opacity: 0.12; /* Bem suave para não atrapalhar a leitura */
+        opacity: 0.15; 
         z-index: 0;
         pointer-events: none; 
     }
@@ -55,115 +51,106 @@
     .header-mrs {
         position: relative;
         z-index: 1;
-        background: rgba(0, 43, 92, 0.85); /* Fundo translúcido moderno */
-        backdrop-filter: blur(5px);
+        background: rgba(0, 43, 92, 0.9);
         color: var(--mrs-amarelo);
-        padding: 18px 15px;
+        padding: 10px; /* Reduzido */
         text-align: center;
-        border-bottom: 4px solid var(--mrs-amarelo);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        border-bottom: 3px solid var(--mrs-amarelo);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.4);
     }
 
-    .header-mrs h2 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 1px; }
-    .header-mrs p { margin: 5px 0 0 0; font-size: 13px; color: #fff; font-weight: 500; letter-spacing: 2px;}
+    .header-mrs h2 { margin: 0; font-size: 18px; font-weight: bold; }
+    .header-mrs p { margin: 2px 0 0 0; font-size: 11px; color: #fff; letter-spacing: 1px;}
 
     .container {
         position: relative;
         z-index: 1;
         max-width: 800px;
         margin: auto;
-        padding: 12px;
+        padding: 8px; /* Reduzido */
     }
 
     .card {
         background: rgba(255, 255, 255, 0.97);
-        border-radius: 12px; /* Bordas mais arredondadas e modernas */
-        padding: 18px;
-        margin-bottom: 18px;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 8px;
+        padding: 10px; /* Reduzido de 18px para 10px */
+        margin-bottom: 10px; /* Reduzido */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     label {
         font-weight: bold;
-        font-size: 13px;
+        font-size: 12px; /* Reduzido */
         color: var(--mrs-azul);
         display: block;
-        margin-top: 12px;
+        margin-top: 6px;
     }
 
+    /* Inputs mais espremidos */
     input[type="text"], input[type="date"], input[type="time"], select, textarea {
         width: 100%;
-        padding: 12px;
-        margin-top: 6px;
-        border-radius: 8px;
+        padding: 8px; /* Reduzido de 12px para 8px */
+        margin-top: 4px;
+        border-radius: 6px;
         border: 1px solid #ccc;
         box-sizing: border-box;
-        font-size: 16px; 
+        font-size: 14px; /* Reduzido */
         background: #fafafa;
-        transition: 0.3s;
     }
 
-    input:focus, textarea:focus {
-        border-color: var(--mrs-azul);
-        background: #fff;
-        box-shadow: 0 0 8px rgba(0, 43, 92, 0.2);
-        outline: none;
-    }
+    input:focus, textarea:focus { border-color: var(--mrs-azul); outline: none; }
 
     .section-title {
         background: var(--mrs-azul);
         color: #fff;
-        padding: 10px 15px;
-        margin: 10px -18px 15px -18px;
+        padding: 6px 10px;
+        margin: -10px -10px 10px -10px; /* Gruda nas bordas do card */
         font-weight: bold;
-        text-transform: uppercase;
-        font-size: 15px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        font-size: 13px;
+        border-radius: 8px 8px 0 0;
     }
 
     .category-title {
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
         color: var(--mrs-azul);
-        border-bottom: 3px solid var(--mrs-amarelo);
-        margin: 25px 0 12px 0;
-        padding-bottom: 5px;
+        border-bottom: 2px solid var(--mrs-amarelo);
+        margin: 15px 0 8px 0;
+        padding-bottom: 3px;
     }
 
+    /* Questões mais compactas */
     .question-box {
         background: #fff;
         border: 1px solid #e0e0e0;
-        padding: 14px;
-        border-radius: 8px;
-        margin-bottom: 12px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        padding: 8px; /* Reduzido de 14px para 8px */
+        border-radius: 6px;
+        margin-bottom: 6px; /* Reduzido */
     }
     
     .question-text {
-        font-size: 14px;
+        font-size: 12px; /* Reduzido de 14px para 12px */
         font-weight: 600;
-        margin-bottom: 12px;
+        margin-bottom: 6px;
         color: #222;
-        line-height: 1.4;
+        line-height: 1.2;
     }
 
     .radio-group {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 4px; /* Reduzido */
     }
 
     .radio-label {
-        flex: 1 1 calc(50% - 8px);
+        flex: 1 1 calc(50% - 4px);
         text-align: center;
-        padding: 12px 5px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        font-size: 13px;
+        padding: 8px 2px; /* Menos altura nos botões */
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 11px; /* Fonte menor nos botões */
         font-weight: bold;
         cursor: pointer;
-        transition: all 0.2s ease-in-out;
         background: #f9f9f9;
         display: flex;
         align-items: center;
@@ -172,71 +159,57 @@
 
     .radio-label input { display: none; }
 
-    /* Cores dos botões ao selecionar */
     .radio-label.atencao-btn:has(input:checked) {
         background: var(--atencao-bg);
         border-color: var(--atencao-border);
         color: #c62828;
-        transform: scale(1.02);
     }
 
     .radio-label.ok-btn:has(input:checked) {
         background: var(--ok-bg);
         border-color: var(--ok-border);
         color: #2e7d32;
-        transform: scale(1.02);
     }
 
     .radio-label.amarelo-btn:has(input:checked) {
         background: var(--amarelo-bg);
         border-color: var(--amarelo-border);
         color: #f57f17;
-        transform: scale(1.02);
     }
 
+    /* Canvas (Assinatura) menor na tela */
     .canvas-container {
         border: 2px dashed #b0bec5;
-        border-radius: 8px;
+        border-radius: 6px;
         background: #f4f6f8;
-        margin-top: 8px;
+        margin-top: 4px;
         touch-action: none;
     }
 
-    canvas { width: 100%; height: 110px; display: block; }
+    canvas { width: 100%; height: 75px; display: block; } /* Reduzido de 110px para 75px */
 
     button {
         width: 100%;
-        padding: 16px;
-        margin-top: 12px;
+        padding: 12px; /* Botão ligeiramente menor */
+        margin-top: 8px;
         border: none;
-        border-radius: 8px;
+        border-radius: 6px;
         font-weight: bold;
-        font-size: 16px;
+        font-size: 14px;
         cursor: pointer;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        transition: 0.3s;
     }
 
-    .btn-gerar { 
-        background: var(--mrs-amarelo); 
-        color: var(--mrs-azul); 
-        box-shadow: 0 4px 10px rgba(255, 198, 0, 0.4);
-    }
-    .btn-gerar:active { transform: translateY(2px); }
-
+    .btn-gerar { background: var(--mrs-amarelo); color: var(--mrs-azul); }
     .btn-limpar { background: #e0e0e0; color: #444; }
-    
-    .btn-share { 
-        background: #4caf50; 
-        color: white; 
-        display: none; 
-        box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
-    }
-    .btn-share:active { transform: translateY(2px); }
+    .btn-share { background: #4caf50; color: white; display: none; margin-top: 15px;}
 
-    .qrBox { display: none; flex-direction: column; align-items: center; margin-top: 20px; }
+    .qrBox { display: none; flex-direction: column; align-items: center; margin-top: 10px; }
     .hidden { display: none; }
+    
+    /* Layout lado a lado para campos iniciais */
+    .row { display: flex; gap: 8px; }
+    .col { flex: 1; }
 </style>
 </head>
 
@@ -253,22 +226,33 @@
     <form id="formPassagem">
         
         <div class="card">
-            <label>Prefixo do Trem</label>
-            <input type="text" id="prefixo" placeholder="Ex: NGM0101">
-
-            <div style="display: flex; gap: 10px;">
-                <div style="flex: 1;"><label>Data</label><input type="date" id="data"></div>
-                <div style="flex: 1;"><label>Hora</label><input type="time" id="hora"></div>
+            <div class="section-title">Dados Gerais</div>
+            <div class="row">
+                <div class="col">
+                    <label>Prefixo do Trem</label>
+                    <input type="text" id="prefixo" placeholder="Ex: NGM0101">
+                </div>
+                <div class="col">
+                    <label>Local</label>
+                    <input type="text" id="local" placeholder="Km / Pátio">
+                </div>
             </div>
 
-            <label>Local</label>
-            <input type="text" id="local" placeholder="Estação ou Km">
+            <div class="row">
+                <div class="col"><label>Data</label><input type="date" id="data"></div>
+                <div class="col"><label>Hora</label><input type="time" id="hora"></div>
+            </div>
 
-            <label>Nome / Matrícula Maquinista que sai:</label>
-            <input type="text" id="sai" placeholder="Maquinista que deixa o trem">
-
-            <label>Nome / Matrícula Maquinista que entra:</label>
-            <input type="text" id="entra" placeholder="Maquinista que assume o trem">
+            <div class="row">
+                <div class="col">
+                    <label>Maquinista (Sai)</label>
+                    <input type="text" id="sai" placeholder="Nome/Matrícula">
+                </div>
+                <div class="col">
+                    <label>Maquinista (Entra)</label>
+                    <input type="text" id="entra" placeholder="Nome/Matrícula">
+                </div>
+            </div>
         </div>
 
         <div class="card">
@@ -276,7 +260,7 @@
             
             <div class="category-title">Locomotivas</div>
             <div class="question-box">
-                <div class="question-text">01. Condições restritas das locomotivas (isoladas, desligadas ou avariadas).</div>
+                <div class="question-text">01. Condições restritas (isoladas, desligadas ou avariadas).</div>
                 <div class="radio-group">
                     <label class="radio-label atencao-btn"><input type="radio" name="q1" value="ATENCAO: SIM"> SIM (Atenção)</label>
                     <label class="radio-label ok-btn"><input type="radio" name="q1" value="OK: NAO"> NÃO (OK)</label>
@@ -299,14 +283,14 @@
 
             <div class="category-title">Vagões</div>
             <div class="question-box">
-                <div class="question-text">04. Existência de vagões isolados além dos constantes no Boletim de Trem.</div>
+                <div class="question-text">04. Vagões isolados além do Boletim.</div>
                 <div class="radio-group">
                     <label class="radio-label atencao-btn"><input type="radio" name="q4" value="ATENCAO: SIM"> SIM (Atenção)</label>
                     <label class="radio-label ok-btn"><input type="radio" name="q4" value="OK: NAO"> NÃO (OK)</label>
                 </div>
             </div>
             <div class="question-box">
-                <div class="question-text">05. Existência de vagões com restrições além dos constantes no Boletim de Trem.</div>
+                <div class="question-text">05. Vagões com restrições além do Boletim.</div>
                 <div class="radio-group">
                     <label class="radio-label atencao-btn"><input type="radio" name="q5" value="ATENCAO: SIM"> SIM (Atenção)</label>
                     <label class="radio-label ok-btn"><input type="radio" name="q5" value="OK: NAO"> NÃO (OK)</label>
@@ -323,28 +307,28 @@
                 </div>
             </div>
             <div class="question-box">
-                <div class="question-text">07. Existe alguma dificuldade em manter a VMA?</div>
+                <div class="question-text">07. Alguma dificuldade em manter a VMA?</div>
                 <div class="radio-group">
                     <label class="radio-label atencao-btn"><input type="radio" name="q7" value="ATENCAO: SIM"> SIM (Atenção)</label>
                     <label class="radio-label ok-btn"><input type="radio" name="q7" value="OK: NAO"> NÃO (OK)</label>
                 </div>
             </div>
             <div class="question-box">
-                <div class="question-text">08. Os defeitos e avarias foram informados ao CCO e CCM?</div>
+                <div class="question-text">08. Defeitos/avarias informados ao CCO/CCM?</div>
                 <div class="radio-group">
                     <label class="radio-label atencao-btn"><input type="radio" name="q8" value="ATENCAO: NAO"> NÃO (Atenção)</label>
                     <label class="radio-label ok-btn"><input type="radio" name="q8" value="OK: SIM"> SIM (OK)</label>
                 </div>
             </div>
             <div class="question-box">
-                <div class="question-text">09. Algum teste deixou de ser realizado no trem?</div>
+                <div class="question-text">09. Algum teste deixou de ser realizado?</div>
                 <div class="radio-group">
                     <label class="radio-label atencao-btn"><input type="radio" name="q9" value="ATENCAO: SIM"> SIM (Atenção)</label>
                     <label class="radio-label ok-btn"><input type="radio" name="q9" value="OK: NAO"> NÃO (OK)</label>
                 </div>
             </div>
             <div class="question-box">
-                <div class="question-text">10. Documentação do trem: existência de documentação ou malote.</div>
+                <div class="question-text">10. Existência de documentação ou malote.</div>
                 <div class="radio-group">
                     <label class="radio-label atencao-btn"><input type="radio" name="q10" value="ATENCAO: NAO"> NÃO (Atenção)</label>
                     <label class="radio-label ok-btn"><input type="radio" name="q10" value="OK: SIM"> SIM (OK)</label>
@@ -353,25 +337,27 @@
 
             <div class="category-title">Circulação</div>
             <div class="question-box">
-                <div class="question-text">11. O trem está circulando com LICENÇA ESPECIAL ou ORDEM DE AVANÇO / Licença via rádio?</div>
+                <div class="question-text">11. Licença Especial, Ordem de Avanço ou Rádio?</div>
                 <div class="radio-group">
-                    <label class="radio-label atencao-btn"><input type="radio" name="q11" value="ATENCAO: SIM" onchange="toggleQ11(true)"> SIM (Atenção)</label>
-                    <label class="radio-label ok-btn"><input type="radio" name="q11" value="OK: NAO" onchange="toggleQ11(false)"> NÃO (OK)</label>
+                    <label class="radio-label atencao-btn"><input type="radio" name="q11" value="ATENCAO: SIM" onchange="toggleQ11(true)"> SIM</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q11" value="OK: NAO" onchange="toggleQ11(false)"> NÃO</label>
                 </div>
-                <div id="q11-details" class="hidden" style="margin-top: 10px;">
-                    <input type="text" id="q11-origem" placeholder="Origem">
-                    <input type="text" id="q11-destino" placeholder="Destino">
+                <div id="q11-details" class="hidden" style="margin-top: 6px;">
+                    <div class="row">
+                        <div class="col"><input type="text" id="q11-origem" placeholder="Origem"></div>
+                        <div class="col"><input type="text" id="q11-destino" placeholder="Destino"></div>
+                    </div>
                 </div>
             </div>
             <div class="question-box">
-                <div class="question-text">12. O trem está circulando com VELOCIDADE RESTRITA ou qualquer outra restrição?</div>
+                <div class="question-text">12. Velocidade restrita ou outra restrição?</div>
                 <div class="radio-group">
-                    <label class="radio-label atencao-btn"><input type="radio" name="q12" value="ATENCAO: SIM"> SIM (Atenção)</label>
-                    <label class="radio-label ok-btn"><input type="radio" name="q12" value="OK: NAO"> NÃO (OK)</label>
+                    <label class="radio-label atencao-btn"><input type="radio" name="q12" value="ATENCAO: SIM"> SIM</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q12" value="OK: NAO"> NÃO</label>
                 </div>
             </div>
             <div class="question-box">
-                <div class="question-text">13. Aspecto do último sinal (semáforo) recebido pelo trem.</div>
+                <div class="question-text">13. Aspecto do último sinal recebido.</div>
                 <div class="radio-group">
                     <label class="radio-label atencao-btn" style="flex: 1 1 30%;"><input type="radio" name="q13" value="ATENCAO: VERMELHO"> Vermelho</label>
                     <label class="radio-label atencao-btn" style="flex: 1 1 30%;"><input type="radio" name="q13" value="ATENCAO: VERM. PISCA"> V. Pisca</label>
@@ -383,28 +369,27 @@
         </div>
 
         <div class="card">
-            <div class="section-title">B) Observações das Descrições</div>
-            <textarea id="observacoes" rows="5" placeholder="Digite as observações aqui..."></textarea>
+            <div class="section-title">B) Observações (Itens de Atenção)</div>
+            <textarea id="observacoes" rows="3" placeholder="Descreva os itens marcados em vermelho..."></textarea>
         </div>
 
         <div class="card">
             <div class="section-title">Assinaturas</div>
-
-            <label>Maquinista que Sai</label>
-            <div class="canvas-container"><canvas id="ass1"></canvas></div>
-
-            <label>Maquinista que Entra</label>
-            <div class="canvas-container"><canvas id="ass2"></canvas></div>
-
-            <button type="button" class="btn-limpar" onclick="limparAssinaturas()">Limpar Assinaturas</button>
-            <button type="button" class="btn-gerar" onclick="gerarPDF()">Gerar Documento Oficial</button>
-            
-            <button type="button" id="btnShare" class="btn-share">📤 Enviar PDF (Bluetooth / WhatsApp)</button>
-
-            <div class="qrBox" id="qrContainer">
-                <canvas id="qr"></canvas>
-                <p style="font-size: 12px; color: #666; text-align: center;">Escaneie o QR Code ou use o botão de Enviar PDF acima.</p>
+            <div class="row">
+                <div class="col">
+                    <label>Sai</label>
+                    <div class="canvas-container"><canvas id="ass1"></canvas></div>
+                </div>
+                <div class="col">
+                    <label>Entra</label>
+                    <div class="canvas-container"><canvas id="ass2"></canvas></div>
+                </div>
             </div>
+
+            <button type="button" class="btn-limpar" onclick="limparAssinaturas()">Limpar</button>
+            <button type="button" class="btn-gerar" onclick="gerarPDF()">Gerar PDF Oficial</button>
+            <button type="button" id="btnShare" class="btn-share">📤 Enviar (Bluetooth / WhatsApp)</button>
+            <div class="qrBox" id="qrContainer"><canvas id="qr"></canvas></div>
         </div>
     </form>
 </div>
@@ -477,10 +462,7 @@
 
         let y = 0;
         const checarPagina = (espacoNecessario) => {
-            if (y + espacoNecessario > 280) {
-                pdf.addPage();
-                y = 20; 
-            }
+            if (y + espacoNecessario > 280) { pdf.addPage(); y = 20; }
         };
 
         pdf.setFillColor(0, 43, 92); pdf.rect(0, 0, 210, 15, 'F');
