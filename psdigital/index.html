@@ -13,6 +13,10 @@
         --mrs-azul: #002b5c;
         --mrs-amarelo: #FFC600;
         --mrs-bg: #f4f6f8;
+        --atencao-bg: #ffebee;
+        --atencao-border: #f44336;
+        --ok-bg: #e8f5e9;
+        --ok-border: #4caf50;
     }
 
     body {
@@ -31,16 +35,13 @@
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
-    .header-mrs h2 {
-        margin: 0;
-        font-size: 22px;
-        letter-spacing: 1px;
-    }
+    .header-mrs h2 { margin: 0; font-size: 20px; }
+    .header-mrs p { margin: 5px 0 0 0; font-size: 12px; color: #fff; }
 
     .container {
         max-width: 800px;
         margin: auto;
-        padding: 15px;
+        padding: 10px;
     }
 
     .card {
@@ -59,20 +60,19 @@
         margin-top: 10px;
     }
 
-    input, select, textarea {
+    input[type="text"], input[type="date"], input[type="time"], select, textarea {
         width: 100%;
         padding: 12px;
         margin-top: 5px;
         border-radius: 6px;
         border: 1px solid #ccc;
         box-sizing: border-box;
-        font-size: 16px; /* Evita zoom automático no iPhone */
+        font-size: 16px; 
     }
 
-    input:focus, select:focus, textarea:focus {
+    input:focus, textarea:focus {
         border-color: var(--mrs-azul);
         outline: none;
-        box-shadow: 0 0 5px rgba(0, 43, 92, 0.3);
     }
 
     .section-title {
@@ -85,19 +85,73 @@
         font-size: 14px;
     }
 
+    .category-title {
+        font-size: 15px;
+        color: var(--mrs-azul);
+        border-bottom: 2px solid var(--mrs-amarelo);
+        margin: 20px 0 10px 0;
+        padding-bottom: 5px;
+    }
+
+    /* Estilo das Perguntas (Quadro A) */
+    .question-box {
+        background: #fdfdfd;
+        border: 1px solid #eee;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+    }
+    
+    .question-text {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 10px;
+        color: #111;
+    }
+
+    .radio-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .radio-label {
+        flex: 1;
+        text-align: center;
+        padding: 10px 5px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+        background: #fff;
+    }
+
+    .radio-label input { display: none; }
+
+    /* Cores ao selecionar ATENÇÃO */
+    .radio-label.atencao-btn:has(input:checked) {
+        background: var(--atencao-bg);
+        border-color: var(--atencao-border);
+        color: #c62828;
+    }
+
+    /* Cores ao selecionar OK */
+    .radio-label.ok-btn:has(input:checked) {
+        background: var(--ok-bg);
+        border-color: var(--ok-border);
+        color: #2e7d32;
+    }
+
     .canvas-container {
         border: 2px dashed #aaa;
         border-radius: 6px;
         background: #fafafa;
         margin-top: 5px;
-        touch-action: none; /* Evita que a tela role ao assinar */
+        touch-action: none;
     }
 
-    canvas {
-        width: 100%;
-        height: 100px;
-        display: block;
-    }
+    canvas { width: 100%; height: 100px; display: block; }
 
     button {
         width: 100%;
@@ -108,117 +162,171 @@
         font-weight: bold;
         font-size: 16px;
         cursor: pointer;
-        transition: 0.2s;
     }
 
-    .btn-gerar {
-        background: var(--mrs-amarelo);
-        color: var(--mrs-azul);
-    }
+    .btn-gerar { background: var(--mrs-amarelo); color: var(--mrs-azul); }
+    .btn-limpar { background: #e0e0e0; color: #333; }
 
-    .btn-gerar:hover { background: #e6b300; }
-
-    .btn-limpar {
-        background: #e0e0e0;
-        color: #333;
-    }
-
-    .qrBox {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 20px;
-    }
-
-    /* Oculta inicialmente */
-    #licencaBox, #qrContainer { display: none; }
+    .qrBox { display: none; flex-direction: column; align-items: center; margin-top: 20px; }
+    
+    .hidden { display: none; }
 </style>
 </head>
 
 <body>
 
 <div class="header-mrs">
-    <h2>🚂 PASSAGEM DE SERVIÇO</h2>
+    <h2>PASSAGEM DE SERVIÇO</h2>
+    <p>DE MAQUINISTA</p>
 </div>
 
 <div class="container">
     <form id="formPassagem">
+        
         <div class="card">
-            <div class="section-title">Dados Gerais</div>
-            
             <label>Prefixo do Trem</label>
-            <input id="prefixo" list="trens" placeholder="Ex: NGM0101">
-            <datalist id="trens">
-                <option value="NGM0101">
-                <option value="MGU0202">
-                <option value="TMO0303">
-            </datalist>
+            <input type="text" id="prefixo" placeholder="Ex: NGM0101">
 
             <div style="display: flex; gap: 10px;">
-                <div style="flex: 1;">
-                    <label>Data</label>
-                    <input id="data" type="date">
-                </div>
-                <div style="flex: 1;">
-                    <label>Hora</label>
-                    <input id="hora" type="time">
-                </div>
+                <div style="flex: 1;"><label>Data</label><input type="date" id="data"></div>
+                <div style="flex: 1;"><label>Hora</label><input type="time" id="hora"></div>
             </div>
 
-            <label>Local (Pátio/Km)</label>
-            <input id="local" list="locais" placeholder="Selecione ou digite">
-            <datalist id="locais">
-                <option value="Pátio Arará">
-                <option value="Barra do Piraí">
-                <option value="Brisamar">
-                <option value="Conselheiro Lafaiete">
-            </datalist>
+            <label>Local</label>
+            <input type="text" id="local" placeholder="Estação ou Km">
 
-            <label>Maquinista - Quem Sai (Nome/Matrícula)</label>
-            <input id="sai" placeholder="Ex: João Silva (12345)">
+            <label>Nome / Matrícula Maquinista que sai:</label>
+            <input type="text" id="sai" placeholder="Maquinista que deixa o trem">
 
-            <label>Maquinista - Quem Entra (Nome/Matrícula)</label>
-            <input id="entra" placeholder="Ex: Carlos Souza (54321)">
+            <label>Nome / Matrícula Maquinista que entra:</label>
+            <input type="text" id="entra" placeholder="Maquinista que assume o trem">
         </div>
 
         <div class="card">
-            <div class="section-title">Circulação</div>
-            
-            <label>Licença Especial (LE)</label>
-            <select id="licencaSel" onchange="toggleLicenca()">
-                <option value="NAO">NÃO</option>
-                <option value="SIM">SIM</option>
-            </select>
+            <div class="section-title">A) Informações Relevantes</div>
+            <p style="font-size: 12px; color: #666;">Selecione a condição de cada item. Os campos marcados como <b>ATENÇÃO</b> exigem justificativa no Quadro B.</p>
 
-            <div id="licencaBox">
-                <label>Origem da LE</label>
-                <input id="origem" placeholder="Km / Pátio">
-                
-                <label>Destino da LE</label>
-                <input id="destino" placeholder="Km / Pátio">
+            <div class="category-title">Locomotivas</div>
+            <div class="question-box">
+                <div class="question-text">01. Condições restritas das locomotivas (isoladas, desligadas ou avariadas).</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q1" value="ATENCAO: SIM"> SIM (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q1" value="OK: NAO"> NÃO (OK)</label>
+                </div>
+            </div>
+            <div class="question-box">
+                <div class="question-text">02. Existência de câmera interna.</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q2" value="ATENCAO: NAO"> NÃO (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q2" value="OK: SIM"> SIM (OK)</label>
+                </div>
+            </div>
+            <div class="question-box">
+                <div class="question-text">03. Cabos da câmera interna conectados.</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q3" value="ATENCAO: NAO"> NÃO (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q3" value="OK: SIM"> SIM (OK)</label>
+                </div>
+            </div>
+
+            <div class="category-title">Vagões</div>
+            <div class="question-box">
+                <div class="question-text">04. Existência de vagões isolados além dos constantes no Boletim de Trem.</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q4" value="ATENCAO: SIM"> SIM (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q4" value="OK: NAO"> NÃO (OK)</label>
+                </div>
+            </div>
+            <div class="question-box">
+                <div class="question-text">05. Existência de vagões com restrições além dos constantes no Boletim de Trem.</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q5" value="ATENCAO: SIM"> SIM (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q5" value="OK: NAO"> NÃO (OK)</label>
+                </div>
+            </div>
+
+            <div class="category-title">Composição</div>
+            <div class="question-box">
+                <div class="question-text">06. Condições gerais do freio da composição.</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q6" value="ATENCAO: RUIM"> RUIM (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q6" value="OK: REGULAR/BOM"> REGULAR / BOM (OK)</label>
+                </div>
+            </div>
+            <div class="question-box">
+                <div class="question-text">07. Existe alguma dificuldade em manter a VMA?</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q7" value="ATENCAO: SIM"> SIM (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q7" value="OK: NAO"> NÃO (OK)</label>
+                </div>
+            </div>
+            <div class="question-box">
+                <div class="question-text">08. Os defeitos e avarias foram informados ao CCO e CCM?</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q8" value="ATENCAO: NAO"> NÃO (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q8" value="OK: SIM"> SIM (OK)</label>
+                </div>
+            </div>
+            <div class="question-box">
+                <div class="question-text">09. Algum teste deixou de ser realizado no trem?</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q9" value="ATENCAO: SIM"> SIM (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q9" value="OK: NAO"> NÃO (OK)</label>
+                </div>
+            </div>
+            <div class="question-box">
+                <div class="question-text">10. Documentação do trem: existência de documentação ou malote.</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q10" value="ATENCAO: NAO"> NÃO (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q10" value="OK: SIM"> SIM (OK)</label>
+                </div>
+            </div>
+
+            <div class="category-title">Circulação</div>
+            <div class="question-box">
+                <div class="question-text">11. O trem está circulando com LICENÇA ESPECIAL ou ORDEM DE AVANÇO / Licença via rádio?</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q11" value="ATENCAO: SIM" onchange="toggleQ11(true)"> SIM (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q11" value="OK: NAO" onchange="toggleQ11(false)"> NÃO (OK)</label>
+                </div>
+                <div id="q11-details" class="hidden" style="margin-top: 10px;">
+                    <input type="text" id="q11-origem" placeholder="Origem">
+                    <input type="text" id="q11-destino" placeholder="Destino">
+                </div>
+            </div>
+            <div class="question-box">
+                <div class="question-text">12. O trem está circulando com VELOCIDADE RESTRITA ou qualquer outra restrição?</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q12" value="ATENCAO: SIM"> SIM (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q12" value="OK: NAO"> NÃO (OK)</label>
+                </div>
+            </div>
+            <div class="question-box">
+                <div class="question-text">13. Aspecto do último sinal (semáforo) recebido pelo trem.</div>
+                <div class="radio-group">
+                    <label class="radio-label atencao-btn"><input type="radio" name="q13" value="ATENCAO: VERMELHO/APAGADO"> Verm. Apagado / Vermelho (Atenção)</label>
+                    <label class="radio-label ok-btn"><input type="radio" name="q13" value="OK: VERDE/AMARELO"> Verde Pisca / Verde / Amarelo (OK)</label>
+                </div>
             </div>
         </div>
 
         <div class="card">
-            <div class="section-title">Observações (Avarias, RESTRIÇÕES, etc.)</div>
-            <textarea id="obs" rows="4" placeholder="Detalhe aqui as condições da locomotiva e da via..."></textarea>
+            <div class="section-title">B) Observações das Descrições</div>
+            <p style="font-size: 12px; color: #666;">Descreva abaixo os detalhes para os campos assinalados como ATENÇÃO. (Ex: "Item 06 - Freio falhando no vagão X").</p>
+            <textarea id="observacoes" rows="5" placeholder="Digite as observações aqui..."></textarea>
         </div>
 
         <div class="card">
             <div class="section-title">Assinaturas</div>
 
-            <label>Assinatura - Quem Sai</label>
-            <div class="canvas-container">
-                <canvas id="ass1"></canvas>
-            </div>
+            <label>Maquinista que Sai</label>
+            <div class="canvas-container"><canvas id="ass1"></canvas></div>
 
-            <label>Assinatura - Quem Entra</label>
-            <div class="canvas-container">
-                <canvas id="ass2"></canvas>
-            </div>
+            <label>Maquinista que Entra</label>
+            <div class="canvas-container"><canvas id="ass2"></canvas></div>
 
             <button type="button" class="btn-limpar" onclick="limparAssinaturas()">Limpar Assinaturas</button>
-            <button type="button" class="btn-gerar" onclick="gerarDocumento()">Gerar PDF e QR Code</button>
+            <button type="button" class="btn-gerar" onclick="gerarPDF()">Gerar Documento Oficial</button>
 
             <div class="qrBox" id="qrContainer">
                 <canvas id="qr"></canvas>
@@ -231,231 +339,155 @@
 <script>
     const { jsPDF } = window.jspdf;
 
-    // --- 1. FUNÇÕES DE INICIALIZAÇÃO E AUTO-SAVE ---
     window.onload = function() {
-        // Preenche Data e Hora atuais se estiverem vazios
         const now = new Date();
         document.getElementById('data').value = now.toISOString().split('T')[0];
         document.getElementById('hora').value = now.toTimeString().slice(0,5);
-
-        // Carrega rascunho salvo no modo Offline (LocalStorage)
-        carregarRascunho();
-
-        // Configura salvamento automático a cada digitação
-        document.getElementById('formPassagem').addEventListener('input', salvarRascunho);
         
-        // Ajustar Canvas para o tamanho real na tela
-        ajustarResolucaoCanvas('ass1');
-        ajustarResolucaoCanvas('ass2');
-        ativarCanvas("ass1");
-        ativarCanvas("ass2");
+        ajustarResolucaoCanvas('ass1'); ajustarResolucaoCanvas('ass2');
+        ativarCanvas("ass1"); ativarCanvas("ass2");
     };
 
-    function toggleLicenca() {
-        const v = document.getElementById("licencaSel").value;
-        document.getElementById("licencaBox").style.display = (v === "SIM") ? "block" : "none";
+    function toggleQ11(mostrar) {
+        document.getElementById("q11-details").style.display = mostrar ? "block" : "none";
     }
 
-    function salvarRascunho() {
-        const dados = {
-            prefixo: document.getElementById('prefixo').value,
-            local: document.getElementById('local').value,
-            sai: document.getElementById('sai').value,
-            entra: document.getElementById('entra').value,
-            obs: document.getElementById('obs').value,
-            licencaSel: document.getElementById('licencaSel').value,
-            origem: document.getElementById('origem').value,
-            destino: document.getElementById('destino').value
-        };
-        localStorage.setItem('rascunho_mrs', JSON.stringify(dados));
-    }
-
-    function carregarRascunho() {
-        const salvo = localStorage.getItem('rascunho_mrs');
-        if(salvo) {
-            const dados = JSON.parse(salvo);
-            document.getElementById('prefixo').value = dados.prefixo || "";
-            document.getElementById('local').value = dados.local || "";
-            document.getElementById('sai').value = dados.sai || "";
-            document.getElementById('entra').value = dados.entra || "";
-            document.getElementById('obs').value = dados.obs || "";
-            document.getElementById('licencaSel').value = dados.licencaSel || "NAO";
-            document.getElementById('origem').value = dados.origem || "";
-            document.getElementById('destino').value = dados.destino || "";
-            toggleLicenca();
-        }
-    }
-
-    // --- 2. LÓGICA DO CANVAS (MOUSE E TOUCH CORRIGIDO) ---
+    // Lógica do Canvas (Mantida perfeita da versão anterior)
     function ajustarResolucaoCanvas(id) {
         let c = document.getElementById(id);
         let rect = c.getBoundingClientRect();
-        c.width = rect.width;
-        c.height = rect.height;
+        c.width = rect.width; c.height = rect.height;
     }
 
     function ativarCanvas(id) {
         let c = document.getElementById(id);
         let ctx = c.getContext("2d");
-        ctx.lineWidth = 2;
-        ctx.lineCap = "round";
-        ctx.strokeStyle = "#002b5c"; // Cor da caneta
-
+        ctx.lineWidth = 2; ctx.lineCap = "round"; ctx.strokeStyle = "#002b5c";
         let desenhando = false;
 
-        const iniciar = (e) => {
-            e.preventDefault();
-            desenhando = true;
-            ctx.beginPath();
+        const iniciar = (e) => { e.preventDefault(); desenhando = true; ctx.beginPath();
             let rect = c.getBoundingClientRect();
-            let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-            let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-            ctx.moveTo(x, y);
+            ctx.moveTo((e.touches ? e.touches[0].clientX : e.clientX) - rect.left, (e.touches ? e.touches[0].clientY : e.clientY) - rect.top);
         };
-
-        const desenhar = (e) => {
-            e.preventDefault();
-            if (!desenhando) return;
+        const desenhar = (e) => { e.preventDefault(); if (!desenhando) return;
             let rect = c.getBoundingClientRect();
-            let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-            let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-            ctx.lineTo(x, y);
-            ctx.stroke();
+            ctx.lineTo((e.touches ? e.touches[0].clientX : e.clientX) - rect.left, (e.touches ? e.touches[0].clientY : e.clientY) - rect.top); ctx.stroke();
         };
+        const parar = () => { desenhando = false; };
 
-        const parar = () => {
-            desenhando = false;
-        };
-
-        // Eventos Mobile (Touch)
-        c.addEventListener("touchstart", iniciar, {passive: false});
-        c.addEventListener("touchmove", desenhar, {passive: false});
-        c.addEventListener("touchend", parar);
-
-        // Eventos PC (Mouse)
-        c.addEventListener("mousedown", iniciar);
-        c.addEventListener("mousemove", desenhar);
-        c.addEventListener("mouseup", parar);
-        c.addEventListener("mouseout", parar);
+        c.addEventListener("touchstart", iniciar, {passive: false}); c.addEventListener("touchmove", desenhar, {passive: false}); c.addEventListener("touchend", parar);
+        c.addEventListener("mousedown", iniciar); c.addEventListener("mousemove", desenhar); c.addEventListener("mouseup", parar); c.addEventListener("mouseout", parar);
     }
 
     function limparAssinaturas() {
         ["ass1", "ass2"].forEach(id => {
-            let c = document.getElementById(id);
-            let ctx = c.getContext("2d");
-            ctx.clearRect(0, 0, c.width, c.height);
+            let c = document.getElementById(id); c.getContext("2d").clearRect(0, 0, c.width, c.height);
         });
     }
 
-    // --- 3. GERAÇÃO DE PDF E QR CODE ---
-    function gerarDocumento() {
-        const dados = {
-            prefixo: document.getElementById("prefixo").value,
-            data: document.getElementById("data").value,
-            hora: document.getElementById("hora").value,
-            local: document.getElementById("local").value,
-            sai: document.getElementById("sai").value,
-            entra: document.getElementById("entra").value,
-            licenca: document.getElementById("licencaSel").value,
-            origem: document.getElementById("origem").value,
-            destino: document.getElementById("destino").value,
-            obs: document.getElementById("obs").value
-        };
-
-        if (dados.licenca === "SIM" && (!dados.origem || !dados.destino)) {
-            alert("Atenção: Preencha a ORIGEM e DESTINO da Licença Especial!");
-            return;
-        }
-
-        // Criando PDF Profissional
+    // Gerador do PDF Oficial
+    function gerarPDF() {
         let pdf = new jsPDF();
         
-        // Cabeçalho
-        pdf.setFillColor(0, 43, 92); // Azul MRS
-        pdf.rect(0, 0, 210, 20, 'F');
-        pdf.setTextColor(255, 198, 0); // Amarelo MRS
-        pdf.setFontSize(16);
-        pdf.setFont("helvetica", "bold");
-        pdf.text("PASSAGEM DE SERVIÇO - MRS", 105, 13, null, null, "center");
+        // Coleta os dados
+        const getVal = id => document.getElementById(id).value;
+        const getRadio = name => {
+            let el = document.querySelector(`input[name="${name}"]:checked`);
+            return el ? el.value : "NÃO RESPONDIDO";
+        };
 
-        // Corpo
-        pdf.setTextColor(0, 0, 0);
-        pdf.setFontSize(11);
-        pdf.setFont("helvetica", "normal");
-        
-        let y = 30;
-        pdf.text(`Prefixo do Trem: ${dados.prefixo}`, 10, y);
-        pdf.text(`Data e Hora: ${dados.data.split('-').reverse().join('/')} às ${dados.hora}`, 110, y); y += 10;
-        pdf.text(`Local: ${dados.local}`, 10, y); y += 15;
-
-        pdf.setFont("helvetica", "bold");
-        pdf.text("Equipe:", 10, y); y += 8;
-        pdf.setFont("helvetica", "normal");
-        pdf.text(`Maquinista (Sai): ${dados.sai}`, 10, y); y += 8;
-        pdf.text(`Maquinista (Entra): ${dados.entra}`, 10, y); y += 15;
-
-        pdf.setFont("helvetica", "bold");
-        pdf.text("Circulação:", 10, y); y += 8;
-        pdf.setFont("helvetica", "normal");
-        pdf.text(`Licença Especial (LE): ${dados.licenca}`, 10, y);
-        if (dados.licenca === "SIM") {
-            y += 8;
-            pdf.text(`Trecho da LE: De ${dados.origem} até ${dados.destino}`, 10, y);
+        const q11Val = getRadio('q11');
+        let q11Extra = "";
+        if(q11Val.includes("ATENCAO")) {
+            if(!getVal('q11-origem') || !getVal('q11-destino')){
+                alert("Atenção: Preencha ORIGEM e DESTINO na pergunta 11!"); return;
+            }
+            q11Extra = ` (Origem: ${getVal('q11-origem')} | Destino: ${getVal('q11-destino')})`;
         }
-        y += 15;
 
-        // Quebra automática de linhas para a Observação não vazar da página
-        pdf.setFont("helvetica", "bold");
-        pdf.text("Observações:", 10, y); y += 8;
+        // Função auxiliar para quebrar página se a folha acabar
+        let y = 0;
+        const checarPagina = (espacoNecessario) => {
+            if (y + espacoNecessario > 280) {
+                pdf.addPage();
+                y = 20; // Reseta o Y pro topo da nova página
+            }
+        };
+
+        // --- INÍCIO DO DESENHO DO PDF ---
+        pdf.setFillColor(0, 43, 92); pdf.rect(0, 0, 210, 15, 'F');
+        pdf.setTextColor(255, 198, 0); pdf.setFontSize(14); pdf.setFont("helvetica", "bold");
+        pdf.text("PASSAGEM DE SERVIÇO DE MAQUINISTA", 105, 10, null, null, "center");
+
+        pdf.setTextColor(0, 0, 0); pdf.setFontSize(10); pdf.setFont("helvetica", "normal");
+        y = 25;
+        pdf.text(`Prefixo: ${getVal('prefixo')}   |   Data: ${getVal('data').split('-').reverse().join('/')}   |   Hora: ${getVal('hora')}`, 10, y); y += 8;
+        pdf.text(`Local: ${getVal('local')}`, 10, y); y += 12;
+
+        pdf.text(`Maquinista que sai: ${getVal('sai')}`, 10, y); y += 8;
+        pdf.text(`Maquinista que entra: ${getVal('entra')}`, 10, y); y += 15;
+
+        // Quadro A
+        pdf.setFont("helvetica", "bold"); pdf.text("A) DESCRIÇÃO DAS INFORMAÇÕES RELEVANTES:", 10, y); y += 8;
+        pdf.setFont("helvetica", "normal"); pdf.setFontSize(9);
+
+        const respostas = [
+            `01. Condições restritas: ${getRadio('q1')}`,
+            `02. Câmera interna: ${getRadio('q2')}`,
+            `03. Cabos câmera conectados: ${getRadio('q3')}`,
+            `04. Vagões isolados: ${getRadio('q4')}`,
+            `05. Vagões com restrições: ${getRadio('q5')}`,
+            `06. Freio composição: ${getRadio('q6')}`,
+            `07. Dificuldade VMA: ${getRadio('q7')}`,
+            `08. Defeitos informados CCO: ${getRadio('q8')}`,
+            `09. Teste não realizado: ${getRadio('q9')}`,
+            `10. Documentação/Malote: ${getRadio('q10')}`,
+            `11. Licença Especial/Ordem: ${q11Val}${q11Extra}`,
+            `12. Velocidade Restrita: ${getRadio('q12')}`,
+            `13. Aspecto do sinal: ${getRadio('q13')}`
+        ];
+
+        respostas.forEach(linha => {
+            checarPagina(10); // Cria página nova se não couber
+            // Pinta a linha de vermelho se tiver ATENÇÃO
+            if(linha.includes("ATENCAO")) { pdf.setTextColor(200, 0, 0); pdf.setFont("helvetica", "bold"); } 
+            else { pdf.setTextColor(0, 0, 0); pdf.setFont("helvetica", "normal"); }
+            
+            // Tratamento caso a string seja muito grande (Q11 por ex)
+            let splitText = pdf.splitTextToSize(linha, 190);
+            pdf.text(splitText, 10, y);
+            y += splitText.length * 5;
+        });
+
+        // Quadro B
+        y += 5; checarPagina(30);
+        pdf.setTextColor(0, 0, 0); pdf.setFont("helvetica", "bold"); pdf.setFontSize(10);
+        pdf.text("B) OBSERVAÇÕES DAS DESCRIÇÕES (Itens de Atenção):", 10, y); y += 8;
         pdf.setFont("helvetica", "normal");
-        let linhasObs = pdf.splitTextToSize(dados.obs || "Nenhuma observação registrada.", 190);
+        let obs = getVal('observacoes') || "Nenhuma observação registrada.";
+        let linhasObs = pdf.splitTextToSize(obs, 190);
         pdf.text(linhasObs, 10, y);
-        y += (linhasObs.length * 6) + 15;
+        y += (linhasObs.length * 5) + 15;
 
-        // Inserir imagens das assinaturas capturadas
+        // Assinaturas
+        checarPagina(40); // Garante que as assinaturas não vão ficar pela metade na folha
         pdf.line(10, y, 200, y); y += 10;
-        pdf.setFont("helvetica", "bold");
-        pdf.text("Assinaturas:", 10, y); y += 10;
-
-        let imgSai = document.getElementById("ass1").toDataURL("image/png");
-        let imgEntra = document.getElementById("ass2").toDataURL("image/png");
+        pdf.setFont("helvetica", "bold"); pdf.text("Assinaturas:", 10, y); y += 10;
 
         pdf.setFont("helvetica", "normal");
         pdf.text("Quem Sai:", 10, y);
-        pdf.addImage(imgSai, 'PNG', 10, y + 2, 70, 20); // Posiciona a img do canvas
+        pdf.addImage(document.getElementById("ass1").toDataURL("image/png"), 'PNG', 10, y + 2, 70, 20);
         
         pdf.text("Quem Entra:", 110, y);
-        pdf.addImage(imgEntra, 'PNG', 110, y + 2, 70, 20);
+        pdf.addImage(document.getElementById("ass2").toDataURL("image/png"), 'PNG', 110, y + 2, 70, 20);
 
-        // Salvar Arquivo
-        let nomeArquivo = `Passagem_${dados.prefixo}_${dados.data}.pdf`;
-        pdf.save(nomeArquivo);
-
-        // Limpa o rascunho após gerar o PDF com sucesso
-        localStorage.removeItem('rascunho_mrs');
-
-        // Gera QR Code
+        pdf.save(`Passagem_${getVal('prefixo')}_${getVal('data')}.pdf`);
+        
+        // Gera o QR Code visual na tela apenas para confirmação rápida
         document.getElementById("qrContainer").style.display = "flex";
-        QRCode.toCanvas(document.getElementById("qr"), JSON.stringify(dados), {
-            width: 200,
-            color: { dark: '#002b5c', light: '#ffffff' }
-        });
+        QRCode.toCanvas(document.getElementById("qr"), `Prefixo:${getVal('prefixo')}|Data:${getVal('data')}|Resp:Ok`, { width: 150 });
     }
 </script>
 
-<script>
-    // Registra o Service Worker para funcionar Offline
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then((registration) => {
-                    console.log('Service Worker registrado com sucesso!', registration.scope);
-                })
-                .catch((error) => {
-                    console.log('Falha ao registrar o Service Worker:', error);
-                });
-        });
-    }
-</script>
 </body>
 </html>
