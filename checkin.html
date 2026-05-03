@@ -13,35 +13,53 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: var(--bg); color: #fff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 15px; }
         
-        .header { text-align: center; margin-bottom: 20px; }
-        .logo { width: 150px; margin-bottom: 10px; border-radius: 5px; }
-        .title { font-size: 0.9rem; font-weight: 900; color: var(--mrs-green); text-transform: uppercase; letter-spacing: 2px; }
+        .header { text-align: center; margin-bottom: 15px; }
+        .logo { width: 140px; margin-bottom: 8px; border-radius: 5px; }
+        .title { font-size: 0.85rem; font-weight: 900; color: var(--mrs-green); text-transform: uppercase; letter-spacing: 2px; }
 
         .game-card {
-            width: 100%; max-width: 400px; background: var(--panel); border: 1px solid rgba(0,255,170,0.2);
+            width: 100%; max-width: 380px; background: var(--panel); border: 1px solid rgba(0,255,170,0.2);
             border-radius: 20px; padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); text-align: center;
         }
 
         /* PUZZLE AREA */
         .puzzle-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
-            margin: 20px 0; background: #1e293b; padding: 10px; border-radius: 12px;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px;
+            margin: 15px 0; background: #1e293b; padding: 8px; border-radius: 12px;
         }
         .puzzle-piece {
-            aspect-ratio: 1/1; background-size: 200% 300%; border: 2px solid transparent;
-            border-radius: 8px; cursor: pointer; transition: 0.2s;
-            background-image: url('https://i.imgur.com/8Qe8h3z.jpeg'); /* Imagem de Locomotiva MRS */
+            aspect-ratio: 1/1; border: 2px solid transparent;
+            border-radius: 6px; cursor: pointer; transition: 0.2s;
+            overflow: hidden; position: relative; background: #0f172a;
         }
-        .puzzle-piece.selected { border-color: var(--mrs-green); transform: scale(0.95); box-shadow: 0 0 15px var(--mrs-green); }
+        .puzzle-piece.selected { border-color: var(--mrs-green); transform: scale(0.96); box-shadow: 0 0 12px var(--mrs-green); }
+
+        /* LOCOMOTIVA MRS EM CSS PURO (SPRITE SHEET) */
+        .mrs-train-css {
+            position: absolute; width: 200%; height: 300%;
+            background: linear-gradient(to bottom, #000 15%, transparent 15%), /* Teto */
+                        linear-gradient(90deg, #0b3a6f 0%, #0b3a6f 70%, #d1d5db 70%, #d1d5db 100%); /* Corpo Blue/Gray */
+            border-radius: 4px;
+        }
+        /* Janelas */
+        .mrs-train-css::before {
+            content: ''; position: absolute; top: 20%; left: 10%; width: 50%; height: 25%;
+            background: rgba(0, 210, 255, 0.3); border: 2px solid #000; border-radius: 2px;
+        }
+        /* Logo MRS Simplificado (Três Setas) */
+        .mrs-train-css::after {
+            content: '>>>'; position: absolute; bottom: 15%; right: 10%;
+            color: #f59e0b; font-weight: 900; font-size: 1.2rem; font-family: monospace; letter-spacing: -2px;
+        }
 
         .btn {
-            background: var(--mrs-green); color: #000; border: none; padding: 15px;
+            background: var(--mrs-green); color: #000; border: none; padding: 14px;
             width: 100%; border-radius: 10px; font-weight: 900; text-transform: uppercase;
-            cursor: pointer; margin-top: 15px;
+            cursor: pointer; margin-top: 15px; font-size: 0.9rem;
         }
 
-        .instruction { font-size: 0.85rem; color: #94a3b8; margin-bottom: 10px; }
-        .success-msg { color: var(--mrs-green); font-weight: 800; display: none; margin-top: 10px; animation: fadeIn 0.5s; }
+        .instruction { font-size: 0.8rem; color: #94a3b8; margin-bottom: 5px; }
+        .success-msg { color: var(--mrs-green); font-weight: 800; display: none; margin-top: 10px; animation: fadeIn 0.5s; font-size: 0.9rem; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
@@ -49,43 +67,54 @@
 <body>
 
     <div class="header">
-        <img src="1000147486.jpg" class="logo">
+        <img src="1000147486.jpg" class="logo" alt="MRS LOGO">
         <div class="title">Check-In 360: Prontidão</div>
     </div>
 
     <div class="game-card" id="game-container">
-        <h2 style="font-size: 1.2rem;">Aptidão Neural</h2>
-        <p class="instruction">Toque em duas peças para trocá-las e monte a locomotiva para ativar seu cérebro.</p>
+        <h2 style="font-size: 1.1rem; margin-bottom: 5px;">Aptidão Neural</h2>
+        <p class="instruction">Toque em duas peças para trocá-las. Monte a locomotiva para ativar seu cérebro.</p>
         
         <div class="puzzle-grid" id="puzzle-grid"></div>
         
         <div id="success-msg" class="success-msg">✅ CÉREBRO ATIVADO! PRONTIDÃO 100%.</div>
         <div id="next-step" style="display:none;">
-            <p style="font-size: 0.8rem; margin: 15px 0;">Sua mente saiu do automático. Agora, siga para o BAS-20.</p>
-            <button class="btn" onclick="goToEtilometro()">Próxima Etapa</button>
+            <p style="font-size: 0.8rem; margin: 12px 0; color:#cbd5e1;">Sua mente saiu do automático. Agora, realize o teste no BAS-20.</p>
+            <button class="btn" onclick="goToEtilometro()">Validar Etilômetro</button>
         </div>
     </div>
 
     <script>
-        // Configuração do Puzzle (2x3 = 6 peças)
         const gridContainer = document.getElementById('puzzle-grid');
-        let pieces = [0, 1, 2, 3, 4, 5];
-        let currentOrder = [...pieces].sort(() => Math.random() - 0.5);
+        let pieces = [0, 1, 2, 3, 4, 5]; // Ordem correta (2x3)
+        // Embaralha, mas garante que não comece resolvido
+        let currentOrder = [];
+        do {
+            currentOrder = [...pieces].sort(() => Math.random() - 0.5);
+        } while (JSON.stringify(currentOrder) === JSON.stringify(pieces));
+        
         let selectedIndex = null;
 
         function createPuzzle() {
             gridContainer.innerHTML = '';
             currentOrder.forEach((pieceIdx, displayIdx) => {
-                const piece = document.createElement('div');
-                piece.className = 'puzzle-piece';
+                const pieceHolder = document.createElement('div');
+                pieceHolder.className = 'puzzle-piece';
                 
-                // Cálculo da posição da imagem (Background Sprite)
-                const row = Math.floor(pieceIdx / 2);
-                const col = pieceIdx % 2;
-                piece.style.backgroundPosition = `${col * 100}% ${row * 50}%`;
+                // Cria a locomotiva CSS dentro de cada peça e a posiciona
+                const trainCSS = document.createElement('div');
+                trainCSS.className = 'mrs-train-css';
                 
-                piece.onclick = () => handlePieceClick(displayIdx);
-                gridContainer.appendChild(piece);
+                const row = Math.floor(pieceIdx / 2); // 0, 1, 2
+                const col = pieceIdx % 2; // 0, 1
+                
+                // Posicionamento reverso do background interno para criar o efeito de quebra-cabeça
+                trainCSS.style.left = `-${col * 100}%`;
+                trainCSS.style.top = `-${row * 100}%`;
+                
+                pieceHolder.appendChild(trainCSS);
+                pieceHolder.onclick = () => handlePieceClick(displayIdx);
+                gridContainer.appendChild(pieceHolder);
             });
         }
 
@@ -94,11 +123,11 @@
                 selectedIndex = idx;
                 gridContainer.children[idx].classList.add('selected');
             } else {
-                // Trocar peças
+                // Trocar peças na lógica
                 [currentOrder[selectedIndex], currentOrder[idx]] = [currentOrder[idx], currentOrder[selectedIndex]];
                 gridContainer.children[selectedIndex].classList.remove('selected');
                 selectedIndex = null;
-                createPuzzle();
+                createPuzzle(); // Redesenha com a nova ordem
                 checkWin();
             }
         }
@@ -107,23 +136,20 @@
             if (JSON.stringify(currentOrder) === JSON.stringify(pieces)) {
                 document.getElementById('success-msg').style.display = 'block';
                 document.getElementById('next-step').style.display = 'block';
-                const piecesElements = document.querySelectorAll('.puzzle-piece');
-                piecesElements.forEach(p => {
-                    p.style.pointerEvents = 'none';
-                    p.style.borderColor = 'var(--mrs-green)';
-                });
+                gridContainer.style.borderColor = 'var(--mrs-green)';
+                gridContainer.style.pointerEvents = 'none'; // Desabilita cliques
             }
         }
 
         function goToEtilometro() {
             document.getElementById('game-container').innerHTML = `
-                <h2 style="margin-bottom:10px;">Procedimento BAS-20</h2>
-                <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:20px;">Lembre-se do fluxo correto para evitar falhas de similaridade facial:</p>
-                <div style="text-align:left; background:rgba(255,255,255,0.05); padding:15px; border-radius:10px; font-size:0.9rem;">
-                    1. Aproxime o Crachá<br>
-                    2. Aguarde a Identificação Facial<br>
-                    3. Posicione o canudo e sopre<br>
-                    4. Verifique o resultado no painel
+                <h2 style="margin-bottom:10px; font-size:1.1rem;">BAS-20: Procedimento</h2>
+                <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:15px;">Siga o fluxo correto para evitar bloqueios de facial:</p>
+                <div style="text-align:left; background:rgba(255,255,255,0.04); padding:12px; border-radius:10px; font-size:0.85rem; line-height:1.5; border: 1px solid #334155;">
+                    1️⃣ Aproxime o Crachá<br>
+                    2️⃣ Aguarde a Identificação Facial<br>
+                    3️⃣ Posicione o canudo e sopre<br>
+                    4️⃣ Verifique o resultado no painel
                 </div>
                 <button class="btn" onclick="goToSentinela()">Entendido</button>
             `;
@@ -131,10 +157,10 @@
 
         function goToSentinela() {
             document.getElementById('game-container').innerHTML = `
-                <h2 style="margin-bottom:10px;">Cuidado Mútuo</h2>
-                <p style="font-size:0.9rem; margin-bottom:15px;">Seu colega deu "Fora da Tolerância" no teste. Ele pede para você omitir ao gestor. O que você faz?</p>
-                <button class="btn" style="background:#ef4444; color:#fff;" onclick="finish(false)">Omitir (Risco Fatal)</button>
-                <button class="btn" onclick="finish(true)">Intervir (Protocolo Sentinela)</button>
+                <h2 style="margin-bottom:10px; font-size:1.1rem;">Cuidado Mútuo</h2>
+                <p style="font-size:0.85rem; margin-bottom:15px; color:#cbd5e1;">Um colega deu "Fora da Tolerância" no teste. Ele pede para você omitir ao gestor. O que você faz?</p>
+                <button class="btn" style="background:#ef4444; color:#fff;" onclick="finish(false)">Omitir (Risco de Acidente)</button>
+                <button class="btn" onclick="finish(true)">Intervir (Cuidado Mútuo)</button>
             `;
         }
 
@@ -142,14 +168,14 @@
             const container = document.getElementById('game-container');
             if (saved) {
                 container.innerHTML = `
-                    <h2 style="color:var(--mrs-green);">SENTINELA ATIVO</h2>
-                    <p style="margin-top:15px; font-size:0.9rem;">Você praticou o cuidado mútuo. Os 10 acidentes do trimestre param aqui. Bom turno!</p>
-                    <button class="btn" onclick="location.reload()">Reiniciar</button>
+                    <h2 style="color:var(--mrs-green); font-size:1.2rem;">SENTINELA ATIVO!</h2>
+                    <p style="margin-top:12px; font-size:0.85rem; color:#cbd5e1;">Você seguiu o protocolo. Os 10 acidentes do trimestre param com a sua atitude. Bom turno!</p>
+                    <button class="btn" onclick="location.reload()">Reiniciar Check-In</button>
                 `;
             } else {
                 container.innerHTML = `
-                    <h2 style="color:var(--danger);">ALERTA CRÍTICO</h2>
-                    <p style="margin-top:15px; font-size:0.9rem;">A omissão causou a fatalidade deste ano. Sem segurança, não há operação.</p>
+                    <h2 style="color:var(--danger); font-size:1.2rem;">ALERTA DE RISCO</h2>
+                    <p style="margin-top:12px; font-size:0.85rem; color:#cbd5e1;">A omissão é a causa das fatalidades. Sem segurança, não há operação na MRS.</p>
                     <button class="btn" style="background:var(--danger); color:#fff;" onclick="location.reload()">Tentar Novamente</button>
                 `;
             }
