@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MRS - Check-In 360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mrs-blue: #0b3a6f; --mrs-green: #00ffaa; --bg: #020617;
+            --danger: #ff2a2a; --panel: rgba(15, 23, 42, 0.9);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: #fff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 15px; }
+        
+        .header { text-align: center; margin-bottom: 20px; }
+        .logo { width: 120px; margin-bottom: 10px; }
+        .title { font-size: 0.9rem; font-weight: 900; color: var(--mrs-green); text-transform: uppercase; letter-spacing: 2px; }
+
+        .game-card {
+            width: 100%; max-width: 400px; background: var(--panel); border: 1px solid rgba(0,255,170,0.2);
+            border-radius: 20px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); text-align: center;
+        }
+
+        /* FASE 1: REFLEXO */
+        #reaction-area { 
+            width: 100%; height: 150px; background: #1e293b; border-radius: 15px; 
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            font-weight: 800; margin-bottom: 20px; transition: 0.1s;
+        }
+
+        /* FASE 2: ETILÔMETRO */
+        .step-box { 
+            background: rgba(255,255,255,0.05); border: 1px dashed #475569; 
+            padding: 12px; margin: 8px 0; border-radius: 10px; cursor: move; font-size: 0.9rem;
+        }
+
+        .btn {
+            background: var(--mrs-green); color: #000; border: none; padding: 15px;
+            width: 100%; border-radius: 10px; font-weight: 900; text-transform: uppercase;
+            cursor: pointer; margin-top: 15px;
+        }
+
+        .feedback { font-size: 0.85rem; margin-top: 15px; line-height: 1.4; color: #94a3b8; display: none; }
+        .alert { color: var(--danger); font-weight: 700; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="1000121485.png" class="logo">
+        <div class="title">Check-In 360: Prontidão</div>
+    </div>
+
+    <div class="game-card" id="game-container">
+        </div>
+
+    <script>
+        let state = 'START';
+        let startTime, endTime;
+
+        const screens = {
+            START: `
+                <h2 style="margin-bottom:15px;">Aptidão Neural</h2>
+                <p style="font-size:0.9rem; margin-bottom:20px; opacity:0.8;">Antes do BAS-20, seu cérebro precisa estar alerta. Teste seu reflexo abaixo.</p>
+                <div id="reaction-area" onclick="handleReaction()" style="background:#ef4444;">AGUARDE O VERDE...</div>
+                <div id="result" style="font-weight:800; color:var(--mrs-green);"></div>
+            `,
+            ETILOMETRO: `
+                <h2 style="margin-bottom:10px;">BAS-20: O Fluxo</h2>
+                <p style="font-size:0.8rem; margin-bottom:15px;">Ordene o uso correto do novo etilômetro:</p>
+                <div class="step-box">1. Assopre no local indicado</div>
+                <div class="step-box">2. Aproxime o crachá/matrícula</div>
+                <div class="step-box">3. Aguarde a Análise Facial</div>
+                <div class="step-box">4. Veja o resultado no painel</div>
+                <button class="btn" onclick="checkSteps()">Validar Procedimento</button>
+            `,
+            SENTINELA: `
+                <h2 style="margin-bottom:10px;">Cuidado Mútuo</h2>
+                <p style="font-size:0.9rem; margin-bottom:15px;">Seu colega deu "Fora da Tolerância". Ele pede para você não contar ao gestor.</p>
+                <button class="btn" style="background:#ef4444; color:#fff;" onclick="finish(false)">Omitir (Risco Fatal)</button>
+                <button class="btn" onclick="finish(true)">Intervir (Protocolo Sentinela)</button>
+            `
+        };
+
+        function render() { document.getElementById('game-container').innerHTML = screens[state]; }
+
+        // LÓGICA FASE 1
+        function handleReaction() {
+            const area = document.getElementById('reaction-area');
+            if (state === 'START') {
+                area.style.background = '#ef4444';
+                area.innerText = 'AGUARDE...';
+                setTimeout(() => {
+                    area.style.background = '#00ffaa';
+                    area.innerText = 'CLIQUE AGORA!';
+                    startTime = new Date().getTime();
+                }, Math.random() * 2000 + 1000);
+                state = 'WAITING';
+            } else if (state === 'WAITING') {
+                if (area.style.background.includes('rgb(0, 255, 170)')) {
+                    endTime = new Date().getTime();
+                    let diff = endTime - startTime;
+                    document.getElementById('result').innerText = `Reflexo: ${diff}ms`;
+                    setTimeout(() => { state = 'ETILOMETRO'; render(); }, 1500);
+                } else {
+                    area.innerText = 'MUITO CEDO! REINICIANDO...';
+                    setTimeout(() => { state = 'START'; render(); }, 1000);
+                }
+            }
+        }
+
+        // LÓGICA FASE 2
+        function checkSteps() {
+            // MVP Simplificado: Apenas avança para focar na mensagem
+            state = 'SENTINELA';
+            render();
+        }
+
+        // FINAL
+        function finish(saved) {
+            const container = document.getElementById('game-container');
+            if (saved) {
+                container.innerHTML = `
+                    <h2 style="color:var(--mrs-green);">SENTINELA ATIVO</h2>
+                    <p style="margin-top:15px; font-size:0.9rem;">Você seguiu a <strong>POP-CSO-0003</strong>. O cuidado mútuo evitou que um colega inapto operasse. Isso salva famílias.</p>
+                    <button class="btn" onclick="location.reload()">Reiniciar</button>
+                `;
+            } else {
+                container.innerHTML = `
+                    <h2 style="color:var(--danger);">FALHA CRÍTICA</h2>
+                    <p style="margin-top:15px; font-size:0.9rem;">A omissão é a causa real das fatalidades de 2026. Sem prontidão, não há operação.</p>
+                    <button class="btn" style="background:var(--danger); color:#fff;" onclick="location.reload()">Tentar Novamente</button>
+                `;
+            }
+        }
+
+        render();
+    </script>
+</body>
+</html>
